@@ -1,0 +1,37 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "npm-run-all build-app copy-jquery copy-select2 copy-tailwindcss",
+        "build-app": "vite build",
+        "copy-select2": "mkdirp public/build/plugins && ncp node_modules/select2 public/build/plugins/select2",
+        "copy-jquery": "mkdirp public/build/plugins && ncp node_modules/jquery public/build/plugins/jquery",
+        "copy-tailwindcss": "mkdirp public/build/plugins && ncp node_modules/tailwindcss public/build/plugins/tailwindcss",
+        "build:prod": "cross-env NODE_ENV=production vite build"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-basic-ssl": "^1.0.1",
+        "autoprefixer": "^10.4.16",
+        "axios": "^1.1.2",
+        "laravel-vite-plugin": "^0.7.5",
+        "ncp": "^2.0.0",
+        "postcss": "^8.4.31",
+        "select2": "^4.1.0-rc.0",
+        "vite": "^4.0.0"
+    },
+    "dependencies": {
+        "@flaticon/flaticon-uicons": "^2.3.0",
+        "@fortawesome/fontawesome-free": "^6.4.0",
+        "@tailwindcss/typography": "^0.5.10",
+        "@vitejs/plugin-vue": "^4.2.3",
+        "daisyui": "^3.4.0",
+        "feather-icons": "^4.29.0",
+        "jquery": "^3.7.1",
+        "jquery-ui-dist": "^1.13.2",
+        "lodash": "^4.17.21",
+        "mkdirp": "^3.0.1",
+        "npm-run-all": "^4.1.5",
+        "sweetalert2": "^11.6.13"
+    }
+}

@@ -1,0 +1,91 @@
+<?php
+
+use App\Http\Controllers\Catalogs\GroupController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Reports\ExcelAllReportsController;
+use App\Http\Controllers\Reports\PDFReportController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\UserManager;
+use App\Http\Middleware\CheckLoginMiddleware;
+use App\Http\Middleware\MenuMiddleware;
+use App\Http\Middleware\NTCPMiddleware;
+use App\Http\Middleware\ThrottleRequests;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+
+//Login Routes
+Route::get('/', function () {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+    return redirect()->route('dashboard');
+});
+Route::get('/home', function () {
+    Auth::logout();
+    return redirect()->route('login');
+});
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::middleware(ThrottleRequests::class)->post('/login', [LoginController::class, 'login']);
+Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');
+
+
+//Panel Routes
+Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class)->group(function () {
+    Route::get('/dateandtime', [DashboardController::class, 'jalaliDateAndTime']);
+    Route::get('/date', [DashboardController::class, 'jalaliDate']);
+    Route::get('/Profile', [DashboardController::class, 'Profile'])->name('Profile');
+    Route::post('/ChangePasswordInc', [DashboardController::class, 'ChangePasswordInc']);
+    Route::post('/ChangeUserImage', [DashboardController::class, 'ChangeUserImage']);
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/Search', [SearchController::class, 'search'])->name('Search');
+
+    Route::middleware(NTCPMiddleware::class)->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        //Search Route
+        Route::middleware('roleAuthorization:1')->group(callback: function () {
+            //User Manager
+            Route::get('/UserManager', [UserManager::class, 'index'])->name('UserManager');
+            Route::get('/GetUserInfo', [UserManager::class, 'getUserInfo'])->name('GetUserInfo');
+            Route::Post('/NewUser', [UserManager::class, 'newUser'])->name('NewUser');
+            Route::Post('/EditUser', [UserManager::class, 'editUser'])->name('EditUser');
+            Route::Post('/ChangeUserActivationStatus', [UserManager::class, 'changeUserActivationStatus'])->name('ChangeUserActivationStatus');
+            Route::Post('/ChangeUserNTCP', [UserManager::class, 'ChangeUserNTCP'])->name('ChangeUserNTCP');
+            Route::Post('/ResetPassword', [UserManager::class, 'ResetPassword'])->name('ResetPassword');
+
+            //Group Catalogs
+            Route::group(['prefix' => 'Groups'], function () {
+                Route::get('/', [GroupController::class, 'index']);
+                Route::post('/create', [GroupController::class, 'create']);
+                Route::get('/getInfo', [GroupController::class, 'getInfo']);
+                Route::post('/update', [GroupController::class, 'update']);
+                Route::post('/changeStatus', [GroupController::class, 'changeStatus']);
+            });
+
+            //Start Reports
+            //Excel Reports
+            Route::get('/ExcelAllReports', [ExcelAllReportsController::class, 'index']);
+            Route::get('/GetReport', [ExcelAllReportsController::class, 'getReport'])->name('GetReport');
+
+            //PDF Reports
+            Route::get('/PDFReports', [PDFReportController::class, 'index']);
+            Route::post('/GeneratePDF', [PDFReportController::class, 'generatePDF']);
+            //End Reports
+        });
+
+    });
+});
+
