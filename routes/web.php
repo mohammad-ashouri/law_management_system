@@ -3,6 +3,7 @@
 use App\Http\Controllers\Catalogs\GroupController;
 use App\Http\Controllers\Catalogs\TopicController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LawController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Reports\ExcelAllReportsController;
 use App\Http\Controllers\Reports\PDFReportController;
@@ -82,6 +83,16 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
                 Route::get('/getInfo', [TopicController::class, 'getInfo']);
                 Route::post('/update', [TopicController::class, 'update']);
                 Route::post('/changeStatus', [TopicController::class, 'changeStatus']);
+            });
+
+            //Law Management
+            Route::group(['prefix' => 'Laws'], function () {
+                Route::get('/', [LawController::class, 'index']);
+                Route::post('/create', [LawController::class, 'create']);
+                Route::get('/getInfo', [LawController::class, 'getInfo']);
+                Route::post('/update', [LawController::class, 'update']);
+                Route::post('/delete', [LawController::class, 'delete']);
+                Route::post('/changeStatus', [LawController::class, 'changeStatus']);
             });
 
             //Start Reports
