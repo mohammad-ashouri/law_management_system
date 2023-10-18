@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Catalogs\GroupController;
+use App\Http\Controllers\Catalogs\TopicController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Reports\ExcelAllReportsController;
@@ -73,6 +74,14 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
                 Route::get('/getInfo', [GroupController::class, 'getInfo']);
                 Route::post('/update', [GroupController::class, 'update']);
                 Route::post('/changeStatus', [GroupController::class, 'changeStatus']);
+            });
+            //Topic Catalogs
+            Route::group(['prefix' => 'Topics'], function () {
+                Route::get('/', [TopicController::class, 'index']);
+                Route::post('/create', [TopicController::class, 'create']);
+                Route::get('/getInfo', [TopicController::class, 'getInfo']);
+                Route::post('/update', [TopicController::class, 'update']);
+                Route::post('/changeStatus', [TopicController::class, 'changeStatus']);
             });
 
             //Start Reports

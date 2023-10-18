@@ -586,8 +586,7 @@ $(document).ready(function () {
                                 if (response.errors) {
                                     if (response.errors.nullName) {
                                         swalFire('خطا!', response.errors.nullName[0], 'error', 'تلاش مجدد');
-                                    }
-                                    else if (response.errors.dupName) {
+                                    } else if (response.errors.dupName) {
                                         swalFire('خطا!', response.errors.dupName[0], 'error', 'تلاش مجدد');
                                     }
                                 } else if (response.success) {
@@ -614,36 +613,35 @@ $(document).ready(function () {
             });
             $('#edit-group').on('submit', function (e) {
                 e.preventDefault();
-                    Swal.fire({
-                        title: 'آیا مطمئن هستید؟',
-                        text: 'با ویرایش این مقدار، تمامی فیلدها تغییر خواهند کرد.',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        cancelButtonText: 'خیر',
-                        confirmButtonText: 'بله',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            var form = $(this);
-                            var data = form.serialize();
-                            $.ajax({
-                                type: 'POST', url: '/Groups/update', data: data, headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                }, success: function (response) {
-                                    if (response.errors) {
-                                        if (response.errors.nullName) {
-                                            swalFire('خطا!', response.errors.nullName[0], 'error', 'تلاش مجدد');
-                                        }
-                                        else if (response.errors.dupName) {
-                                            swalFire('خطا!', response.errors.dupName[0], 'error', 'تلاش مجدد');
-                                        }
-                                    } else if (response.success) {
-                                        location.reload();
-                                        resetFields();
+                Swal.fire({
+                    title: 'آیا مطمئن هستید؟',
+                    text: 'با ویرایش این مقدار، تمامی فیلدها تغییر خواهند کرد.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'خیر',
+                    confirmButtonText: 'بله',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var form = $(this);
+                        var data = form.serialize();
+                        $.ajax({
+                            type: 'POST', url: '/Groups/update', data: data, headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            }, success: function (response) {
+                                if (response.errors) {
+                                    if (response.errors.nullName) {
+                                        swalFire('خطا!', response.errors.nullName[0], 'error', 'تلاش مجدد');
+                                    } else if (response.errors.dupName) {
+                                        swalFire('خطا!', response.errors.dupName[0], 'error', 'تلاش مجدد');
                                     }
+                                } else if (response.success) {
+                                    location.reload();
+                                    resetFields();
                                 }
-                            });
-                        }
-                    });
+                            }
+                        });
+                    }
+                });
             });
             $('.changeStatusGroupControl').on('click', function () {
                 Swal.fire({
@@ -657,6 +655,122 @@ $(document).ready(function () {
                     if (result.isConfirmed) {
                         $.ajax({
                             type: 'POST', url: '/Groups/changeStatus', data: {
+                                id: $(this).data('id')
+                            }, headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            }, success: function (response) {
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+
+            });
+            break;
+        case '/Topics':
+            resetFields();
+
+            $('#new-topic-button, #cancel-new-topic').on('click', function () {
+                toggleModal(newTopicModal.id);
+            });
+            $('.absolute.inset-0.bg-gray-500.opacity-75.add').on('click', function () {
+                toggleModal(newTopicModal.id)
+            });
+            $('.absolute.inset-0.bg-gray-500.opacity-75.edit').on('click', function () {
+                toggleModal(editTopicModal.id)
+            });
+            $('#cancel-edit-topic').on('click', function () {
+                toggleModal(editTopicModal.id);
+            });
+            $('#new-topic').on('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'آیا مطمئن هستید؟',
+                    text: 'این مقدار به صورت دائمی اضافه خواهد شد.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'خیر',
+                    confirmButtonText: 'بله',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var form = $(this);
+                        var data = form.serialize();
+                        $.ajax({
+                            type: 'POST', url: '/Topics/create', data: data, headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            }, success: function (response) {
+                                if (response.errors) {
+                                    if (response.errors.nullName) {
+                                        swalFire('خطا!', response.errors.nullName[0], 'error', 'تلاش مجدد');
+                                    } else if (response.errors.dupName) {
+                                        swalFire('خطا!', response.errors.dupName[0], 'error', 'تلاش مجدد');
+                                    }
+                                } else if (response.success) {
+                                    location.reload();
+                                    resetFields();
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            $('.TopicControl').on('click', function () {
+                $.ajax({
+                    type: 'GET', url: '/Topics/getInfo', data: {
+                        id: $(this).data('id')
+                    }, success: function (response) {
+                        if (response) {
+                            topic_id.value = response.id;
+                            nameForEdit.value = response.name;
+                            toggleModal(editTopicModal.id);
+                        }
+                    }
+                });
+            });
+            $('#edit-topic').on('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'آیا مطمئن هستید؟',
+                    text: 'با ویرایش این مقدار، تمامی فیلدها تغییر خواهند کرد.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'خیر',
+                    confirmButtonText: 'بله',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var form = $(this);
+                        var data = form.serialize();
+                        $.ajax({
+                            type: 'POST', url: '/Topics/update', data: data, headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            }, success: function (response) {
+                                if (response.errors) {
+                                    if (response.errors.nullName) {
+                                        swalFire('خطا!', response.errors.nullName[0], 'error', 'تلاش مجدد');
+                                    } else if (response.errors.dupName) {
+                                        swalFire('خطا!', response.errors.dupName[0], 'error', 'تلاش مجدد');
+                                    }
+                                } else if (response.success) {
+                                    location.reload();
+                                    resetFields();
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            $('.changeStatusTopicControl').on('click', function () {
+                Swal.fire({
+                    title: 'آیا مطمئن هستید؟',
+                    text: 'وضعیت این کاتالوگ تغییر خواهد کرد.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'خیر',
+                    confirmButtonText: 'بله',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST', url: '/Topics/changeStatus', data: {
                                 id: $(this).data('id')
                             }, headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),

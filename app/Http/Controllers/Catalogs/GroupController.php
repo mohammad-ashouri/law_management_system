@@ -16,15 +16,15 @@ class GroupController extends Controller
             return $this->alerts(false, 'nullName', 'نام گروه وارد نشده است');
         }
 
-        $table = LawGroup::where('name',$name)->first();
-        if ($name==$table->name){
+        $table = LawGroup::where('name',$name)->get();
+        if ($table->count()>0){
             return $this->alerts(false, 'dupName', 'نام گروه تکراری وارد شده است');
         }
 
         $table = new LawGroup();
         $table->name=$name;
         $table->save();
-        $this->logActivity('Added =>' . $table->id, request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity('Group Added =>' . $table->id, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'Added', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
     }
 
@@ -37,14 +37,15 @@ class GroupController extends Controller
             return $this->alerts(false, 'nullName', 'نام گروه وارد نشده است');
         }
 
-        $table = LawGroup::find($ID);
-        if ($name===$table->name){
+        $table = LawGroup::where('name',$name)->get();
+        if ($table->count()>0){
             return $this->alerts(false, 'dupName', 'نام گروه تکراری وارد شده است');
         }
 
+        $table = LawGroup::find($ID);
         $table->name=$name;
         $table->save();
-        $this->logActivity('Edited =>' . $ID, request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity('Group Edited =>' . $ID, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'Edited', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
     }
 
@@ -66,7 +67,7 @@ class GroupController extends Controller
             } else {
                 $groupInfo->status = 1;
             }
-            $this->logActivity('Group status changed to =>' . $groupInfo->status, request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity('Group' . $ID . 'status changed to =>' . $groupInfo->status, request()->ip(), request()->userAgent(), session('id'));
             $groupInfo->save();
         }
     }
