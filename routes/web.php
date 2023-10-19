@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Catalogs\GroupController;
 use App\Http\Controllers\Catalogs\TopicController;
+use App\Http\Controllers\Catalogs\TypeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LawController;
 use App\Http\Controllers\LoginController;
@@ -68,6 +69,14 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
             Route::Post('/ChangeUserNTCP', [UserManager::class, 'ChangeUserNTCP'])->name('ChangeUserNTCP');
             Route::Post('/ResetPassword', [UserManager::class, 'ResetPassword'])->name('ResetPassword');
 
+            //Types Catalogs
+            Route::group(['prefix' => 'Types'], function () {
+                Route::get('/', [TypeController::class, 'index']);
+                Route::post('/create', [TypeController::class, 'create']);
+                Route::get('/getInfo', [TypeController::class, 'getInfo']);
+                Route::post('/update', [TypeController::class, 'update']);
+                Route::post('/changeStatus', [TypeController::class, 'changeStatus']);
+            });
             //Group Catalogs
             Route::group(['prefix' => 'Groups'], function () {
                 Route::get('/', [GroupController::class, 'index']);
@@ -88,8 +97,10 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
             //Law Management
             Route::group(['prefix' => 'Laws'], function () {
                 Route::get('/', [LawController::class, 'index']);
+                Route::get('/new', [LawController::class, 'createIndex']);
                 Route::post('/create', [LawController::class, 'create']);
                 Route::get('/getInfo', [LawController::class, 'getInfo']);
+                Route::get('/edit/{id}', [LawController::class, 'updateIndex']);
                 Route::post('/update', [LawController::class, 'update']);
                 Route::post('/delete', [LawController::class, 'delete']);
                 Route::post('/changeStatus', [LawController::class, 'changeStatus']);
