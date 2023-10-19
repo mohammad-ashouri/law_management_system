@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('laws', function (Blueprint $table) {
             $table->id();
-            $table->integer('law_code');
-            $table->integer('session_code');
+            $table->integer('law_code')->comment('کد قانون');
+            $table->integer('session_code')->nullable()->comment('کد جلسه');
             $table->unsignedBigInteger('group_id');
             $table->foreign('group_id')->references('id')->on('law_groups');
             $table->unsignedBigInteger('topic_id');
@@ -23,11 +23,11 @@ return new class extends Migration
             $table->text('body');
             $table->string('approval_date')->comment('تاریخ تصویب');
             $table->string('issue_date')->nullable()->comment('تاریخ صدور');
-            $table->string('notification_date')->nullable()->comment('تاریخ ابلاغ');
+            $table->string('promulgation_date')->nullable()->comment('تاریخ ابلاغ');
+            $table->json('keywords')->comment('کلمات کلیدی');
+            $table->json('files_src')->nullable();
             $table->unsignedBigInteger('adder');
             $table->foreign('adder')->references('id')->on('users');
-            $table->unsignedBigInteger('editor')->nullable();
-            $table->foreign('editor')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });
