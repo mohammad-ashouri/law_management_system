@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('laws', function (Blueprint $table) {
             $table->id();
-            $table->integer('law_code')->comment('کد قانون');
+            $table->integer('law_code')->comment('شماره مصوبه');
             $table->integer('session_code')->nullable()->comment('کد جلسه');
             $table->unsignedBigInteger('type_id');
             $table->foreign('type_id')->references('id')->on('types');

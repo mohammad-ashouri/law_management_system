@@ -9,11 +9,28 @@
                 <form id="new-law">
                     @csrf
                     <div class="bg-white px-4 pb-4 sm:p-6 sm:pb-4">
+                        <div class="flex mt-4">
+                            <div class="flex-1 flex-col items-right mb-2 ml-3">
+                                <label for="lawCode"
+                                       class="block text-gray-700 text-sm font-bold mb-2">شماره مصوبه*:</label>
+                                <input type="text" id="lawCode" name="lawCode" autocomplete="off"
+                                       class="border rounded-md w-full mb-2 px-3 py-2 text-right"
+                                       placeholder="شماره مصوبه را وارد کنید">
+                            </div>
+                            <div class="flex-1 flex-col items-right mb-2 ml-3">
+                                <label for="sessionCode"
+                                       class="block text-gray-700 text-sm font-bold mb-2">شماره جلسه:</label>
+                                <input type="text" id="sessionCode" name="sessionCode" autocomplete="off"
+                                       class="border rounded-md w-full mb-2 px-3 py-2 text-right"
+                                       placeholder="شماره جلسه را وارد کنید">
+                            </div>
+                        </div>
+
                         <div class="">
                             <div class="flex flex-col items-right mb-2">
-                                <label for="name"
+                                <label for="title"
                                        class="block text-gray-700 text-sm font-bold mb-2">عنوان*:</label>
-                                <input type="text" id="name" name="name" autocomplete="off"
+                                <input type="text" id="title" name="title" autocomplete="off"
                                        class="border rounded-md w-full mb-2 px-3 py-2 text-right"
                                        placeholder="عنوان را وارد کنید">
                             </div>
@@ -86,6 +103,7 @@
                                     defaultText: 'کلمه کلیدی را وارد کنید و enter را فشار دهید',
                                     width: '700px',
                                     interactive: true,
+                                    delimiter: ['||'],
                                 });
                             });
                         </script>
