@@ -3,11 +3,12 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "npm-run-all build-app copy-jquery copy-select2 copy-tailwindcss",
+        "build": "npm-run-all build-app copy-jquery copy-select2 copy-tailwindcss copy-jquery-tags-input",
         "build-app": "vite build",
         "copy-select2": "mkdirp public/build/plugins && ncp node_modules/select2 public/build/plugins/select2",
         "copy-jquery": "mkdirp public/build/plugins && ncp node_modules/jquery public/build/plugins/jquery",
         "copy-tailwindcss": "mkdirp public/build/plugins && ncp node_modules/tailwindcss public/build/plugins/tailwindcss",
+        "copy-jquery-tags-input": "mkdirp public/build/plugins && ncp node_modules/jquery-tags-input public/build/plugins/jquery-tags-input",
         "build:prod": "cross-env NODE_ENV=production vite build"
     },
     "devDependencies": {
@@ -28,6 +29,7 @@
         "daisyui": "^3.4.0",
         "feather-icons": "^4.29.0",
         "jquery": "^3.7.1",
+        "jquery-tags-input": "^1.3.5",
         "jquery-ui-dist": "^1.13.2",
         "lodash": "^4.17.21",
         "mkdirp": "^3.0.1",

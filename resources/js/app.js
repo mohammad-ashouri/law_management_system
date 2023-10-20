@@ -901,39 +901,6 @@ $(document).ready(function () {
             break;
         case '/Laws':
             resetFields();
-
-            $('#new-law').on('submit', function (e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'آیا مطمئن هستید؟',
-                    text: 'این مقدار به صورت دائمی اضافه خواهد شد.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    cancelButtonText: 'خیر',
-                    confirmButtonText: 'بله',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var form = $(this);
-                        var data = form.serialize();
-                        $.ajax({
-                            type: 'POST', url: '/Laws/create', data: data, headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                            }, success: function (response) {
-                                if (response.errors) {
-                                    if (response.errors.nullName) {
-                                        swalFire('خطا!', response.errors.nullName[0], 'error', 'تلاش مجدد');
-                                    } else if (response.errors.dupName) {
-                                        swalFire('خطا!', response.errors.dupName[0], 'error', 'تلاش مجدد');
-                                    }
-                                } else if (response.success) {
-                                    location.reload();
-                                    resetFields();
-                                }
-                            }
-                        });
-                    }
-                });
-            });
             $('.LawControl').on('click', function () {
                 $.ajax({
                     type: 'GET', url: '/Laws/getInfo', data: {
@@ -1001,6 +968,43 @@ $(document).ready(function () {
                     }
                 });
 
+            });
+            break;
+        case '/Laws/new':
+            // resetFields();
+
+            $('#new-law').on('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'آیا مطمئن هستید؟',
+                    text: 'این مقدار در سامانه اضافه خواهد شد.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'خیر',
+                    confirmButtonText: 'بله',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var form = $(this);
+                        var data = form.serialize();
+                        $.ajax({
+                            type: 'POST', url: '/Laws/create', data: data, headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            }, success: function (response) {
+                                console.log(response);
+                                // if (response.errors) {
+                                //     if (response.errors.nullName) {
+                                //         swalFire('خطا!', response.errors.nullName[0], 'error', 'تلاش مجدد');
+                                //     } else if (response.errors.dupName) {
+                                //         swalFire('خطا!', response.errors.dupName[0], 'error', 'تلاش مجدد');
+                                //     }
+                                // } else if (response.success) {
+                                //     location.reload();
+                                //     resetFields();
+                                // }
+                            }
+                        });
+                    }
+                });
             });
             break;
     }

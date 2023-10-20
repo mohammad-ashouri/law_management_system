@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('law_code')->comment('کد قانون');
             $table->integer('session_code')->nullable()->comment('کد جلسه');
+            $table->unsignedBigInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('types');
             $table->unsignedBigInteger('group_id');
             $table->foreign('group_id')->references('id')->on('law_groups');
             $table->unsignedBigInteger('topic_id');
@@ -25,7 +27,7 @@ return new class extends Migration
             $table->string('issue_date')->nullable()->comment('تاریخ صدور');
             $table->string('promulgation_date')->nullable()->comment('تاریخ ابلاغ');
             $table->json('keywords')->comment('کلمات کلیدی');
-            $table->json('files_src')->nullable();
+            $table->string('file')->nullable();
             $table->unsignedBigInteger('adder');
             $table->foreign('adder')->references('id')->on('users');
             $table->timestamps();
