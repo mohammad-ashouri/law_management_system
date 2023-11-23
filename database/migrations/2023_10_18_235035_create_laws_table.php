@@ -30,6 +30,8 @@ return new class extends Migration
             $table->string('file')->nullable();
             $table->unsignedBigInteger('adder');
             $table->foreign('adder')->references('id')->on('users');
+            $table->unsignedBigInteger('editor');
+            $table->foreign('editor')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });
