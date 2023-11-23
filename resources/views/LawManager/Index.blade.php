@@ -18,28 +18,32 @@
                     <tr class="bg-gradient-to-r from-blue-400 to-purple-500 items-center text-center text-white">
                         <th class="px-6 py-3  font-bold ">ردیف</th>
                         <th class="px-6 py-3  font-bold ">عنوان</th>
+                        <th class="px-6 py-3  font-bold ">نوع مصوبه</th>
+                        <th class="px-6 py-3  font-bold ">گروه</th>
+                        <th class="px-6 py-3  font-bold ">موضوع</th>
+                        <th class="px-6 py-3  font-bold ">تاریخ تصویب</th>
                         <th class="px-6 py-3  font-bold ">عملیات</th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-300">
                     @foreach ($lawList as $law)
                         <tr class="bg-white">
-                            <td class="px-6 py-4">{{ $loop->iteration }}</td>
-                            <td class="px-6 py-4">
-                                {{ $law->name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <button type="submit" data-id="{{ $law->id }}"
-                                        class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 LawControl">
-                                    جزئیات و ویرایش
-                                </button>
+                            <td class="px-6 py-1">{{ $loop->iteration }}</td>
+                            <td class="px-6 py-1">{{ $law->title }}</td>
+                            <td class="px-6 py-1">{{ $law->type->name }}</td>
+                            <td class="px-6 py-1">{{ $law->group->name }}</td>
+                            <td class="px-6 py-1">{{ $law->topic->name }}</td>
+                            <td class="px-6 py-1">{{ $law->approval_date }}</td>
+                            <td class="px-6 py-1">
+                                <form action="Laws/edit/{{$law->id}}" method="get">
+                                    <button type="submit"
+                                            class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 LawControl">
+                                        جزئیات و ویرایش
+                                    </button>
+                                </form>
                                 <button type="submit" data-id="{{ $law->id }}"
                                         class="px-4 py-2 mr-3 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 changeStatusLawControl">
-                                    @if($law->status==1)
-                                        غیرفعالسازی
-                                    @else
-                                        فعالسازی
-                                    @endif
+                                    حذف
                                 </button>
                             </td>
                         </tr>

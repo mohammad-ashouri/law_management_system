@@ -103,7 +103,6 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
                 Route::get('/edit/{id}', [LawController::class, 'updateIndex']);
                 Route::post('/update', [LawController::class, 'update']);
                 Route::post('/delete', [LawController::class, 'delete']);
-                Route::post('/changeStatus', [LawController::class, 'changeStatus']);
             });
 
             //Start Reports

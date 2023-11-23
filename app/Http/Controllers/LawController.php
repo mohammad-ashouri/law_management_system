@@ -68,8 +68,9 @@ class LawController extends Controller
         if (!$keywords) {
             return $this->alerts(false, 'nullKeyword', 'کلمات کلیدی وارد نشده است');
         }
-        $keywords = explode('||', $keywords);
-        $keywords = json_encode($keywords, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+//        dd($keywords);
+//        $keywords = explode('||', $keywords);
+//        $keywords = json_encode($keywords, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $law->keywords = $keywords;
 
         $approval_day = $request->input('approval_day');
@@ -122,9 +123,9 @@ class LawController extends Controller
                 $law->file = $postFilePath;
             }
         }
-//        else {
-//            return $this->alerts(false, 'nullFile', 'فایل مصوبه انتخاب نشده است');
-//        }
+        else {
+            return $this->alerts(false, 'nullFile', 'فایل مصوبه انتخاب نشده است');
+        }
 
         $law->adder = session('id');
         $law->save();
@@ -161,27 +162,10 @@ class LawController extends Controller
         }
     }
 
-    public function changeStatus(Request $request)
-    {
-        $ID = $request->input('id');
-        if ($ID) {
-            $groupInfo = LawGroup::find($ID);
-            if ($groupInfo->status === 1) {
-                $groupInfo->status = 0;
-            } else {
-                $groupInfo->status = 1;
-            }
-            $this->logActivity('Group' . $ID . 'status changed to =>' . $groupInfo->status, request()->ip(), request()->userAgent(), session('id'));
-            $groupInfo->save();
-        }
-    }
-
     public function index()
     {
-        $lawList = Law::orderBy('created_at', 'desc')->paginate(20);
-        $groups = LawGroup::orderBy('name', 'asc')->get();
-        $topics = Topic::orderBy('name', 'desc')->get();
-        return view('LawManager.Index', compact('lawList', 'groups', 'topics'));
+        $lawList = Law::with('type')->with('group')->with('topic')->orderBy('created_at', 'desc')->paginate(20);
+        return view('LawManager.Index', compact('lawList'));
     }
 
     public function createIndex()
@@ -190,5 +174,14 @@ class LawController extends Controller
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
         return view('LawManager.Create', compact('groups', 'topics', 'types'));
+    }
+
+    public function updateIndex($id)
+    {
+        $lawInfo=Law::with('type')->with('group')->with('topic')->find($id);
+        $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
+        $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
+        $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
+        return view('LawManager.Update', compact('lawInfo','groups', 'topics', 'types'));
     }
 }
