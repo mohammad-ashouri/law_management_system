@@ -2,6 +2,14 @@ import './bootstrap';
 import '@fortawesome/fontawesome-free/css/all.css';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
+// Initialization for ES Users
+import {
+    Modal,
+    Ripple,
+    initTE,
+} from "tw-elements";
+
+initTE({ Modal, Ripple });
 
 window.Swal = Swal;
 
@@ -1005,6 +1013,10 @@ $(document).ready(function () {
                             });
                         }
                     });
+                    $('.filter').on('click', function () {
+
+                    });
+
 
                 });
                 break;

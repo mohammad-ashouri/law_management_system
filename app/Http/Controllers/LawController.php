@@ -251,18 +251,50 @@ class LawController extends Controller
         return $this->success(true, 'Edited', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
     }
 
-    public function getInfo(Request $request)
-    {
-        $ID = $request->input('id');
-        if ($ID) {
-            return LawGroup::find($ID);
-        }
-    }
-
     public function index()
     {
+        $filtered = false;
+        $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
+        $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
+        $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
         $lawList = Law::with('type')->with('group')->with('topic')->orderBy('created_at', 'desc')->paginate(20);
-        return view('LawManager.Index', compact('lawList'));
+        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'filtered'));
+    }
+
+    public function search(Request $request)
+    {
+//        dd($request->all());
+        $lawCode = $request->input('lawCode');
+//        $sessionCode = $request->input('sessionCode');
+//        $title = $request->input('title');
+//        $type = $request->input('type');
+//        $group = $request->input('group');
+//        $topic = $request->input('topic');
+//        $approval_day = $request->input('approval_day');
+//        $approval_month = $request->input('approval_month');
+//        $approval_year = $request->input('approval_year');
+//        $issue_day = $request->input('issue_day');
+//        $issue_month = $request->input('issue_month');
+//        $issue_year = $request->input('issue_year');
+//        $promulgation_day = $request->input('promulgation_day');
+//        $promulgation_month = $request->input('promulgation_month');
+//        $promulgation_year = $request->input('promulgation_year');
+//        $keywords = explode('||', $request->input('keywords'));
+
+        $query = Law::query();
+        $query->with('type')->with('group')->with('topic');
+        if ($lawCode) {
+            $query->where('law_code', $lawCode);
+        }
+        $query->orderBy('created_at', 'desc')->paginate(20);
+
+
+        $filtered = true;
+        $lawList = $query->get();
+        $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
+        $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
+        $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
+        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'filtered'));
     }
 
     public function createIndex()

@@ -30,5 +30,6 @@ module.exports = {
             },
         },
     },
-    plugins: [require("daisyui"),require('@tailwindcss/typography')],
+    plugins: [require("daisyui"),require('@tailwindcss/typography'),require("tw-elements/dist/plugin.cjs")],
+    darkMode: "class"
 }
