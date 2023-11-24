@@ -68,8 +68,8 @@ class LawController extends Controller
             return $this->alerts(false, 'nullKeyword', 'کلمات کلیدی وارد نشده است');
         }
 //        dd($keywords);
-//        $keywords = explode('||', $keywords);
-//        $keywords = json_encode($keywords, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $keywords = explode('||', $keywords);
+        $keywords = json_encode($keywords, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $law->keywords = $keywords;
 
         $approval_day = $request->input('approval_day');
@@ -190,8 +190,8 @@ class LawController extends Controller
             return $this->alerts(false, 'nullKeyword', 'کلمات کلیدی وارد نشده است');
         }
 //        dd($keywords);
-//        $keywords = explode('||', $keywords);
-//        $keywords = json_encode($keywords, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $keywords = explode('||', $keywords);
+        $keywords = json_encode($keywords, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $law->keywords = $keywords;
 
         $approval_day = $request->input('approval_day');

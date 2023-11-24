@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('approval_date')->comment('تاریخ تصویب');
             $table->string('issue_date')->nullable()->comment('تاریخ صدور');
             $table->string('promulgation_date')->nullable()->comment('تاریخ ابلاغ');
-            $table->text('keywords')->comment('کلمات کلیدی');
+            $table->json('keywords')->comment('کلمات کلیدی');
             $table->string('file')->nullable();
             $table->unsignedBigInteger('adder');
             $table->foreign('adder')->references('id')->on('users');

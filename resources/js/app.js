@@ -165,7 +165,6 @@ $(document).ready(function () {
                                 }
                             } else if (response.success) {
                                 swalFire('عملیات موفقیت آمیز بود!', response.message.Edited, 'success', 'تایید');
-
                             }
                         }
                     });
