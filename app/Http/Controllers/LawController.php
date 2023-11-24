@@ -141,7 +141,7 @@ class LawController extends Controller
             return $this->alerts(false, 'nullLawCode', 'شماره مصوبه وارد نشده است');
         }
 
-        $checkLawCode = Law::where('law_code', $lawCode)->where('id','!=',$lawID)->get();
+        $checkLawCode = Law::where('law_code', $lawCode)->where('id', '!=', $lawID)->get();
         if ($checkLawCode->count() > 0) {
             return $this->alerts(false, 'dupLawCode', 'شماره مصوبه تکراری وارد شده است');
         }
@@ -280,5 +280,16 @@ class LawController extends Controller
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
         return view('LawManager.Update', compact('lawInfo', 'groups', 'topics', 'types'));
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->input('id');
+        $law = Law::find($id);
+        if ($law->delete()) {
+            $this->logActivity('Law Deleted =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
+            return $this->success(true, 'Deleted', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
+        }
+        return $this->alerts(false, 'wrongError', 'خطای نامشخص.');
     }
 }
