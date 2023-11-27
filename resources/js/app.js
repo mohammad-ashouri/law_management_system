@@ -3,13 +3,9 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
 // Initialization for ES Users
-import {
-    Modal,
-    Ripple,
-    initTE,
-} from "tw-elements";
+import {initTE, Modal, Ripple,} from "tw-elements";
 
-initTE({ Modal, Ripple });
+initTE({Modal, Ripple});
 
 window.Swal = Swal;
 
@@ -183,10 +179,8 @@ $(document).ready(function () {
         switch (pathname) {
             case "/Profile":
                 resetFields();
-
                 $('#change-password').submit(function (e) {
                     e.preventDefault();
-
                     var form = $(this);
                     var data = form.serialize();
 
@@ -254,7 +248,6 @@ $(document).ready(function () {
                 break;
             case "/UserManager":
                 resetFields();
-
                 //Search In User Manager
                 $('#search-Username-UserManager').on('input', function () {
                     var inputUsername = $('#search-Username-UserManager').val().trim().toLowerCase();
@@ -622,7 +615,6 @@ $(document).ready(function () {
                     }
                 });
                 break;
-
             case '/Types':
                 resetFields();
 
@@ -972,7 +964,7 @@ $(document).ready(function () {
                 });
                 break;
             case '/Laws':
-                resetFields();
+                // resetFields();
                 $('.LawControl').on('click', function () {
                     $.ajax({
                         type: 'GET', url: '/Laws/getInfo', data: {
@@ -1018,6 +1010,46 @@ $(document).ready(function () {
                     });
 
 
+                });
+                $('#LawSearcha').on('submit', function (e) {
+                    e.preventDefault();
+                    if (approval_day.value !== '' && approval_month.value === '' && approval_year.value === '') {
+                        swalFire('خطا!', 'تاریخ تصویب را به صورت کامل وارد نمایید.', 'error', 'تلاش مجدد');
+                    } else if (approval_day.value === '' && approval_month.value !== '' && approval_year.value === '') {
+                        swalFire('خطا!', 'تاریخ تصویب را به صورت کامل وارد نمایید.', 'error', 'تلاش مجدد');
+                    } else if (approval_day.value === '' && approval_month.value === '' && approval_year.value !== '') {
+                        swalFire('خطا!', 'تاریخ تصویب را به صورت کامل وارد نمایید.', 'error', 'تلاش مجدد');
+                    } else if (approval_day.value === '' && approval_month.value !== '' && approval_year.value !== '') {
+                        swalFire('خطا!', 'تاریخ تصویب را به صورت کامل وارد نمایید.', 'error', 'تلاش مجدد');
+                    } else if (approval_day.value !== '' && approval_month.value === '' && approval_year.value !== '') {
+                        swalFire('خطا!', 'تاریخ تصویب را به صورت کامل وارد نمایید.', 'error', 'تلاش مجدد');
+                    } else if (approval_day.value !== '' && approval_month.value !== '' && approval_year.value === '') {
+                        swalFire('خطا!', 'تاریخ تصویب را به صورت کامل وارد نمایید.', 'error', 'تلاش مجدد');
+                    }else if (issue_day.value !== '' && issue_month.value === '' && issue_year.value === '') {
+                        swalFire('خطا!', 'تاریخ صدور را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    } else if (issue_day.value === '' && issue_month.value !== '' && issue_year.value === '') {
+                        swalFire('خطا!', 'تاریخ صدور را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    } else if (issue_day.value === '' && issue_month.value === '' && issue_year.value !== '') {
+                        swalFire('خطا!', 'تاریخ صدور را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    } else if (issue_day.value === '' && issue_month.value !== '' && issue_year.value !== '') {
+                        swalFire('خطا!', 'تاریخ صدور را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    } else if (issue_day.value !== '' && issue_month.value === '' && issue_year.value !== '') {
+                        swalFire('خطا!', 'تاریخ صدور را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    } else if (issue_day.value !== '' && issue_month.value !== '' && issue_year.value === '') {
+                        swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    }else if (promulgation_day.value !== '' && promulgation_month.value === '' && promulgation_year.value === '') {
+                        swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    } else if (promulgation_day.value === '' && promulgation_month.value !== '' && promulgation_year.value === '') {
+                        swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    } else if (promulgation_day.value === '' && promulgation_month.value === '' && promulgation_year.value !== '') {
+                        swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    } else if (promulgation_day.value === '' && promulgation_month.value !== '' && promulgation_year.value !== '') {
+                        swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    } else if (promulgation_day.value !== '' && promulgation_month.value === '' && promulgation_year.value !== '') {
+                        swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    } else if (promulgation_day.value !== '' && promulgation_month.value !== '' && promulgation_year.value === '') {
+                        swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    }
                 });
                 break;
             case '/Laws/new':

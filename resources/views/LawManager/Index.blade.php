@@ -13,24 +13,25 @@
                             جدید
                         </button>
                     </a>
-                    @if($filtered)
-                        <a href="/Laws">
-                            <button type="button" data-te-toggle="modal"
-                                    class="px-4 py-2 mb-3 mr-3 bg-red-500 w-32 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 filter">
-                                حذف فیلتر
-                            </button>
-                        </a>
-                    @else
+{{--                    @if($filtered)--}}
+{{--                        <a href="/Laws">--}}
+{{--                            <button type="button" data-te-toggle="modal"--}}
+{{--                                    class="px-4 py-2 mb-3 mr-3 bg-red-500 w-32 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 filter">--}}
+{{--                                حذف فیلتر--}}
+{{--                            </button>--}}
+{{--                        </a>--}}
+{{--                    @else--}}
                         <button type="button" data-te-toggle="modal"
                                 data-te-target="#searchModal"
                                 class="px-4 py-2 mb-3 mr-3 bg-blue-500 w-24 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 filter">
                             جستجو
                         </button>
-                    @endif
+{{--                    @endif--}}
 
                 </div>
                 <!-- Modal -->
-                <form action="/Laws/search" method="get">
+                <form action="/Laws/search" id="LawSearch" method="POST">
+                    @csrf
                     <div
                         data-te-modal-init
                         class="fixed left-0 top-0 mt-10 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"

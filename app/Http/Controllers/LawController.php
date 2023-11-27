@@ -263,31 +263,44 @@ class LawController extends Controller
 
     public function search(Request $request)
     {
-//        dd($request->all());
         $lawCode = $request->input('lawCode');
-//        $sessionCode = $request->input('sessionCode');
-//        $title = $request->input('title');
-//        $type = $request->input('type');
-//        $group = $request->input('group');
-//        $topic = $request->input('topic');
-//        $approval_day = $request->input('approval_day');
-//        $approval_month = $request->input('approval_month');
-//        $approval_year = $request->input('approval_year');
-//        $issue_day = $request->input('issue_day');
-//        $issue_month = $request->input('issue_month');
-//        $issue_year = $request->input('issue_year');
-//        $promulgation_day = $request->input('promulgation_day');
-//        $promulgation_month = $request->input('promulgation_month');
-//        $promulgation_year = $request->input('promulgation_year');
-//        $keywords = explode('||', $request->input('keywords'));
+        $sessionCode = $request->input('sessionCode');
+        $title = $request->input('title');
+        $type = $request->input('type');
+        $group = $request->input('group');
+        $topic = $request->input('topic');
+        $approval_day = $request->input('approval_day');
+        $approval_month = $request->input('approval_month');
+        $approval_year = $request->input('approval_year');
+        $issue_day = $request->input('issue_day');
+        $issue_month = $request->input('issue_month');
+        $issue_year = $request->input('issue_year');
+        $promulgation_day = $request->input('promulgation_day');
+        $promulgation_month = $request->input('promulgation_month');
+        $promulgation_year = $request->input('promulgation_year');
+        $keywords = explode('||', $request->input('keywords'));
 
         $query = Law::query();
         $query->with('type')->with('group')->with('topic');
         if ($lawCode) {
             $query->where('law_code', $lawCode);
         }
+        if ($sessionCode) {
+            $query->where('session_code', $sessionCode);
+        }
+        if ($title) {
+            $query->where('title', 'LIKE', '%' . $title . '%');
+        }
+        if ($type) {
+            $query->where('type_id', $type);
+        }
+        if ($group) {
+            $query->where('group_id', $group);
+        }
+        if ($topic) {
+            $query->where('topic_id', $topic);
+        }
         $query->orderBy('created_at', 'desc')->paginate(20);
-
 
         $filtered = true;
         $lawList = $query->get();
