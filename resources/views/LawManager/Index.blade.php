@@ -77,19 +77,19 @@
                                 <div class="columns-2 px-4 mb-2">
                                     <label for="lawCode"
                                            class="block text-gray-700 text-sm font-bold mb-2">شماره مصوبه:</label>
-                                    <input type="text" id="lawCode" name="lawCode"
+                                    <input type="text" id="lawCode" name="lawCode" @if(@$allRequests['lawCode']) value="{{$allRequests['lawCode']}}" @endif
                                            class="border rounded-md w-full px-3 py-2 text-right"
                                            placeholder="شماره مصوبه را وارد کنید">
                                     <label for="sessionCode"
                                            class="block text-gray-700 text-sm font-bold mb-2">شماره جلسه:</label>
-                                    <input type="text" id="sessionCode" name="sessionCode"
+                                    <input type="text" id="sessionCode" name="sessionCode" @if(@$allRequests['sessionCode']) value="{{$allRequests['sessionCode']}}" @endif
                                            class="border rounded-md w-full px-3 py-2 text-right"
                                            placeholder="شماره جلسه را وارد کنید">
                                 </div>
                                 <div class="columns-1 px-4 mb-2">
                                     <label for="title"
                                            class="block text-gray-700 text-sm font-bold mb-2">عنوان:</label>
-                                    <input type="text" id="title" name="title"
+                                    <input type="text" id="title" name="title" @if(@$allRequests['title']) value="{{$allRequests['title']}}" @endif
                                            class="border rounded-md w-full px-3 py-2 text-right"
                                            placeholder="عنوان مصوبه را وارد کنید">
                                 </div>
@@ -101,7 +101,7 @@
                                                 name="type">
                                             <option value="" disabled selected>انتخاب کنید</option>
                                             @foreach($types as $type)
-                                                <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                                <option @if(@$allRequests['type']==$type->id) selected @endif value="{{ $type->id }}">{{ $type->name }}</option>
                                             @endforeach
                                         </select>
                                         <label for="group"
@@ -110,7 +110,7 @@
                                                 name="group">
                                             <option value="" disabled selected>انتخاب کنید</option>
                                             @foreach($groups as $group)
-                                                <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                                <option @if(@$allRequests['group']==$group->id) selected @endif value="{{ $group->id }}">{{ $group->name }}</option>
                                             @endforeach
                                         </select>
                                         <label for="topic"
@@ -119,7 +119,7 @@
                                                 name="topic">
                                             <option value="" disabled selected>انتخاب کنید</option>
                                             @foreach($topics as $topic)
-                                                <option value="{{ $topic->id }}">{{ $topic->name }}</option>
+                                                <option @if(@$allRequests['topic']==$topic->id) selected @endif value="{{ $topic->id }}">{{ $topic->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -130,23 +130,23 @@
                                         <div class="flex-1 flex-col items-right mb-2 ml-3">
                                             <select id="approval_day" class="border rounded-md px-3 py-2"
                                                     name="approval_day">
-                                                <option value="" disabled selected>روز</option>
+                                                <option value=""  selected>روز</option>
                                                 @for($a=1;$a<=31;$a++)
-                                                    <option value="{{ $a }}">{{ $a }}</option>
+                                                    <option @if(@$allRequests['approval_day']==$a) selected @endif value="{{ $a }}">{{ $a }}</option>
                                                 @endfor
                                             </select>
                                             <select id="approval_month" class="border rounded-md px-3 py-2"
                                                     name="approval_month">
-                                                <option value="" disabled selected>ماه</option>
+                                                <option value=""  selected>ماه</option>
                                                 @for($a=1;$a<=12;$a++)
-                                                    <option value="{{ $a }}">{{ $a }}</option>
+                                                    <option @if(@$allRequests['approval_month']==$a) selected @endif value="{{ $a }}">{{ $a }}</option>
                                                 @endfor
                                             </select>
                                             <select id="approval_year" class="border rounded-md px-3 py-2"
                                                     name="approval_year">
-                                                <option value="" disabled selected>سال</option>
+                                                <option value=""  selected>سال</option>
                                                 @for($a=1370;$a<=1402;$a++)
-                                                    <option value="{{ $a }}">{{ $a }}</option>
+                                                    <option @if(@$allRequests['approval_year']==$a) selected @endif value="{{ $a }}">{{ $a }}</option>
                                                 @endfor
                                             </select>
                                         </div>
@@ -157,23 +157,23 @@
                                     <div class="flex-1 flex-col items-right mb-2 ml-3">
                                         <select id="issue_day" class="border rounded-md px-3 py-2"
                                                 name="issue_day">
-                                            <option value="" disabled selected>روز</option>
+                                            <option value=""  selected>روز</option>
                                             @for($a=1;$a<=31;$a++)
-                                                <option value="{{ $a }}">{{ $a }}</option>
+                                                <option @if(@$allRequests['issue_day']==$a) selected @endif value="{{ $a }}">{{ $a }}</option>
                                             @endfor
                                         </select>
                                         <select id="issue_month" class="border rounded-md px-3 py-2"
                                                 name="issue_month">
-                                            <option value="" disabled selected>ماه</option>
+                                            <option value=""  selected>ماه</option>
                                             @for($a=1;$a<=12;$a++)
-                                                <option value="{{ $a }}">{{ $a }}</option>
+                                                <option @if(@$allRequests['issue_month']==$a) selected @endif value="{{ $a }}">{{ $a }}</option>
                                             @endfor
                                         </select>
                                         <select id="issue_year" class="border rounded-md px-3 py-2"
                                                 name="issue_year">
-                                            <option value="" disabled selected>سال</option>
+                                            <option value=""  selected>سال</option>
                                             @for($a=1370;$a<=1402;$a++)
-                                                <option value="{{ $a }}">{{ $a }}</option>
+                                                <option @if(@$allRequests['issue_year']==$a) selected @endif value="{{ $a }}">{{ $a }}</option>
                                             @endfor
                                         </select>
                                     </div>
@@ -184,23 +184,23 @@
                                         <div class="flex-1 flex-col items-right mb-2 ml-3">
                                             <select id="promulgation_day" class="border rounded-md px-3 py-2"
                                                     name="promulgation_day">
-                                                <option value="" disabled selected>روز</option>
+                                                <option value="" selected>روز</option>
                                                 @for($a=1;$a<=31;$a++)
-                                                    <option value="{{ $a }}">{{ $a }}</option>
+                                                    <option @if(@$allRequests['promulgation_day']==$a) selected @endif value="{{ $a }}">{{ $a }}</option>
                                                 @endfor
                                             </select>
                                             <select id="promulgation_month" class="border rounded-md px-3 py-2"
                                                     name="promulgation_month">
-                                                <option value="" disabled selected>ماه</option>
+                                                <option value=""  selected>ماه</option>
                                                 @for($a=1;$a<=12;$a++)
-                                                    <option value="{{ $a }}">{{ $a }}</option>
+                                                    <option @if(@$allRequests['promulgation_month']==$a) selected @endif value="{{ $a }}">{{ $a }}</option>
                                                 @endfor
                                             </select>
                                             <select id="promulgation_year" class="border rounded-md px-3 py-2"
                                                     name="promulgation_year">
-                                                <option value="" disabled selected>سال</option>
+                                                <option value=""  selected>سال</option>
                                                 @for($a=1370;$a<=1402;$a++)
-                                                    <option value="{{ $a }}">{{ $a }}</option>
+                                                    <option @if(@$allRequests['promulgation_year']==$a) selected @endif value="{{ $a }}">{{ $a }}</option>
                                                 @endfor
                                             </select>
                                         </div>
@@ -211,7 +211,7 @@
                                         <label for="keywords" class="block text-gray-700 text-sm font-bold mb-2">کلمات
                                             کلیدی*:
                                         </label>
-                                        <input type="text" name="keywords" id="keywords" value="">
+                                        <input type="text" name="keywords" id="keywords" @if(@$allRequests['keywords']) value="{{$allRequests['keywords']}}" @endif>
                                     </div>
                                     <script>
                                         $(document).ready(function () {
@@ -264,7 +264,7 @@
                         </div>
                     </div>
                 </form>
-                @if(!$isEmpty)
+                @if(!@$isEmpty)
                 <table class="w-full border-collapse rounded-lg overflow-hidden text-center datasheet">
                     <thead>
                     <tr class="bg-gradient-to-r from-blue-400 to-purple-500 items-center text-center text-white">

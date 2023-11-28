@@ -1011,7 +1011,7 @@ $(document).ready(function () {
 
 
                 });
-                $('#LawSearcha').on('submit', function (e) {
+                $('#LawSearch').on('submit', function (e) {
                     e.preventDefault();
                     if (approval_day.value !== '' && approval_month.value === '' && approval_year.value === '') {
                         swalFire('خطا!', 'تاریخ تصویب را به صورت کامل وارد نمایید.', 'error', 'تلاش مجدد');
@@ -1049,6 +1049,8 @@ $(document).ready(function () {
                         swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
                     } else if (promulgation_day.value !== '' && promulgation_month.value !== '' && promulgation_year.value === '') {
                         swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
+                    }else {
+                        this.submit();
                     }
                 });
                 break;

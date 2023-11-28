@@ -254,6 +254,7 @@ class LawController extends Controller
     public function index()
     {
         $filtered = false;
+        $allRequests=[];
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
@@ -336,7 +337,8 @@ class LawController extends Controller
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
-        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'isEmpty'));
+        $allRequests=$request->all();
+        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'isEmpty','allRequests'));
     }
 
     public function createIndex()

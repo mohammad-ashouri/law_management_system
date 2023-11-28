@@ -438,7 +438,7 @@
     <div class="max-w-4xl mx-auto text-center">
             <span>کلیه حقوق مادی این سامانه متعلق به
                 {{ env('APP_PERSIAN_NAME') }}
-                مرکز فناوری اطلاعات حوزه های علمیه کشور
+                 حوزه های علمیه کشور
                 می باشد.</span>
     </div>
 </footer>
