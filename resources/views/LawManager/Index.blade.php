@@ -227,7 +227,6 @@
                                                 if (window.getSelection) {
                                                     selectedText = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
                                                 }
-
                                                 return selectedText;
                                             }
 
@@ -265,6 +264,7 @@
                         </div>
                     </div>
                 </form>
+                @if(!$isEmpty)
                 <table class="w-full border-collapse rounded-lg overflow-hidden text-center datasheet">
                     <thead>
                     <tr class="bg-gradient-to-r from-blue-400 to-purple-500 items-center text-center text-white">
@@ -291,7 +291,7 @@
                             <td class="px-6 py-1">{{ $law->topic->name }}</td>
                             <td class="px-6 py-1">{{ $law->approval_date }}</td>
                             <td class="px-6 py-1">
-                                <form action="Laws/edit/{{$law->id}}" method="get">
+                                <form action="/Laws/edit/{{$law->id}}" method="get">
                                     <button type="submit"
                                             class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 LawControl">
                                         جزئیات و ویرایش
@@ -306,9 +306,14 @@
                     @endforeach
                     </tbody>
                 </table>
+                @else
+                    <div dir="ltr" class="mt-4 flex justify-center">
+                        هیچ موردی یافت نشد
+                    </div>
+                @endif
 
                 <div dir="ltr" class="mt-4 flex justify-center" id="laravel-next-prev">
-                    {{--                    {{ $lawList->links() }}--}}
+{{--                                        {{ $lawList->links() }}--}}
                 </div>
             </div>
 

@@ -327,12 +327,16 @@ class LawController extends Controller
         }
         $query->orderBy('created_at', 'desc')->paginate(20);
 
-        $filtered = true;
         $lawList = $query->get();
+
+        $isEmpty = false;
+        if ($lawList->isEmpty()) {
+            $isEmpty = true;
+        }
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
-        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'filtered'));
+        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'isEmpty'));
     }
 
     public function createIndex()
