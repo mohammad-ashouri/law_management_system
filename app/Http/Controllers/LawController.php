@@ -272,12 +272,21 @@ class LawController extends Controller
         $approval_day = $request->input('approval_day');
         $approval_month = $request->input('approval_month');
         $approval_year = $request->input('approval_year');
+        if ($approval_day and $approval_month and $approval_year) {
+            $approval_date = $approval_year . '/' . $approval_month . '/' . $approval_day;
+        }
         $issue_day = $request->input('issue_day');
         $issue_month = $request->input('issue_month');
         $issue_year = $request->input('issue_year');
+        if ($issue_day and $issue_month and $issue_year) {
+            $issue_date = $issue_year . '/' . $issue_month . '/' . $issue_day;
+        }
         $promulgation_day = $request->input('promulgation_day');
         $promulgation_month = $request->input('promulgation_month');
         $promulgation_year = $request->input('promulgation_year');
+        if ($promulgation_day and $promulgation_month and $promulgation_year) {
+            $promulgation_date = $promulgation_year . '/' . $promulgation_month . '/' . $promulgation_day;
+        }
         $keywords = explode('||', $request->input('keywords'));
 
         $query = Law::query();
@@ -299,6 +308,22 @@ class LawController extends Controller
         }
         if ($topic) {
             $query->where('topic_id', $topic);
+        }
+        if (@$approval_date) {
+            $query->where('approval_date', $approval_date);
+        }
+        if (@$issue_date) {
+            $query->where('issue_date', $issue_date);
+        }
+        if (@$promulgation_date) {
+            $query->where('promulgation_date', $promulgation_date);
+        }
+        if ($request->filled('keywords')) {
+            $query->where(function ($query) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $query->orWhereJsonContains('keywords', $keyword);
+                }
+            });
         }
         $query->orderBy('created_at', 'desc')->paginate(20);
 
