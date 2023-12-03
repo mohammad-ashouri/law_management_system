@@ -11,10 +11,11 @@ use Illuminate\Support\Facades\Validator;
 
 class LawController extends Controller
 {
+    public $searchArray = ['أ', 'ئ', 'ة', 'إ', 'ؤ', 'ً', 'ٌ', 'ٍ', 'َ', 'ُ', 'ِ'];
+    public $replaceArray = ['ا', 'ی', 'ه', 'ا', 'و', '', '', '', '', '', ''];
+
     public function create(Request $request)
     {
-        $searchArray=['أ','ئ','ة','إ','ؤ','ً','ٌ','ٍ','َ','ُ','ِ'];
-        $replaceArray =['ا','ی','ه','ا','و','','','','','',''];
 
         $lawCode = $request->input('lawCode');
         if (!$lawCode) {
@@ -39,7 +40,7 @@ class LawController extends Controller
         if (!$title) {
             return $this->alerts(false, 'nullTitle', 'عنوان وارد نشده است');
         }
-        $law->title = str_replace($searchArray, $replaceArray, $title);
+        $law->title = str_replace($this->searchArray, $this->replaceArray, $title);
 
         $type = $request->input('type');
         if (!$type) {
@@ -63,9 +64,9 @@ class LawController extends Controller
         if (!$body) {
             return $this->alerts(false, 'nullBody', 'کلمات کلیدی وارد نشده است');
         }
-        $law->body = str_replace($searchArray, $replaceArray, $body);
+        $law->body = str_replace($this->searchArray, $this->replaceArray, $body);
 
-        $keywords = str_replace($searchArray, $replaceArray, $request->input('keywords'));
+        $keywords = str_replace($this->searchArray, $this->replaceArray, $request->input('keywords'));
         if (!$keywords) {
             return $this->alerts(false, 'nullKeyword', 'کلمات کلیدی وارد نشده است');
         }
@@ -161,7 +162,7 @@ class LawController extends Controller
         if (!$title) {
             return $this->alerts(false, 'nullTitle', 'عنوان وارد نشده است');
         }
-        $law->title = $title;
+        $law->title = str_replace($this->searchArray, $this->replaceArray, $title);
 
         $type = $request->input('type');
         if (!$type) {
@@ -185,9 +186,9 @@ class LawController extends Controller
         if (!$body) {
             return $this->alerts(false, 'nullBody', 'کلمات کلیدی وارد نشده است');
         }
-        $law->body = $body;
+        $law->body = str_replace($this->searchArray, $this->replaceArray, $body);
 
-        $keywords = $request->input('keywords');
+        $keywords = str_replace($this->searchArray, $this->replaceArray, $request->input('keywords'));
         if (!$keywords) {
             return $this->alerts(false, 'nullKeyword', 'کلمات کلیدی وارد نشده است');
         }
@@ -256,7 +257,7 @@ class LawController extends Controller
     public function index()
     {
         $filtered = false;
-        $allRequests=[];
+        $allRequests = [];
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
@@ -339,8 +340,8 @@ class LawController extends Controller
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
-        $allRequests=$request->all();
-        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'isEmpty','allRequests'));
+        $allRequests = $request->all();
+        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'isEmpty', 'allRequests'));
     }
 
     public function createIndex()
