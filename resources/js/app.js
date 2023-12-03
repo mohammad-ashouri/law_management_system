@@ -124,6 +124,7 @@ $(document).ready(function () {
                 confirmButtonText: 'بله',
             }).then((result) => {
                 if (result.isConfirmed) {
+                    showLoadingPopup();
                     var form = $(this);
                     var formData = new FormData(form[0]);
                     $.ajax({
@@ -168,6 +169,7 @@ $(document).ready(function () {
                                     swalFire('خطا!', response.errors.nullFile[0], 'error', 'تلاش مجدد');
                                 }
                             } else if (response.success) {
+                                hideLoadingPopup();
                                 swalFire('عملیات موفقیت آمیز بود!', response.message.Edited, 'success', 'تایید');
                             }
                         }
@@ -1056,7 +1058,6 @@ $(document).ready(function () {
                 break;
             case '/Laws/new':
                 resetFields();
-
                 $('#new-law').on('submit', function (e) {
                     e.preventDefault();
                     Swal.fire({
@@ -1068,6 +1069,7 @@ $(document).ready(function () {
                         confirmButtonText: 'بله',
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            showLoadingPopup();
                             var form = $(this);
                             var formData = new FormData(form[0]);
                             $.ajax({
