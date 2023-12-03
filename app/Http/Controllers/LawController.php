@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Validator;
 
 class LawController extends Controller
 {
-    public $searchArray = ['أ', 'ئ', 'ة', 'إ', 'ؤ', 'ً', 'ٌ', 'ٍ', 'َ', 'ُ', 'ِ','ّ','ۀ','¬','ي','ك','‌'];
-    public $replaceArray = ['ا', 'ی', 'ه', 'ا', 'و', '', '', '', '', '', '','','ه',' ','ی','ک',' '];
+    public $searchArray = ['أ',  'ة', 'إ', 'ؤ', 'ً', 'ٌ', 'ٍ', 'َ', 'ُ', 'ِ','ّ','ۀ','¬','ي','ك','‌'];
+    public $replaceArray = ['ا', 'ی', 'ه', 'ا', 'و', '', '', '', '', '', '','','ه',' ','ک',' '];
 
     public function create(Request $request)
     {
