@@ -13,6 +13,8 @@ class LawController extends Controller
 {
     public function create(Request $request)
     {
+        $searchArray=['أ','ئ','ة','إ','ؤ','ً','ٌ','ٍ','َ','ُ','ِ'];
+        $replaceArray =['ا','ی','ه','ا','و','','','','','',''];
 
         $lawCode = $request->input('lawCode');
         if (!$lawCode) {
@@ -37,7 +39,7 @@ class LawController extends Controller
         if (!$title) {
             return $this->alerts(false, 'nullTitle', 'عنوان وارد نشده است');
         }
-        $law->title = $title;
+        $law->title = str_replace($searchArray, $replaceArray, $title);
 
         $type = $request->input('type');
         if (!$type) {
@@ -61,9 +63,9 @@ class LawController extends Controller
         if (!$body) {
             return $this->alerts(false, 'nullBody', 'کلمات کلیدی وارد نشده است');
         }
-        $law->body = $body;
+        $law->body = str_replace($searchArray, $replaceArray, $body);
 
-        $keywords = $request->input('keywords');
+        $keywords = str_replace($searchArray, $replaceArray, $request->input('keywords'));
         if (!$keywords) {
             return $this->alerts(false, 'nullKeyword', 'کلمات کلیدی وارد نشده است');
         }
