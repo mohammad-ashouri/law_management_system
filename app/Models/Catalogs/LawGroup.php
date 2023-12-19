@@ -4,10 +4,11 @@ namespace App\Models\Catalogs;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LawGroup extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $table = "law_groups";
     protected $fillable = [

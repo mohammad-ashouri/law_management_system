@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
         $query="insert into types (name) values ('قانون'),('مصوبه'),('آیین نامه'),('دستورالعمل')";
         DB::statement($query);
