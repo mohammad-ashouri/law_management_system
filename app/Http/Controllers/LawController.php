@@ -286,6 +286,7 @@ class LawController extends Controller
         $title = $request->input('title');
         $type = $request->input('type');
         $group = $request->input('group');
+        $approver = $request->input('approver');
         $topic = $request->input('topic');
         $approval_day = $request->input('approval_day');
         $approval_month = $request->input('approval_month');
@@ -324,6 +325,9 @@ class LawController extends Controller
         if ($group) {
             $query->where('group_id', $group);
         }
+        if ($approver) {
+            $query->where('approver_id', $approver);
+        }
         if ($topic) {
             $query->where('topic_id', $topic);
         }
@@ -353,9 +357,10 @@ class LawController extends Controller
         }
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
+        $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
         $allRequests = $request->all();
-        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'isEmpty', 'allRequests'));
+        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'approvers', 'isEmpty', 'allRequests'));
     }
 
     public function createIndex()

@@ -97,7 +97,7 @@
                                            class="border rounded-md w-full px-3 py-2 text-right"
                                            placeholder="عنوان مصوبه را وارد کنید">
                                 </div>
-                                <div class="columns-3 px-4 mb-2">
+                                <div class="columns-2 px-4 mb-2">
                                     <div class=" items-right mb-2 ml-3">
                                         <label for="type" class="block text-gray-700 text-sm font-bold mb-2">نوع
                                             مصوبه:</label>
@@ -119,14 +119,28 @@
                                                         @endif value="{{ $group->id }}">{{ $group->name }}</option>
                                             @endforeach
                                         </select>
-                                        <label for="topic"
-                                               class="block text-gray-700 text-sm font-bold mb-2">موضوع:</label>
-                                        <select id="topic" class="border rounded-md w-full px-3 py-2"
-                                                name="topic">
+                                    </div>
+                                </div>
+                                <div class="columns-2 px-4 mb-2">
+                                    <div class=" items-right mb-2 ml-3">
+                                        <label for="type" class="block text-gray-700 text-sm font-bold mb-2">نوع
+                                            مصوبه:</label>
+                                        <select id="type" class="border rounded-md w-full px-3 py-2"
+                                                name="type">
                                             <option value="" disabled selected>انتخاب کنید</option>
-                                            @foreach($topics as $topic)
-                                                <option @if(@$allRequests['topic']==$topic->id) selected
-                                                        @endif value="{{ $topic->id }}">{{ $topic->name }}</option>
+                                            @foreach($types as $type)
+                                                <option @if(@$allRequests['type']==$type->id) selected
+                                                        @endif value="{{ $type->id }}">{{ $type->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <label for="approver"
+                                               class="block text-gray-700 text-sm font-bold mb-2">تصویب کننده:</label>
+                                        <select id="approver" class="border rounded-md w-full px-3 py-2"
+                                                name="approver">
+                                            <option value="" disabled selected>انتخاب کنید</option>
+                                            @foreach($approvers as $approver)
+                                                <option @if(@$allRequests['approver']==$approver->id) selected
+                                                        @endif value="{{ $approver->id }}">{{ $approver->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
