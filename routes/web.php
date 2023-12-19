@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Catalogs\ApproverController;
 use App\Http\Controllers\Catalogs\GroupController;
 use App\Http\Controllers\Catalogs\TopicController;
 use App\Http\Controllers\Catalogs\TypeController;
@@ -92,6 +93,14 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
                 Route::get('/getInfo', [TopicController::class, 'getInfo']);
                 Route::post('/update', [TopicController::class, 'update']);
                 Route::post('/changeStatus', [TopicController::class, 'changeStatus']);
+            });
+            //Approver Catalogs
+            Route::group(['prefix' => 'Approvers'], function () {
+                Route::get('/', [ApproverController::class, 'index']);
+                Route::post('/create', [ApproverController::class, 'create']);
+                Route::get('/getInfo', [ApproverController::class, 'getInfo']);
+                Route::post('/update', [ApproverController::class, 'update']);
+                Route::post('/changeStatus', [ApproverController::class, 'changeStatus']);
             });
 
             //Law Management
