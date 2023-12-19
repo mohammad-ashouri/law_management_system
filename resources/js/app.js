@@ -138,39 +138,56 @@ $(document).ready(function () {
                         }, success: function (response) {
                             if (response.errors) {
                                 if (response.errors.wrongError) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.wrongError[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullTitle) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullTitle[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullLawCode) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullLawCode[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.dupLawCode) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.dupLawCode[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullSessionCode) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullSessionCode[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullType) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullType[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullGroup) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullGroup[0], 'error', 'تلاش مجدد');
+                                } else if (response.errors.nullApprover) {
+                                    hideLoadingPopup();
+                                    swalFire('خطا!', response.errors.nullApprover[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullTopic) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullTopic[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullBody) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullBody[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullKeyword) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullKeyword[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullApprovalDate) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullApprovalDate[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullIssueDate) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullIssueDate[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullPromulgationDate) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullPromulgationDate[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.wrongFile) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.wrongFile[0], 'error', 'تلاش مجدد');
                                 } else if (response.errors.nullFile) {
+                                    hideLoadingPopup();
                                     swalFire('خطا!', response.errors.nullFile[0], 'error', 'تلاش مجدد');
                                 }
                             } else if (response.success) {
-                                hideLoadingPopup();
-                                swalFire('عملیات موفقیت آمیز بود!', response.message.Edited, 'success', 'تایید');
+                                window.history.back();
                             }
                         }
                     });
@@ -1123,10 +1140,6 @@ $(document).ready(function () {
                             });
                         }
                     });
-                    $('.filter').on('click', function () {
-
-                    });
-
 
                 });
                 $('#LawSearch').on('submit', function (e) {
@@ -1143,7 +1156,7 @@ $(document).ready(function () {
                         swalFire('خطا!', 'تاریخ تصویب را به صورت کامل وارد نمایید.', 'error', 'تلاش مجدد');
                     } else if (approval_day.value !== '' && approval_month.value !== '' && approval_year.value === '') {
                         swalFire('خطا!', 'تاریخ تصویب را به صورت کامل وارد نمایید.', 'error', 'تلاش مجدد');
-                    }else if (issue_day.value !== '' && issue_month.value === '' && issue_year.value === '') {
+                    } else if (issue_day.value !== '' && issue_month.value === '' && issue_year.value === '') {
                         swalFire('خطا!', 'تاریخ صدور را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
                     } else if (issue_day.value === '' && issue_month.value !== '' && issue_year.value === '') {
                         swalFire('خطا!', 'تاریخ صدور را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
@@ -1155,7 +1168,7 @@ $(document).ready(function () {
                         swalFire('خطا!', 'تاریخ صدور را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
                     } else if (issue_day.value !== '' && issue_month.value !== '' && issue_year.value === '') {
                         swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
-                    }else if (promulgation_day.value !== '' && promulgation_month.value === '' && promulgation_year.value === '') {
+                    } else if (promulgation_day.value !== '' && promulgation_month.value === '' && promulgation_year.value === '') {
                         swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
                     } else if (promulgation_day.value === '' && promulgation_month.value !== '' && promulgation_year.value === '') {
                         swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
@@ -1167,7 +1180,7 @@ $(document).ready(function () {
                         swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
                     } else if (promulgation_day.value !== '' && promulgation_month.value !== '' && promulgation_year.value === '') {
                         swalFire('خطا!', 'تاریخ ابلاع را به صورت کامل انتخاب نمایید.', 'error', 'تلاش مجدد');
-                    }else {
+                    } else {
                         this.submit();
                     }
                 });
@@ -1199,37 +1212,53 @@ $(document).ready(function () {
                                 }, success: function (response) {
                                     if (response.errors) {
                                         if (response.errors.nullTitle) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullTitle[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.nullLawCode) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullLawCode[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.dupLawCode) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.dupLawCode[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.nullSessionCode) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullSessionCode[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.nullType) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullType[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.nullGroup) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullGroup[0], 'error', 'تلاش مجدد');
+                                        } else if (response.errors.nullApprover) {
+                                            hideLoadingPopup();
+                                            swalFire('خطا!', response.errors.nullApprover[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.nullTopic) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullTopic[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.nullBody) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullBody[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.nullKeyword) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullKeyword[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.nullApprovalDate) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullApprovalDate[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.nullIssueDate) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullIssueDate[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.nullPromulgationDate) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullPromulgationDate[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.wrongFile) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.wrongFile[0], 'error', 'تلاش مجدد');
                                         } else if (response.errors.nullFile) {
+                                            hideLoadingPopup();
                                             swalFire('خطا!', response.errors.nullFile[0], 'error', 'تلاش مجدد');
                                         }
                                     } else if (response.success) {
-                                        location.reload();
-                                        resetFields();
+                                        window.history.back();
                                     }
                                 }
                             });

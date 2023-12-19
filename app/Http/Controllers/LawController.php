@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalogs\Approver;
 use App\Models\Catalogs\LawGroup;
 use App\Models\Catalogs\Topic;
 use App\Models\Catalogs\Type;
@@ -11,8 +12,8 @@ use Illuminate\Support\Facades\Validator;
 
 class LawController extends Controller
 {
-    public $searchArray = ['أ',  'ة', 'إ', 'ؤ', 'ً', 'ٌ', 'ٍ', 'َ', 'ُ', 'ِ','ّ','ۀ','¬','ي','ك','‌'];
-    public $replaceArray = ['ا', 'ی', 'ه', 'ا', 'و', '', '', '', '', '', '','','ه',' ','ک',' '];
+    public $searchArray = ['أ', 'ة', 'إ', 'ؤ', 'ً', 'ٌ', 'ٍ', 'َ', 'ُ', 'ِ', 'ّ', 'ۀ', '¬', 'ي', 'ك', '‌'];
+    public $replaceArray = ['ا', 'ی', 'ه', 'ا', 'و', '', '', '', '', '', '', '', 'ه', ' ', 'ک', ' '];
 
     public function create(Request $request)
     {
@@ -53,6 +54,12 @@ class LawController extends Controller
             return $this->alerts(false, 'nullGroup', 'گروه انتخاب نشده است');
         }
         $law->group_id = $group;
+
+        $approver = $request->input('approver');
+        if (!$approver) {
+            return $this->alerts(false, 'nullGroup', 'تصویب کننده انتخاب نشده است');
+        }
+        $law->approver_id = $approver;
 
         $topic = $request->input('topic');
         if (!$topic) {
@@ -176,6 +183,12 @@ class LawController extends Controller
         }
         $law->group_id = $group;
 
+        $approver = $request->input('approver');
+        if (!$approver) {
+            return $this->alerts(false, 'nullGroup', 'تصویب کننده انتخاب نشده است');
+        }
+        $law->approver_id = $approver;
+
         $topic = $request->input('topic');
         if (!$topic) {
             return $this->alerts(false, 'nullTopic', 'موضوع انتخاب نشده است');
@@ -260,9 +273,10 @@ class LawController extends Controller
         $allRequests = [];
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
+        $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
-        $lawList = Law::with('type')->with('group')->with('topic')->orderBy('created_at', 'desc')->paginate(20);
-        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'filtered'));
+        $lawList = Law::with('type')->with('group')->with('topic')->with('approver')->orderBy('created_at', 'desc')->paginate(20);
+        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'approvers', 'types', 'filtered'));
     }
 
     public function search(Request $request)
@@ -348,17 +362,19 @@ class LawController extends Controller
     {
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
+        $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
-        return view('LawManager.Create', compact('groups', 'topics', 'types'));
+        return view('LawManager.Create', compact('groups', 'topics', 'approvers', 'types'));
     }
 
     public function updateIndex($id)
     {
-        $lawInfo = Law::with('type')->with('group')->with('topic')->find($id);
+        $lawInfo = Law::with('type')->with('group')->with('topic')->with('approver')->find($id);
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
+        $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
-        return view('LawManager.Update', compact('lawInfo', 'groups', 'topics', 'types'));
+        return view('LawManager.Update', compact('lawInfo', 'groups', 'approvers', 'topics', 'types'));
     }
 
     public function delete(Request $request)

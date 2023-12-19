@@ -56,13 +56,25 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="flex-1 flex-col items-right mb-2" style="flex: 1;">
+                        </div>
+                        <div class="flex mt-4">
+                            <div class="flex-1 flex-col items-right mb-2 ml-3">
                                 <label for="topic" class="block text-gray-700 text-sm font-bold mb-2">موضوع*:</label>
                                 <select id="topic" class="border rounded-md w-full px-3 py-2"
                                         name="topic">
                                     <option value="" disabled selected>انتخاب کنید</option>
                                     @foreach($topics as $topic)
                                         <option value="{{ $topic->id }}">{{ $topic->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="flex-1 flex-col items-right mb-2 ml-3">
+                                <label for="approver" class="block text-gray-700 text-sm font-bold mb-2">تصویب کننده*:</label>
+                                <select id="approver" class="border rounded-md w-full px-3 py-2"
+                                        name="approver">
+                                    <option value="" disabled selected>انتخاب کنید</option>
+                                    @foreach($approvers as $approver)
+                                        <option value="{{ $approver->id }}">{{ $approver->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

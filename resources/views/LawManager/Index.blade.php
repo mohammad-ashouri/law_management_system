@@ -291,6 +291,7 @@
                             <th class="px-6 py-3  font-bold ">عنوان</th>
                             <th class="px-6 py-3  font-bold ">نوع مصوبه</th>
                             <th class="px-6 py-3  font-bold ">گروه</th>
+                            <th class="px-6 py-3  font-bold ">تصویب کننده</th>
                             <th class="px-6 py-3  font-bold ">موضوع</th>
                             <th class="px-6 py-3  font-bold ">تاریخ تصویب</th>
                             <th class="px-6 py-3  font-bold ">عملیات</th>
@@ -305,6 +306,7 @@
                                 <td class="px-6 py-1">{{ $law->title }}</td>
                                 <td class="px-6 py-1">{{ $law->type->name }}</td>
                                 <td class="px-6 py-1">{{ $law->group->name }}</td>
+                                <td class="px-6 py-1">{{ $law->approver->name }}</td>
                                 <td class="px-6 py-1">{{ $law->topic->name }}</td>
                                 <td class="px-6 py-1">{{ $law->approval_date }}</td>
                                 <td class="flex px-6 py-1">

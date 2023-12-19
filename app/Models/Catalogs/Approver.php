@@ -10,7 +10,7 @@ class Approver extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $table = "law_groups";
+    protected $table = "approvers";
     protected $fillable = [
         'name',
         'status'

@@ -3,12 +3,12 @@
 @section('content')
     <main class="flex-1 bg-gray-100 py-6 px-8">
         <div class="mx-auto lg:mr-72">
-            <h1 class="text-2xl font-bold mb-4">تعاریف اولیه - مدیریت بر اطلاعات موضوع</h1>
+            <h1 class="text-2xl font-bold mb-4">تعاریف اولیه - مدیریت بر اطلاعات تصویب کننده</h1>
 
             <div class="bg-white rounded shadow p-6 flex flex-col ">
                 <button id="new-approver-button" type="button"
-                        class="px-4 py-2 bg-green-500 w-32 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300">
-                    موضوع جدید
+                        class="px-4 py-2 bg-green-500 w-40 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300">
+                    تصویب کننده جدید
                 </button>
                 <form id="new-approver">
                     @csrf
@@ -23,23 +23,23 @@
                                     class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-[550px]">
                                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                         <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
-                                            تعریف موضوع جدید
+                                            تعریف تصویب کننده جدید
                                         </h3>
                                         <div class="mt-4">
                                             <div class="flex flex-col items-right mb-2">
                                                 <label for="name"
                                                        class="block text-gray-700 text-sm font-bold mb-2">
-                                                    موضوع*:</label>
+                                                    تصویب کننده*:</label>
                                                 <input type="text" id="name" name="name" autocomplete="off"
                                                        class="border rounded-md w-full mb-2 px-3 py-2 text-right"
-                                                       placeholder="موضوع را وارد کنید">
+                                                       placeholder="تصویب کننده را وارد کنید">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                                         <button type="submit"
                                                 class="px-4 py-2 mr-3 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300">
-                                            ثبت موضوع جدید
+                                            ثبت تصویب کننده جدید
                                         </button>
                                         <button id="cancel-new-approver" type="button"
                                                 class="mt-3 w-full inline-flex justify-center px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 sm:mt-0 sm:w-auto">
@@ -64,17 +64,17 @@
                                     class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-[550px]">
                                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                         <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
-                                            ویرایش موضوع
+                                            ویرایش تصویب کننده
                                         </h3>
                                         <div class="mt-4">
                                             <div class="flex flex-col items-right mb-2">
                                                 <label for="nameForEdit"
                                                        class="block text-gray-700 text-sm font-bold mb-2">
-                                                    موضوع*:</label>
+                                                    تصویب کننده*:</label>
                                                 <input type="text" id="nameForEdit" name="nameForEdit"
                                                        autocomplete="off"
                                                        class="border rounded-md w-full mb-2 px-3 py-2 text-right"
-                                                       placeholder="موضوع را وارد کنید">
+                                                       placeholder="تصویب کننده را وارد کنید">
                                             </div>
                                         </div>
                                     </div>
@@ -98,7 +98,7 @@
                     <thead>
                     <tr class="bg-gradient-to-r from-blue-400 to-purple-500 items-center text-center text-white">
                         <th class="px-6 py-3  font-bold ">ردیف</th>
-                        <th class="px-6 py-3  font-bold ">موضوع</th>
+                        <th class="px-6 py-3  font-bold ">تصویب کننده</th>
                         <th class="px-6 py-3  font-bold ">عملیات</th>
                     </tr>
                     </thead>

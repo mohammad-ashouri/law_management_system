@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreign('group_id')->references('id')->on('law_groups');
             $table->unsignedBigInteger('topic_id');
             $table->foreign('topic_id')->references('id')->on('topics');
+            $table->unsignedBigInteger('approver_id');
+            $table->foreign('approver_id')->references('id')->on('approvers');
             $table->string('title');
             $table->text('body');
             $table->string('approval_date')->comment('تاریخ تصویب');

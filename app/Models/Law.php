@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Catalogs\Approver;
 use App\Models\Catalogs\LawGroup;
 use App\Models\Catalogs\Topic;
 use App\Models\Catalogs\Type;
@@ -17,6 +18,7 @@ class Law extends Model
         'law_code',
         'session_code',
         'group_id',
+        'approver_id',
         'topic_id',
         'title',
         'body',
@@ -40,6 +42,10 @@ class Law extends Model
     public function type()
     {
         return $this->belongsTo(Type::class,'type_id','id');
+    }
+    public function approver()
+    {
+        return $this->belongsTo(Approver::class,'approver_id','id');
     }
     public function topic()
     {
