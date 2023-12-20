@@ -187,6 +187,7 @@ $(document).ready(function () {
                                     swalFire('خطا!', response.errors.nullFile[0], 'error', 'تلاش مجدد');
                                 }
                             } else if (response.success) {
+                                hideLoadingPopup();
                                 window.history.back();
                             }
                         }
