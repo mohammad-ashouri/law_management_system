@@ -111,6 +111,9 @@ function getJalaliDate() {
 
 $(document).ready(function () {
     hideLoadingPopup();
+    $('#backward_page').on('click', function () {
+        window.history.back();
+    });
     let pathname = window.location.pathname;
     if (pathname.includes("Laws/edit")) {
         $('#edit-law').on('submit', function (e) {
@@ -137,54 +140,29 @@ $(document).ready(function () {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                         }, success: function (response) {
                             if (response.errors) {
-                                if (response.errors.wrongError) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.wrongError[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullTitle) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullTitle[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullLawCode) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullLawCode[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.dupLawCode) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.dupLawCode[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullSessionCode) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullSessionCode[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullType) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullType[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullGroup) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullGroup[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullApprover) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullApprover[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullTopic) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullTopic[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullBody) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullBody[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullKeyword) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullKeyword[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullApprovalDate) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullApprovalDate[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullIssueDate) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullIssueDate[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullPromulgationDate) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullPromulgationDate[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.wrongFile) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.wrongFile[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors.nullFile) {
-                                    hideLoadingPopup();
-                                    swalFire('خطا!', response.errors.nullFile[0], 'error', 'تلاش مجدد');
+                                hideLoadingPopup();
+
+                                for (let errorType in response.errors) {
+                                    switch (errorType) {
+                                        case 'wrongError':
+                                        case 'nullTitle':
+                                        case 'nullLawCode':
+                                        case 'dupLawCode':
+                                        case 'nullSessionCode':
+                                        case 'nullType':
+                                        case 'nullGroup':
+                                        case 'nullApprover':
+                                        case 'nullTopic':
+                                        case 'nullBody':
+                                        case 'nullKeyword':
+                                        case 'nullApprovalDate':
+                                        case 'nullIssueDate':
+                                        case 'nullPromulgationDate':
+                                        case 'wrongFile':
+                                        case 'nullFile':
+                                            swalFire('خطا!', response.errors[errorType][0], 'error', 'تلاش مجدد');
+                                            break;
+                                    }
                                 }
                             } else if (response.success) {
                                 hideLoadingPopup();
