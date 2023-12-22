@@ -138,7 +138,10 @@ class LawController extends Controller
         $law->adder = session('id');
         $law->save();
         $this->logActivity('Law Added =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
-        return $this->success(true, 'Added', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
+        return response()->json([
+            'success' => true,
+            'redirect' => route('LawsIndex')
+        ]);
     }
 
     public function update(Request $request)
@@ -275,7 +278,10 @@ class LawController extends Controller
             $newDiff->save();
         }
         $this->logActivity('Law Edited =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
-        return $this->success(true, 'Edited', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
+        return response()->json([
+            'success' => true,
+            'redirect' => route('LawsIndex')
+        ]);
     }
 
     public function index()

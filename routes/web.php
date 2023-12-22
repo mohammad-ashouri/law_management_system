@@ -105,7 +105,7 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
 
             //Law Management
             Route::group(['prefix' => 'Laws'], function () {
-                Route::get('/', [LawController::class, 'index']);
+                Route::get('/', [LawController::class, 'index'])->name('LawsIndex');
                 Route::get('/new', [LawController::class, 'createIndex']);
                 Route::post('/create', [LawController::class, 'create']);
                 Route::post('/search', [LawController::class, 'search']);

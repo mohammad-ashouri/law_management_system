@@ -166,7 +166,7 @@ $(document).ready(function () {
                                 }
                             } else if (response.success) {
                                 hideLoadingPopup();
-                                window.history.back();
+                                window.location.href = response.redirect;
                             }
                         }
                     });
@@ -1237,7 +1237,7 @@ $(document).ready(function () {
                                             swalFire('خطا!', response.errors.nullFile[0], 'error', 'تلاش مجدد');
                                         }
                                     } else if (response.success) {
-                                        window.history.back();
+                                        window.location.href = response.redirect;
                                     }
                                 }
                             });
