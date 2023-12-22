@@ -6,7 +6,9 @@ use App\Models\Catalogs\Approver;
 use App\Models\Catalogs\LawGroup;
 use App\Models\Catalogs\Topic;
 use App\Models\Catalogs\Type;
+use App\Models\Difference;
 use App\Models\Law;
+use Caxy\HtmlDiff\HtmlDiff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -157,6 +159,10 @@ class LawController extends Controller
         }
 
         $law = Law::find($lawID);
+        $newDiff=new Difference();
+        $newDiff->law_id=$lawID;
+        $newDiff->type='body';
+        $newDiff->old=$law->body;
         $law->law_code = $lawCode;
 
         $sessionCode = $request->input('sessionCode');
@@ -200,6 +206,7 @@ class LawController extends Controller
             return $this->alerts(false, 'nullBody', 'کلمات کلیدی وارد نشده است');
         }
         $law->body = str_replace($this->searchArray, $this->replaceArray, $body);
+        $newDiff->new=$law->body;
 
         $keywords = str_replace($this->searchArray, $this->replaceArray, $request->input('keywords'));
         if (!$keywords) {
@@ -261,8 +268,12 @@ class LawController extends Controller
             }
         }
 
-        $law->adder = session('id');
+        $law->editor = session('id');
         $law->save();
+        if ($newDiff->new!=$newDiff->old) {
+            $newDiff->editor=session('id');
+            $newDiff->save();
+        }
         $this->logActivity('Law Edited =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'Edited', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
     }
@@ -391,5 +402,13 @@ class LawController extends Controller
             return $this->success(true, 'Deleted', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
         }
         return $this->alerts(false, 'wrongError', 'خطای نامشخص.');
+    }
+
+    public function showHistory($id)
+    {
+        $lawDiffs=Difference::with('lawInfo')->with('editorInfo')->where('law_id',$id)->orderBy('id','desc')->get();
+        return view('LawManager.Difference_history',compact('lawDiffs'));
+
+
     }
 }

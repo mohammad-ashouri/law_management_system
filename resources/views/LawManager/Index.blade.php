@@ -324,9 +324,15 @@
                                 <td class="px-6 py-1">{{ $law->topic->name }}</td>
                                 <td class="px-6 py-1">{{ $law->approval_date }}</td>
                                 <td class="flex px-6 py-1">
+                                    <form action="/Laws/showHistory/{{$law->id}}" method="get">
+                                        <button data-id="{{ $law->id }}"
+                                                class="px-2 py-2 mr-2 mt-4 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:border-gray-300 ">
+                                            <i class="fa fa-history" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
                                     <form action="/Laws/edit/{{$law->id}}" method="get">
                                         <button type="submit"
-                                                class="px-1 py-2 mr-3 mt-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 LawControl">
+                                                class="px-1 py-2 mr-2 mt-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 LawControl">
                                             <svg width="24px" height="24px" viewBox="0 0 192 192"
                                                  xmlns="http://www.w3.org/2000/svg" xml:space="preserve" fill="none"><path
                                                     d="m104.175 90.97-4.252 38.384 38.383-4.252L247.923 15.427V2.497L226.78-18.646h-12.93zm98.164-96.96 31.671 31.67"
@@ -338,8 +344,8 @@
                                                       transform="translate(-77.923 40.646)"/></svg>
                                         </button>
                                     </form>
-                                    <button type="submit" data-id="{{ $law->id }}"
-                                            class="px-1 py-1 mr-3 mt-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 deleteLaw">
+                                    <button type="button" data-id="{{ $law->id }}"
+                                            class="px-1 py-1 mr-2 mt-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 deleteLaw">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px"
                                              height="24px">
                                             <path

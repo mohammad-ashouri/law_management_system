@@ -23,7 +23,7 @@
     },
     "dependencies": {
         "@flaticon/flaticon-uicons": "^2.3.0",
-        "@fortawesome/fontawesome-free": "^6.4.0",
+        "@fortawesome/fontawesome-free": "^6.5.1",
         "@tailwindcss/typography": "^0.5.10",
         "@vitejs/plugin-vue": "^4.2.3",
         "daisyui": "^3.4.0",
