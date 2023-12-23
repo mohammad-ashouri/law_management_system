@@ -1,7 +1,7 @@
 @extends('layouts.PanelMaster')
 
 @section('content')
-<style>
+    <style>
         /* Difference Highlighting and Strike-through
 ------------------------------------------------ */
         ins {
@@ -172,27 +172,27 @@
             </div>
         </div>
         <div class="mx-auto mt-3 lg:mr-72">
-        <h1 class="text-2xl font-bold mb-4">مقایسه دو متن</h1>
+            <h1 class="text-2xl font-bold mb-4">مقایسه دو متن</h1>
             <div class="bg-white rounded shadow p-6">
-            <div class="mt-4">
-                            <label for="body1" class="block text-gray-700 text-sm font-bold mb-2">متن اول*:</label>
-                            <textarea id="body1" name="body1" placeholder="متن اول را وارد کنید"
-                                      class="border rounded-md w-full h-96 px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"></textarea>
-                        </div>
-            <div class="mt-4">
-                            <label for="body2" class="block text-gray-700 text-sm font-bold mb-2">متن دوم*:</label>
-                            <textarea id="body2" name="body2" placeholder="متن دوم را وارد کنید"
-                                      class="border rounded-md w-full h-96 px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"></textarea>
-                        </div>
-                        <div class="mt-3 text-left">
-                            <button type="button"
-                                class="px-4 py-2 mr-3 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 compare">
-                            مقایسه
-                        </button>
-                    </div>
-            <div class="mt-4" id="compared"></div>
+                <div class="mt-4">
+                    <label for="body1" class="block text-gray-700 text-sm font-bold mb-2">متن اول*:</label>
+                    <textarea id="body1" name="body1" placeholder="متن اول را وارد کنید"
+                              class="border rounded-md w-full h-96 px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"></textarea>
+                </div>
+                <div class="mt-4">
+                    <label for="body2" class="block text-gray-700 text-sm font-bold mb-2">متن دوم*:</label>
+                    <textarea id="body2" name="body2" placeholder="متن دوم را وارد کنید"
+                              class="border rounded-md w-full h-96 px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"></textarea>
+                </div>
+                <div class="mt-3 text-left">
+                    <button type="button"
+                            class="px-4 py-2 mr-3 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 compare">
+                        مقایسه
+                    </button>
+                </div>
+                <div class="mt-4" id="compared"></div>
             </div>
-            </div>
+        </div>
 
         </div>
     </main>
