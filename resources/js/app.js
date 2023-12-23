@@ -1171,6 +1171,7 @@ $(document).ready(function () {
                 });
                 $('#get-referer').on('click', function (e) {
                     e.preventDefault();
+                    showLoadingPopup();
                     $.ajax({
                         type: 'GET',
                         url: '/Laws/GetLawInfo',
@@ -1183,6 +1184,7 @@ $(document).ready(function () {
                             console.log(response);
                             if (response==='not found'){
                                 swalFire('خطا!', 'مصوبه ای با این کد یافت نشد', 'error', 'تلاش مجدد');
+                                hideLoadingPopup();
                             }else {
                                 $('#refer_law_code').text(response.id);
                                 $('#refer_law_title').text(response.title);
@@ -1191,8 +1193,8 @@ $(document).ready(function () {
                                 $('#refer_law_approver').text(response.approver.name);
                                 $('#refer_law_topic').text(response.topic.name);
                                 $('#refer_law_approval_date').text(response.approval_date);
+                                hideLoadingPopup();
                             }
-                            hideLoadingPopup();
                         }
                     });
                 });

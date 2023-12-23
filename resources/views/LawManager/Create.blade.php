@@ -219,8 +219,8 @@
                         </button>
 
                         <div class="mt-4 mb-4 flex items-center">
-                                                        <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="addRefererModal">
-{{--                            <div class="fixed z-10 inset-0 overflow-y-auto " id="addRefererModal">--}}
+{{--                                                        <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="addRefererModal">--}}
+                            <div class="fixed z-10 inset-0 overflow-y-auto " id="addRefererModal">
                                 <div
                                     class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center  sm:block sm:p-0">
                                     <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -284,6 +284,15 @@
                                                                class=" text-gray-700 text-sm font-bold mb-2">تاریخ تصویب:</label>
                                                         <span id="refer_law_approval_date"></span>
                                                     </div>
+                                                </div>
+                                                <div class="flex-1 flex-col items-right mb-2 ml-3">
+                                                    <label for="refer_to" class="block text-gray-700 text-sm font-bold mb-2">تنظیم به عنوان*:</label>
+                                                    <select id="refer_to" class="border rounded-md w-full px-3 py-2"
+                                                            name="refer_to">
+                                                        <option value="" disabled selected>انتخاب کنید</option>
+                                                            <option value="1">عطف</option>
+                                                            <option value="2">متمم</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
