@@ -182,12 +182,7 @@
                             <tbody class="divide-y divide-gray-300">
                             @foreach($lawDiffs as $lawDiff)
                                 @php
-                                    $config = new \Caxy\HtmlDiff\HtmlDiffConfig();
-                                   $config
-                                            ->setMatchThreshold(95)
-                                            ->setKeepNewLines(false)
-                                        ;
-                                    $htmlDiff = new \Caxy\HtmlDiff\HtmlDiff($lawDiff->old, $lawDiff->new,$config);
+                                    $htmlDiff = new \Caxy\HtmlDiff\HtmlDiff($lawDiff->old, $lawDiff->new);
                                              $content = $htmlDiff->build();
                                 @endphp
                                 <tr class="bg-gray-300">

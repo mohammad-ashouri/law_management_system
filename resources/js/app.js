@@ -97,12 +97,9 @@ function getParameterByName(name, url) {
 function getJalaliDate() {
     return new Promise(function (resolve, reject) {
         $.ajax({
-            type: 'GET',
-            url: "/date",
-            success: function (response) {
+            type: 'GET', url: "/date", success: function (response) {
                 resolve(response);
-            },
-            error: function (error) {
+            }, error: function (error) {
                 reject(error);
             }
         });
@@ -138,7 +135,8 @@ $(document).ready(function () {
                         processData: false,
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        }, success: function (response) {
+                        },
+                        success: function (response) {
                             if (response.errors) {
                                 hideLoadingPopup();
 
@@ -175,6 +173,23 @@ $(document).ready(function () {
         });
     } else {
         switch (pathname) {
+            case '/dashboard':
+                $('.compare').on('click', function () {
+                    showLoadingPopup();
+                    $.ajax({
+                        type: 'POST', url: "/CompareText", data: {
+                            text1: $('#body1').val(), text2: $('#body2').val(),
+                        }, headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        }, success: function (response) {
+                            hideLoadingPopup();
+                            document.getElementById("compared").innerHTML = response;
+                        }, error: function (xhr, textStatus, errorThrown) {
+                            // console.log(xhr);
+                        }
+                    });
+                });
+                break;
             case "/Profile":
                 resetFields();
                 $('#change-password').submit(function (e) {
@@ -220,15 +235,9 @@ $(document).ready(function () {
                     var form = $(this);
                     var formData = new FormData(form[0]);
                     $.ajax({
-                        type: 'POST',
-                        url: "/ChangeUserImage",
-                        data: formData,
-                        headers: {
+                        type: 'POST', url: "/ChangeUserImage", data: formData, headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        contentType: false,
-                        processData: false,
-                        success: function (response) {
+                        }, contentType: false, processData: false, success: function (response) {
                             if (response.success) {
                                 location.reload();
                             } else {
@@ -1209,7 +1218,8 @@ $(document).ready(function () {
                                 processData: false,
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                }, success: function (response) {
+                                },
+                                success: function (response) {
                                     if (response.errors) {
                                         if (response.errors.nullTitle) {
                                             hideLoadingPopup();

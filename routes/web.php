@@ -4,6 +4,7 @@ use App\Http\Controllers\Catalogs\ApproverController;
 use App\Http\Controllers\Catalogs\GroupController;
 use App\Http\Controllers\Catalogs\TopicController;
 use App\Http\Controllers\Catalogs\TypeController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LawController;
 use App\Http\Controllers\LoginController;
@@ -125,6 +126,8 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
             Route::get('/PDFReports', [PDFReportController::class, 'index']);
             Route::post('/GeneratePDF', [PDFReportController::class, 'generatePDF']);
             //End Reports
+
+            Route::post('/CompareText', [Controller::class, 'compareText']);
         });
 
     });
