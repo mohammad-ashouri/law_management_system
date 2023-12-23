@@ -6,6 +6,7 @@ use App\Models\ActivityLog;
 use App\Models\EquipmentLog;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Jenssegers\Agent\Agent;
 
@@ -55,5 +56,14 @@ class Controller extends BaseController
                 $messageVariable => [$messageText]
             ]
         ]);
+    }
+
+    public function compareText(Request $request){
+        $body1=$request->input('text1');
+        $body2=$request->input('text2');
+        if ($body1!=null and $body2!=null){
+            $htmlDiff = new \Caxy\HtmlDiff\HtmlDiff($body1, $body2);
+            return $content = $htmlDiff->build();
+        }
     }
 }

@@ -175,6 +175,27 @@ $(document).ready(function () {
         });
     } else {
         switch (pathname) {
+            case '/dashboard':
+                $('.compare').on('click', function () {
+                    showLoadingPopup();
+                    $.ajax({
+                        type: 'POST',
+                        url: "/CompareText",
+                        data: {
+                            text1: $('#body1').val(),
+                            text2: $('#body2').val(),
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        }, success: function (response) {
+                            hideLoadingPopup();
+                            document.getElementById("compared").innerHTML = response;
+                        }, error: function (xhr, textStatus, errorThrown) {
+                            // console.log(xhr);
+                        }
+                    });
+                });
+                break;
             case "/Profile":
                 resetFields();
                 $('#change-password').submit(function (e) {
