@@ -299,7 +299,7 @@
                     <table class="w-full border-collapse rounded-lg overflow-hidden text-center datasheet">
                         <thead>
                         <tr class="bg-gradient-to-r from-blue-400 to-purple-500 items-center text-center text-white">
-                            <th class="px-2 py-3  font-bold ">ردیف</th>
+                            <th class="px-2 py-3  font-bold ">کد</th>
                             <th class="px-6 py-3  font-bold ">شماره مصوبه</th>
                             <th class="px-6 py-3  font-bold ">شماره جلسه</th>
                             <th class="px-6 py-3  font-bold ">عنوان</th>
@@ -314,7 +314,7 @@
                         <tbody class="divide-y divide-gray-300">
                         @foreach ($lawList as $law)
                             <tr class="bg-white">
-                                <td class="px-2 py-1">{{ $loop->iteration }}</td>
+                                <td class="px-2 py-1">{{ $law->id }}</td>
                                 <td class="px-6 py-1">{{ $law->law_code }}</td>
                                 <td class="px-6 py-1">{{ $law->session_code }}</td>
                                 <td class="px-6 py-1">{{ $law->title }}</td>

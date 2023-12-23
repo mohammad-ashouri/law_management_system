@@ -113,6 +113,7 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
                 Route::post('/update', [LawController::class, 'update']);
                 Route::post('/delete', [LawController::class, 'delete']);
                 Route::get('/showHistory/{id}', [LawController::class, 'showHistory']);
+                Route::get('/GetLawInfo', [LawController::class, 'getLawInfo']);
             });
 
             //Start Reports

@@ -162,10 +162,10 @@ class LawController extends Controller
         }
 
         $law = Law::find($lawID);
-        $newDiff=new Difference();
-        $newDiff->law_id=$lawID;
-        $newDiff->type='body';
-        $newDiff->old=$law->body;
+        $newDiff = new Difference();
+        $newDiff->law_id = $lawID;
+        $newDiff->type = 'body';
+        $newDiff->old = $law->body;
         $law->law_code = $lawCode;
 
         $sessionCode = $request->input('sessionCode');
@@ -209,7 +209,7 @@ class LawController extends Controller
             return $this->alerts(false, 'nullBody', 'کلمات کلیدی وارد نشده است');
         }
         $law->body = str_replace($this->searchArray, $this->replaceArray, $body);
-        $newDiff->new=$law->body;
+        $newDiff->new = $law->body;
 
         $keywords = str_replace($this->searchArray, $this->replaceArray, $request->input('keywords'));
         if (!$keywords) {
@@ -273,8 +273,8 @@ class LawController extends Controller
 
         $law->editor = session('id');
         $law->save();
-        if ($newDiff->new!=$newDiff->old) {
-            $newDiff->editor=session('id');
+        if ($newDiff->new != $newDiff->old) {
+            $newDiff->editor = session('id');
             $newDiff->save();
         }
         $this->logActivity('Law Edited =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
@@ -412,9 +412,18 @@ class LawController extends Controller
 
     public function showHistory($id)
     {
-        $lawDiffs=Difference::with('lawInfo')->with('editorInfo')->where('law_id',$id)->orderBy('id','desc')->get();
-        return view('LawManager.Difference_history',compact('lawDiffs'));
+        $lawDiffs = Difference::with('lawInfo')->with('editorInfo')->where('law_id', $id)->orderBy('id', 'desc')->get();
+        return view('LawManager.Difference_history', compact('lawDiffs'));
 
 
+    }
+
+    public function getLawInfo(Request $request)
+    {
+        $lawInfo = Law::with('group')->with('type')->with('approver')->with('topic')->find($request->law_id);
+        if ($lawInfo) {
+            return $lawInfo;
+        }
+        return 'not found';
     }
 }

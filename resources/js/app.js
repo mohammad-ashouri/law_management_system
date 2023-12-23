@@ -263,14 +263,8 @@ $(document).ready(function () {
                                     case 1:
                                         type = 'ادمین کل';
                                         break;
-                                    case 2:
-                                        type = 'کارشناس ستاد';
-                                        break;
-                                    case 3:
-                                        type = 'کارشناس فناوری استان';
-                                        break;
                                 }
-                                var row = '<tr class="bg-white"><td class="px-6 py-4">' + user.username + '</td><td class="px-6 py-4">' + user.name + '</td><td class="px-6 py-4">' + type + '</td>';
+                                var row = '<tr class="bg-white"><td class="px-6 py-4">' + user.username + '</td><td class="px-6 py-4">' + user.name + ' ' + user.family + '</td><td class="px-6 py-4">' + type + '</td>';
                                 if (user.active == 1) {
                                     row += '<td class="px-6 py-4">' + '<button type="submit" data-username="' + user.username + '" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ASUM" data-active="1">غیرفعال‌سازی</button>';
                                 } else if (user.active == 0) {
@@ -309,14 +303,8 @@ $(document).ready(function () {
                                     case 1:
                                         type = 'ادمین کل';
                                         break;
-                                    case 2:
-                                        type = 'کارشناس ستاد';
-                                        break;
-                                    case 3:
-                                        type = 'کارشناس فناوری استان';
-                                        break;
                                 }
-                                var row = '<tr class="bg-white"><td class="px-6 py-4">' + user.username + '</td><td class="px-6 py-4">' + user.name + '</td><td class="px-6 py-4">' + type + '</td>';
+                                var row = '<tr class="bg-white"><td class="px-6 py-4">' + user.username + '</td><td class="px-6 py-4">' + user.name + ' ' + user.family + '</td><td class="px-6 py-4">' + type + '</td>';
                                 if (user.active == 1) {
                                     row += '<td class="px-6 py-4">' + '<button type="submit" data-username="' + user.username + '" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ASUM" data-active="1">غیرفعال‌سازی</button>';
                                 } else if (user.active == 0) {
@@ -1166,6 +1154,39 @@ $(document).ready(function () {
                 break;
             case '/Laws/new':
                 resetFields();
+                $('#addReferer, #cancel-new-referer').on('click', function () {
+                    toggleModal(addRefererModal.id);
+                });
+                $('.absolute.inset-0.bg-gray-500.opacity-75.addreferer').on('click', function () {
+                    toggleModal(addRefererModal.id)
+                });
+                $('#get-referer').on('click', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Laws/GetLawInfo',
+                        data: {
+                            law_id :$('#to_refer_law_code').val()
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        }, success: function (response) {
+                            console.log(response);
+                            if (response==='not found'){
+                                swalFire('خطا!', 'مصوبه ای با این کد یافت نشد', 'error', 'تلاش مجدد');
+                            }else {
+                                $('#refer_law_code').text(response.id);
+                                $('#refer_law_title').text(response.title);
+                                $('#refer_law_type').text(response.type.name);
+                                $('#refer_law_group').text(response.group.name);
+                                $('#refer_law_approver').text(response.approver.name);
+                                $('#refer_law_topic').text(response.topic.name);
+                                $('#refer_law_approval_date').text(response.approval_date);
+                            }
+                            hideLoadingPopup();
+                        }
+                    });
+                });
                 $('#new-law').on('submit', function (e) {
                     e.preventDefault();
                     Swal.fire({
