@@ -1176,16 +1176,15 @@ $(document).ready(function () {
                         type: 'GET',
                         url: '/Laws/GetLawInfo',
                         data: {
-                            law_id :$('#to_refer_law_code').val()
+                            law_id: $('#to_refer_law_code').val()
                         },
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                         }, success: function (response) {
-                            console.log(response);
-                            if (response==='not found'){
+                            if (response === 'not found') {
                                 swalFire('خطا!', 'مصوبه ای با این کد یافت نشد', 'error', 'تلاش مجدد');
                                 hideLoadingPopup();
-                            }else {
+                            } else {
                                 $('#refer_law_code').text(response.id);
                                 $('#refer_law_title').text(response.title);
                                 $('#refer_law_type').text(response.type.name);
@@ -1198,6 +1197,58 @@ $(document).ready(function () {
                         }
                     });
                 });
+                $('#set-new-referer').on('click', function (e) {
+                    showLoadingPopup();
+                    if ($('#refer_law_code').text() == null || $('#refer_law_code').text() == '') {
+                        swalFire('خطا!', 'مصوبه انتخاب نشده است', 'error', 'تلاش مجدد');
+                        hideLoadingPopup();
+                        return;
+                    } else if ($('#refer_to').val() == null || $('#refer_to').val() == '') {
+                        hideLoadingPopup();
+                        swalFire('خطا!', 'نوع ارتباط انتخاب نشده است', 'error', 'تلاش مجدد');
+                        return;
+                    }
+                    var selectedCode = $('#refer_law_code').text();
+                    if ($('.refers td:first-child:contains(' + selectedCode + ')').length > 0) {
+                        swalFire('خطا!', 'مصوبه با این کد قبلاً اضافه شده است', 'error', 'تلاش مجدد');
+                        hideLoadingPopup();
+                        return;
+                    }
+                    else {
+                        var table = $('.refers');
+                        var newRow = $('<tr class="bg-white"></tr>');
+                        table.find('tbody').append(newRow);
+                        newRow.append('<td>' + $('#refer_law_code').text() + '</td>');
+                        newRow.append('<td>' + $('#refer_law_title').text() + '</td>');
+                        newRow.append('<td>' + $('#refer_law_type').text() + '</td>');
+                        newRow.append('<td>' + $('#refer_law_group').text() + '</td>');
+                        newRow.append('<td>' + $('#refer_law_approver').text() + '</td>');
+                        newRow.append('<td>' + $('#refer_law_topic').text() + '</td>');
+                        newRow.append('<td>' + $('#refer_law_approval_date').text() + '</td>');
+                        newRow.append('<td>' + $('#refer_to').find('option:selected').text() + '</td>');
+
+                        var deleteButton = $('<button type="button" class="px-4 py-2 mr-3 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300">حذف</button>');
+
+                        deleteButton.on('click', function () {
+                            newRow.remove();
+                        });
+
+                        newRow.append('<td></td>').find('td:last').append(deleteButton);
+
+                        $('#to_refer_law_code').val('');
+                        $('#refer_law_code').text('');
+                        $('#refer_law_title').text('');
+                        $('#refer_law_type').text('');
+                        $('#refer_law_group').text('');
+                        $('#refer_law_approver').text('');
+                        $('#refer_law_topic').text('');
+                        $('#refer_law_approval_date').text('');
+                        $('#refer_to').val('');
+                        toggleModal(addRefererModal.id);
+                        hideLoadingPopup();
+                    }
+                });
+
                 $('#new-law').on('submit', function (e) {
                     e.preventDefault();
                     Swal.fire({

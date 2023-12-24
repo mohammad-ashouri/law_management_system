@@ -215,12 +215,12 @@
                     <div class="bg-white px-4 py-3 sm:px-6 sm:flex-row-reverse text-right">
                         <button type="button" id="addReferer"
                                 class="px-4 py-2 mr-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
-                            ایجاد عطف
+                            ایجاد ارتباط
                         </button>
 
-                        <div class="mt-4 mb-4 flex items-center">
-{{--                                                        <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="addRefererModal">--}}
-                            <div class="fixed z-10 inset-0 overflow-y-auto " id="addRefererModal">
+                        <div class="mt-4 mb-2 flex items-center">
+                            <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="addRefererModal">
+                                {{--                            <div class="fixed z-10 inset-0 overflow-y-auto " id="addRefererModal">--}}
                                 <div
                                     class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center  sm:block sm:p-0">
                                     <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -261,7 +261,8 @@
                                                     </div>
                                                     <div>
                                                         <label for="refer_law_type"
-                                                               class=" text-gray-700 text-sm font-bold mb-2">نوع مصوبه:</label>
+                                                               class=" text-gray-700 text-sm font-bold mb-2">نوع
+                                                            مصوبه:</label>
                                                         <span id="refer_law_type"></span>
                                                     </div>
                                                     <div>
@@ -271,7 +272,8 @@
                                                     </div>
                                                     <div>
                                                         <label for="refer_law_approver"
-                                                               class=" text-gray-700 text-sm font-bold mb-2">تصویب کننده:</label>
+                                                               class=" text-gray-700 text-sm font-bold mb-2">تصویب
+                                                            کننده:</label>
                                                         <span id="refer_law_approver"></span>
                                                     </div>
                                                     <div>
@@ -281,23 +283,26 @@
                                                     </div>
                                                     <div>
                                                         <label for="refer_law_approval_date"
-                                                               class=" text-gray-700 text-sm font-bold mb-2">تاریخ تصویب:</label>
+                                                               class=" text-gray-700 text-sm font-bold mb-2">تاریخ
+                                                            تصویب:</label>
                                                         <span id="refer_law_approval_date"></span>
                                                     </div>
                                                 </div>
                                                 <div class="flex-1 flex-col items-right mb-2 ml-3">
-                                                    <label for="refer_to" class="block text-gray-700 text-sm font-bold mb-2">تنظیم به عنوان*:</label>
+                                                    <label for="refer_to"
+                                                           class="block text-gray-700 text-sm font-bold mb-2">تنظیم به
+                                                        عنوان*:</label>
                                                     <select id="refer_to" class="border rounded-md w-full px-3 py-2"
                                                             name="refer_to">
                                                         <option value="" disabled selected>انتخاب کنید</option>
-                                                            <option value="1">عطف</option>
-                                                            <option value="2">متمم</option>
+                                                        <option value="1">عطف</option>
+                                                        <option value="2">متمم</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                            <button type="button"
+                                            <button type="button" id="set-new-referer"
                                                     class="px-4 py-2 mr-3 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300">
                                                 ثبت جدید
                                             </button>
@@ -311,6 +316,28 @@
                             </div>
                         </div>
 
+                        <div>
+                            <table
+                                class="w-full border-collapse rounded-lg overflow-hidden text-center datasheet refers">
+                                <thead>
+                                <tr class="bg-gradient-to-r from-blue-400 to-purple-500 items-center text-center text-white">
+                                    <th class="px-2 py-3  font-bold ">کد</th>
+                                    <th class="px-6 py-3  font-bold ">شماره مصوبه</th>
+                                    <th class="px-6 py-3  font-bold ">عنوان</th>
+                                    <th class="px-6 py-3  font-bold ">نوع مصوبه</th>
+                                    <th class="px-6 py-3  font-bold ">گروه</th>
+                                    <th class="px-6 py-3  font-bold ">تصویب کننده</th>
+                                    <th class="px-6 py-3  font-bold ">موضوع</th>
+                                    <th class="px-6 py-3  font-bold ">تنظیم شده به عنوان</th>
+                                    <th class="px-6 py-3  font-bold ">عملیات</th>
+                                </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-300">
+                                <tr class="bg-white">
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
