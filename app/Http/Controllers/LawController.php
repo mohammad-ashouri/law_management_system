@@ -410,12 +410,14 @@ class LawController extends Controller
 
     public function updateIndex($id)
     {
-        $lawInfo = Law::with('type')->with('group')->with('topic')->with('approver')->find($id);
+        $lawInfo = Law::with('type')->with('group')->with('topic')->with('approver')->with('approver')->find($id);
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
         $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
-        return view('LawManager.Update', compact('lawInfo', 'groups', 'approvers', 'topics', 'types'));
+        $referTypes = ReferType::where('status', 1)->orderBy('name', 'desc')->get();
+        $refers = Refer::with('typeInfo')->where('law_from',$id)->orderBy('id', 'asc')->get();
+        return view('LawManager.Update', compact('lawInfo', 'groups', 'approvers', 'topics', 'types', 'referTypes', 'refers'));
     }
 
     public function delete(Request $request)

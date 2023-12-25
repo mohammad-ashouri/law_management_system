@@ -28,8 +28,12 @@ class Refer extends Model
     {
         return $this->belongsTo(ReferType::class,'type','id');
     }
-    public function lawInfo()
+    public function lawFromInfo()
     {
         return $this->belongsTo(Law::class,'law_from','id');
+    }
+    public function lawToInfo()
+    {
+        return $this->belongsTo(Law::class,'law_to','id');
     }
 }
