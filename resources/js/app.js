@@ -127,6 +127,13 @@ $(document).ready(function () {
                     showLoadingPopup();
                     var form = $(this);
                     var formData = new FormData(form[0]);
+                    $('input[name^="refer_id"]').each(function(index, element) {
+                        formData.append($(element).attr('name'), $(element).val());
+                    });
+
+                    $('input[name^="refer_type"]').each(function(index, element) {
+                        formData.append($(element).attr('name'), $(element).val());
+                    });
                     $.ajax({
                         type: 'POST',
                         url: '/Laws/update',
@@ -137,6 +144,7 @@ $(document).ready(function () {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                         },
                         success: function (response) {
+                            console.log(response);
                             if (response.errors) {
                                 hideLoadingPopup();
 
@@ -170,6 +178,126 @@ $(document).ready(function () {
                     });
                 }
             });
+        });
+        $('.RemoveRefer').on('click', function () {
+            Swal.fire({
+                title: 'آیا مطمئن هستید؟',
+                text: 'این مقدار از سامانه حذف خواهد شد.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'خیر',
+                confirmButtonText: 'بله',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // showLoadingPopup();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Laws/RemoveRefer',
+                        data: {
+                            refer_id: $(this).data('id')
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        success: function (response) {
+                            if (response.errors) {
+                                if (response.errors.wrongID) {
+                                    hideLoadingPopup();
+                                    swalFire('خطا!', response.errors.wrongID[0], 'error', 'تلاش مجدد');
+                                }
+                            } else if (response.success) {
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        $('#addReferer, #cancel-new-referer').on('click', function () {
+            toggleModal(addRefererModal.id);
+        });
+        $('.absolute.inset-0.bg-gray-500.opacity-75.addreferer').on('click', function () {
+            toggleModal(addRefererModal.id)
+        });
+        $('#get-referer').on('click', function (e) {
+            e.preventDefault();
+            showLoadingPopup();
+            $.ajax({
+                type: 'GET',
+                url: '/Laws/GetLawInfo',
+                data: {
+                    law_id: $('#to_refer_law_code').val()
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }, success: function (response) {
+                    if (response === 'not found') {
+                        swalFire('خطا!', 'مصوبه ای با این کد یافت نشد', 'error', 'تلاش مجدد');
+                        hideLoadingPopup();
+                    } else {
+                        $('#refer_law_code').text(response.id);
+                        $('#refer_law_title').text(response.title);
+                        $('#refer_law_type').text(response.type.name);
+                        $('#refer_law_group').text(response.group.name);
+                        $('#refer_law_approver').text(response.approver.name);
+                        $('#refer_law_topic').text(response.topic.name);
+                        $('#refer_law_approval_date').text(response.approval_date);
+                        hideLoadingPopup();
+                    }
+                }
+            });
+        });
+        $('#set-new-referer').on('click', function (e) {
+            showLoadingPopup();
+            if ($('#refer_law_code').text() == null || $('#refer_law_code').text() == '') {
+                swalFire('خطا!', 'مصوبه انتخاب نشده است', 'error', 'تلاش مجدد');
+                hideLoadingPopup();
+                return;
+            } else if ($('#refer_to').val() == null || $('#refer_to').val() == '') {
+                hideLoadingPopup();
+                swalFire('خطا!', 'نوع ارتباط انتخاب نشده است', 'error', 'تلاش مجدد');
+                return;
+            }
+            var selectedCode = $('#refer_law_code').text();
+            if ($('.refers td:first-child:contains(' + selectedCode + ')').length > 0) {
+                swalFire('خطا!', 'مصوبه با این کد قبلاً اضافه شده است', 'error', 'تلاش مجدد');
+                hideLoadingPopup();
+                return;
+            } else {
+                var table = $('.refers');
+                var newRow = $('<tr class="bg-white"></tr>');
+                table.find('tbody').append(newRow);
+                newRow.append('<td>' + $('#refer_law_code').text() + '</td>');
+                newRow.append('<td>' + $('#refer_law_title').text() + '</td>');
+                newRow.append('<td>' + $('#refer_law_type').text() + '</td>');
+                newRow.append('<td>' + $('#refer_law_group').text() + '</td>');
+                newRow.append('<td>' + $('#refer_law_approver').text() + '</td>');
+                newRow.append('<td>' + $('#refer_law_topic').text() + '</td>');
+                newRow.append('<td>' + $('#refer_law_approval_date').text() + '</td>');
+                newRow.append('<td>' + $('#refer_to').find('option:selected').text() + '</td>');
+
+                var deleteButton = $('<button type="button" class="px-2 py-2 mr-3 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300">حذف</button>' +
+                    '<input type="hidden" name="refer_id[]" value=' + $('#refer_law_code').text() + '>' +
+                    '<input type="hidden" name="refer_type[]" value=' + $('#refer_to').find('option:selected').val() + '>');
+
+                deleteButton.on('click', function () {
+                    newRow.remove();
+                });
+
+                newRow.append('<td></td>').find('td:last').append(deleteButton);
+
+                $('#to_refer_law_code').val('');
+                $('#refer_law_code').text('');
+                $('#refer_law_title').text('');
+                $('#refer_law_type').text('');
+                $('#refer_law_group').text('');
+                $('#refer_law_approver').text('');
+                $('#refer_law_topic').text('');
+                $('#refer_law_approval_date').text('');
+                $('#refer_to').val('');
+                toggleModal(addRefererModal.id);
+                hideLoadingPopup();
+            }
         });
     } else {
         switch (pathname) {
@@ -1342,9 +1470,9 @@ $(document).ready(function () {
                         newRow.append('<td>' + $('#refer_law_approval_date').text() + '</td>');
                         newRow.append('<td>' + $('#refer_to').find('option:selected').text() + '</td>');
 
-                        var deleteButton = $('<button type="button" class="px-4 py-2 mr-3 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300">حذف</button>' +
+                        var deleteButton = $('<button type="button" class="px-2 py-2 mr-3 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300">حذف</button>' +
                             '<input type="hidden" name="refer_id[]" value=' + $('#refer_law_code').text() + '>' +
-                            '<input type="hidden" name="refer_type[]" value=' + $('#refer_to').find('option:selected').text() + '>');
+                            '<input type="hidden" name="refer_type[]" value=' + $('#refer_to').find('option:selected').val() + '>');
 
                         deleteButton.on('click', function () {
                             newRow.remove();

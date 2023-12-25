@@ -21,7 +21,6 @@ class LawController extends Controller
 
     public function create(Request $request)
     {
-//        return count($request->refer_id);
         $lawCode = $request->input('lawCode');
         if (!$lawCode) {
             return $this->alerts(false, 'nullLawCode', 'شماره مصوبه وارد نشده است');
@@ -104,9 +103,9 @@ class LawController extends Controller
             ($issue_day && !$issue_month && $issue_year)
         ) {
             return $this->alerts(false, 'nullIssueDate', 'تاریخ صدور به صورت کامل انتخاب نشده است');
-        } else {
-            $law->issue_date = $issue_year . '/' . $issue_month . '/' . $issue_day;
         }
+
+        $law->issue_date = $issue_year . '/' . $issue_month . '/' . $issue_day;
 
         $promulgation_day = $request->input('promulgation_day');
         $promulgation_month = $request->input('promulgation_month');
@@ -118,9 +117,9 @@ class LawController extends Controller
             ($promulgation_day && !$promulgation_month && $promulgation_year)
         ) {
             return $this->alerts(false, 'nullPromulgationDate', 'تاریخ ابلاغ به صورت کامل انتخاب نشده است');
-        } else {
-            $law->promulgation_date = $promulgation_year . '/' . $promulgation_month . '/' . $promulgation_day;
         }
+
+        $law->promulgation_date = $promulgation_year . '/' . $promulgation_month . '/' . $promulgation_day;
 
         $file = $request->file('file');
         if ($file) {
@@ -145,7 +144,7 @@ class LawController extends Controller
             if ($request->refer_id and count($request->refer_id) > 0) {
                 $refer_type = $request->refer_type;
                 $refer_to = $request->refer_id;
-                for ($i = 0; $i < count($request->refer_id); $i++) {
+                for ($i = 0, $iMax = count($request->refer_id); $i < $iMax; $i++) {
                     $lawRefer = new Refer();
                     $lawRefer->law_from = (int)$law->id;
                     $lawRefer->law_to = (int)$refer_to[$i];
@@ -233,7 +232,6 @@ class LawController extends Controller
         if (!$keywords) {
             return $this->alerts(false, 'nullKeyword', 'کلمات کلیدی وارد نشده است');
         }
-//        dd($keywords);
         $keywords = explode('||', $keywords);
         $keywords = json_encode($keywords, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $law->keywords = $keywords;
@@ -256,9 +254,9 @@ class LawController extends Controller
             ($issue_day && !$issue_month && $issue_year)
         ) {
             return $this->alerts(false, 'nullIssueDate', 'تاریخ صدور به صورت کامل انتخاب نشده است');
-        } else {
-            $law->issue_date = $issue_year . '/' . $issue_month . '/' . $issue_day;
         }
+
+        $law->issue_date = $issue_year . '/' . $issue_month . '/' . $issue_day;
 
         $promulgation_day = $request->input('promulgation_day');
         $promulgation_month = $request->input('promulgation_month');
@@ -270,9 +268,9 @@ class LawController extends Controller
             ($promulgation_day && !$promulgation_month && $promulgation_year)
         ) {
             return $this->alerts(false, 'nullPromulgationDate', 'تاریخ ابلاغ به صورت کامل انتخاب نشده است');
-        } else {
-            $law->promulgation_date = $promulgation_year . '/' . $promulgation_month . '/' . $promulgation_day;
         }
+
+        $law->promulgation_date = $promulgation_year . '/' . $promulgation_month . '/' . $promulgation_day;
 
         $file = $request->file('file');
         if ($file) {
@@ -296,6 +294,21 @@ class LawController extends Controller
             $newDiff->save();
         }
         $this->logActivity('Law Edited =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
+        if (count($request->refer_type) == count($request->refer_id)) {
+            if ($request->refer_id and count($request->refer_id) > 0) {
+                $refer_type = $request->refer_type;
+                $refer_to = $request->refer_id;
+                for ($i = 0, $iMax = count($request->refer_id); $i < $iMax; $i++) {
+                    $lawRefer = new Refer();
+                    $lawRefer->law_from = (int)$law->id;
+                    $lawRefer->law_to = (int)$refer_to[$i];
+                    $lawRefer->type = (int)$refer_type[$i];
+                    $lawRefer->adder = session('id');
+                    $lawRefer->save();
+                    $this->logActivity('Law Refer Added =>' . $lawRefer->id, request()->ip(), request()->userAgent(), session('id'));
+                }
+            }
+        }
         return response()->json([
             'success' => true,
             'redirect' => route('LawsIndex')
@@ -416,7 +429,7 @@ class LawController extends Controller
         $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
         $referTypes = ReferType::where('status', 1)->orderBy('name', 'desc')->get();
-        $refers = Refer::with('typeInfo')->where('law_from',$id)->orderBy('id', 'asc')->get();
+        $refers = Refer::with('typeInfo')->with('lawFromInfo')->with('lawToInfo')->where('law_from',$id)->orderBy('id', 'asc')->get();
         return view('LawManager.Update', compact('lawInfo', 'groups', 'approvers', 'topics', 'types', 'referTypes', 'refers'));
     }
 
@@ -446,5 +459,17 @@ class LawController extends Controller
             return $lawInfo;
         }
         return 'not found';
+    }
+
+    public function removeRefer(Request $request)
+    {
+        $refer= Refer::find($request->refer_id);
+        if ($refer){
+            $refer->delete();
+            $this->logActivity('Refer Deleted =>' . $request->refer_id, request()->ip(), request()->userAgent(), session('id'));
+            return $this->success(true, 'Deleted', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
+        }
+        return $this->alerts(false, 'wrongID', 'خطای نامشخص');
+
     }
 }

@@ -124,6 +124,7 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
                 Route::post('/delete', [LawController::class, 'delete']);
                 Route::get('/showHistory/{id}', [LawController::class, 'showHistory']);
                 Route::get('/GetLawInfo', [LawController::class, 'getLawInfo']);
+                Route::post('/RemoveRefer', [LawController::class, 'removeRefer']);
             });
 
             //Start Reports
