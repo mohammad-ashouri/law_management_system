@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Catalogs\ApproverController;
 use App\Http\Controllers\Catalogs\GroupController;
+use App\Http\Controllers\Catalogs\ReferTypesController;
 use App\Http\Controllers\Catalogs\TopicController;
 use App\Http\Controllers\Catalogs\TypeController;
 use App\Http\Controllers\Controller;
@@ -102,6 +103,14 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
                 Route::get('/getInfo', [ApproverController::class, 'getInfo']);
                 Route::post('/update', [ApproverController::class, 'update']);
                 Route::post('/changeStatus', [ApproverController::class, 'changeStatus']);
+            });
+            //Refer Types Catalogs
+            Route::group(['prefix' => 'ReferTypes'], function () {
+                Route::get('/', [ReferTypesController::class, 'index']);
+                Route::post('/create', [ReferTypesController::class, 'create']);
+                Route::get('/getInfo', [ReferTypesController::class, 'getInfo']);
+                Route::post('/update', [ReferTypesController::class, 'update']);
+                Route::post('/changeStatus', [ReferTypesController::class, 'changeStatus']);
             });
 
             //Law Management

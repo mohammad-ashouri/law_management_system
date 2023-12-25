@@ -20,7 +20,7 @@
         "phpoffice/phpspreadsheet": "^1.29",
         "realrashid/sweet-alert": "^7.0",
         "sebastian/diff": "^5.0",
-        "ybazli/faker": "^1.0",
+        "ybazli/faker": "^1.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",

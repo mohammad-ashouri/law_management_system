@@ -1074,6 +1074,122 @@ $(document).ready(function () {
 
                 });
                 break;
+            case '/ReferTypes':
+                resetFields();
+
+                $('#new-referTypes-button, #cancel-new-referTypes').on('click', function () {
+                    toggleModal(newReferTypeModal.id);
+                });
+                $('.absolute.inset-0.bg-gray-500.opacity-75.add').on('click', function () {
+                    toggleModal(newReferTypeModal.id)
+                });
+                $('.absolute.inset-0.bg-gray-500.opacity-75.edit').on('click', function () {
+                    toggleModal(editReferTypeModal.id)
+                });
+                $('#cancel-edit-referTypes').on('click', function () {
+                    toggleModal(editReferTypeModal.id);
+                });
+                $('#new-referTypes').on('submit', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'آیا مطمئن هستید؟',
+                        text: 'این مقدار به صورت دائمی اضافه خواهد شد.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        cancelButtonText: 'خیر',
+                        confirmButtonText: 'بله',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var form = $(this);
+                            var data = form.serialize();
+                            $.ajax({
+                                type: 'POST', url: '/ReferTypes/create', data: data, headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                }, success: function (response) {
+                                    if (response.errors) {
+                                        if (response.errors.nullName) {
+                                            swalFire('خطا!', response.errors.nullName[0], 'error', 'تلاش مجدد');
+                                        } else if (response.errors.dupName) {
+                                            swalFire('خطا!', response.errors.dupName[0], 'error', 'تلاش مجدد');
+                                        }
+                                    } else if (response.success) {
+                                        location.reload();
+                                        resetFields();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+                $('.ReferTypeControl').on('click', function () {
+                    $.ajax({
+                        type: 'GET', url: '/ReferTypes/getInfo', data: {
+                            id: $(this).data('id')
+                        }, success: function (response) {
+                            if (response) {
+                                referTypes_id.value = response.id;
+                                nameForEdit.value = response.name;
+                                toggleModal(editReferTypeModal.id);
+                            }
+                        }
+                    });
+                });
+                $('#edit-referTypes').on('submit', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'آیا مطمئن هستید؟',
+                        text: 'با ویرایش این مقدار، تمامی فیلدها تغییر خواهند کرد.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        cancelButtonText: 'خیر',
+                        confirmButtonText: 'بله',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var form = $(this);
+                            var data = form.serialize();
+                            $.ajax({
+                                type: 'POST', url: '/ReferTypes/update', data: data, headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                }, success: function (response) {
+                                    if (response.errors) {
+                                        if (response.errors.nullName) {
+                                            swalFire('خطا!', response.errors.nullName[0], 'error', 'تلاش مجدد');
+                                        } else if (response.errors.dupName) {
+                                            swalFire('خطا!', response.errors.dupName[0], 'error', 'تلاش مجدد');
+                                        }
+                                    } else if (response.success) {
+                                        location.reload();
+                                        resetFields();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+                $('.changeStatusReferTypeControl').on('click', function () {
+                    Swal.fire({
+                        title: 'آیا مطمئن هستید؟',
+                        text: 'وضعیت این کاتالوگ تغییر خواهد کرد.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        cancelButtonText: 'خیر',
+                        confirmButtonText: 'بله',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: 'POST', url: '/ReferTypes/changeStatus', data: {
+                                    id: $(this).data('id')
+                                }, headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                }, success: function (response) {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    });
+
+                });
+                break;
             case '/Laws':
                 // resetFields();
                 $('.LawControl').on('click', function () {
@@ -1227,7 +1343,9 @@ $(document).ready(function () {
                         newRow.append('<td>' + $('#refer_law_approval_date').text() + '</td>');
                         newRow.append('<td>' + $('#refer_to').find('option:selected').text() + '</td>');
 
-                        var deleteButton = $('<button type="button" class="px-4 py-2 mr-3 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300">حذف</button>');
+                        var deleteButton = $('<button type="button" class="px-4 py-2 mr-3 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300">حذف</button>' +
+                            '<input type="hidden" name="refer_id[]" value=' + $('#refer_law_code').text() + '>' +
+                            '<input type="hidden" name="refer_type[]" value=' + $('#refer_to').find('option:selected').text() + '>');
 
                         deleteButton.on('click', function () {
                             newRow.remove();
@@ -1260,7 +1378,7 @@ $(document).ready(function () {
                         confirmButtonText: 'بله',
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            showLoadingPopup();
+                            // showLoadingPopup();
                             var form = $(this);
                             var formData = new FormData(form[0]);
                             $.ajax({
@@ -1273,56 +1391,57 @@ $(document).ready(function () {
                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                                 },
                                 success: function (response) {
-                                    if (response.errors) {
-                                        if (response.errors.nullTitle) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullTitle[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullLawCode) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullLawCode[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.dupLawCode) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.dupLawCode[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullSessionCode) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullSessionCode[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullType) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullType[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullGroup) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullGroup[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullApprover) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullApprover[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullTopic) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullTopic[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullBody) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullBody[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullKeyword) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullKeyword[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullApprovalDate) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullApprovalDate[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullIssueDate) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullIssueDate[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullPromulgationDate) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullPromulgationDate[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.wrongFile) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.wrongFile[0], 'error', 'تلاش مجدد');
-                                        } else if (response.errors.nullFile) {
-                                            hideLoadingPopup();
-                                            swalFire('خطا!', response.errors.nullFile[0], 'error', 'تلاش مجدد');
-                                        }
-                                    } else if (response.success) {
-                                        window.location.href = response.redirect;
-                                    }
+                                    console.log(response);
+                                    // if (response.errors) {
+                                    //     if (response.errors.nullTitle) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullTitle[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullLawCode) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullLawCode[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.dupLawCode) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.dupLawCode[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullSessionCode) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullSessionCode[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullType) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullType[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullGroup) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullGroup[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullApprover) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullApprover[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullTopic) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullTopic[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullBody) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullBody[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullKeyword) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullKeyword[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullApprovalDate) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullApprovalDate[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullIssueDate) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullIssueDate[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullPromulgationDate) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullPromulgationDate[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.wrongFile) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.wrongFile[0], 'error', 'تلاش مجدد');
+                                    //     } else if (response.errors.nullFile) {
+                                    //         hideLoadingPopup();
+                                    //         swalFire('خطا!', response.errors.nullFile[0], 'error', 'تلاش مجدد');
+                                    //     }
+                                    // } else if (response.success) {
+                                    //     window.location.href = response.redirect;
+                                    // }
                                 }
                             });
                         }

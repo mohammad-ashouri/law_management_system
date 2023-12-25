@@ -193,8 +193,6 @@
                 <div class="mt-4" id="compared"></div>
             </div>
         </div>
-
-        </div>
     </main>
 @endsection
 

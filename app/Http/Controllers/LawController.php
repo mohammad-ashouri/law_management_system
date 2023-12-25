@@ -8,6 +8,7 @@ use App\Models\Catalogs\Topic;
 use App\Models\Catalogs\Type;
 use App\Models\Difference;
 use App\Models\Law;
+use App\Models\Refer;
 use Caxy\HtmlDiff\HtmlDiff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +20,6 @@ class LawController extends Controller
 
     public function create(Request $request)
     {
-
         $lawCode = $request->input('lawCode');
         if (!$lawCode) {
             return $this->alerts(false, 'nullLawCode', 'شماره مصوبه وارد نشده است');
@@ -138,10 +138,24 @@ class LawController extends Controller
         $law->adder = session('id');
         $law->save();
         $this->logActivity('Law Added =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
-        return response()->json([
-            'success' => true,
-            'redirect' => route('LawsIndex')
-        ]);
+
+        if ($request->refer_id and count($request->refer_id)>0){
+            $refers=$request->refer_id;
+            $refers=$request->refer_to;
+            for ($i=0;$i<count($request->refer_id);$i++){
+                $lawRefer=new Refer();
+                $lawRefer->law_from=$law->id;
+                $lawRefer->law_to=$refers[$i];
+                $lawRefer->type=$refers[$i];
+                $lawRefer->adder=session('id');
+                $lawRefer->save();
+                $this->logActivity('Law Refer Added =>' . $lawRefer->id, request()->ip(), request()->userAgent(), session('id'));
+            }
+        }
+//        return response()->json([
+//            'success' => true,
+//            'redirect' => route('LawsIndex')
+//        ]);
     }
 
     public function update(Request $request)
