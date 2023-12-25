@@ -294,9 +294,12 @@
                                                         عنوان*:</label>
                                                     <select id="refer_to" class="border rounded-md w-full px-3 py-2"
                                                             name="refer_to">
+                                                        $referType
                                                         <option value="" disabled selected>انتخاب کنید</option>
-                                                        <option value="1">عطف</option>
-                                                        <option value="2">متمم</option>
+                                                        @foreach($referTypes as $referType)
+                                                            <option
+                                                                value="{{ $referType->id }}">{{ $referType->name }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Catalogs\Approver;
 use App\Models\Catalogs\LawGroup;
+use App\Models\Catalogs\ReferType;
 use App\Models\Catalogs\Topic;
 use App\Models\Catalogs\Type;
 use App\Models\Difference;
@@ -20,6 +21,7 @@ class LawController extends Controller
 
     public function create(Request $request)
     {
+//        return count($request->refer_id);
         $lawCode = $request->input('lawCode');
         if (!$lawCode) {
             return $this->alerts(false, 'nullLawCode', 'شماره مصوبه وارد نشده است');
@@ -139,23 +141,25 @@ class LawController extends Controller
         $law->save();
         $this->logActivity('Law Added =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
 
-        if ($request->refer_id and count($request->refer_id)>0){
-            $refers=$request->refer_id;
-            $refers=$request->refer_to;
-            for ($i=0;$i<count($request->refer_id);$i++){
-                $lawRefer=new Refer();
-                $lawRefer->law_from=$law->id;
-                $lawRefer->law_to=$refers[$i];
-                $lawRefer->type=$refers[$i];
-                $lawRefer->adder=session('id');
-                $lawRefer->save();
-                $this->logActivity('Law Refer Added =>' . $lawRefer->id, request()->ip(), request()->userAgent(), session('id'));
+        if (count($request->refer_type) == count($request->refer_id)) {
+            if ($request->refer_id and count($request->refer_id) > 0) {
+                $refer_type = $request->refer_type;
+                $refer_to = $request->refer_id;
+                for ($i = 0; $i < count($request->refer_id); $i++) {
+                    $lawRefer = new Refer();
+                    $lawRefer->law_from = (int)$law->id;
+                    $lawRefer->law_to = (int)$refer_to[$i];
+                    $lawRefer->type = (int)$refer_type[$i];
+                    $lawRefer->adder = session('id');
+                    $lawRefer->save();
+                    $this->logActivity('Law Refer Added =>' . $lawRefer->id, request()->ip(), request()->userAgent(), session('id'));
+                }
             }
         }
-//        return response()->json([
-//            'success' => true,
-//            'redirect' => route('LawsIndex')
-//        ]);
+        return response()->json([
+            'success' => true,
+            'redirect' => route('LawsIndex')
+        ]);
     }
 
     public function update(Request $request)
@@ -400,7 +404,8 @@ class LawController extends Controller
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
         $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
-        return view('LawManager.Create', compact('groups', 'topics', 'approvers', 'types'));
+        $referTypes = ReferType::where('status', 1)->orderBy('name', 'desc')->get();
+        return view('LawManager.Create', compact('groups', 'topics', 'approvers', 'types', 'referTypes'));
     }
 
     public function updateIndex($id)
