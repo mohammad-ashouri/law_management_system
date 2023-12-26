@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('laws', function (Blueprint $table) {
-            $table->id();
+            $table->id()->startingValue(4514);
             $table->integer('law_code')->comment('شماره مصوبه');
             $table->integer('session_code')->nullable()->comment('کد جلسه');
             $table->unsignedBigInteger('type_id');
