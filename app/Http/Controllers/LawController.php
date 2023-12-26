@@ -140,7 +140,7 @@ class LawController extends Controller
         $law->save();
         $this->logActivity('Law Added =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
 
-        if (count($request->refer_type) == count($request->refer_id)) {
+        if ($request->refer_type and $request->refer_id and (count($request->refer_type) == count($request->refer_id))) {
             if ($request->refer_id and count($request->refer_id) > 0) {
                 $refer_type = $request->refer_type;
                 $refer_to = $request->refer_id;
@@ -294,7 +294,7 @@ class LawController extends Controller
             $newDiff->save();
         }
         $this->logActivity('Law Edited =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
-        if (count($request->refer_type) == count($request->refer_id)) {
+        if ($request->refer_type and $request->refer_id and (count($request->refer_type) == count($request->refer_id))) {
             if ($request->refer_id and count($request->refer_id) > 0) {
                 $refer_type = $request->refer_type;
                 $refer_to = $request->refer_id;
