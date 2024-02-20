@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        $query="insert into law_groups (name) values ('گروه اول')";
+        $query="insert into law_groups (name) values ('قوانین مرکز'),('قوانین شورای عالی'),('قوانین دولت')";
         DB::statement($query);
     }
 

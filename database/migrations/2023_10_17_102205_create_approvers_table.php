@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        $query="insert into approvers (name) values ('تصویب کننده اول')";
+        $query="insert into approvers (name) values ('شورای عالی حوزه'),('کمیسیون منابع انسانی'),('کمیسیون ساختار و تشکیلات'),('کمیته جذب و انتصابات'),('کمیته بودجه'),('مصوبات دولت'),('قانون مدیریت خدمات کشوری')";
         DB::statement($query);
 
     }
