@@ -3,7 +3,9 @@
 @section('content')
     <main class="flex-1 bg-gray-100 py-6 px-8">
         <div class="mx-auto lg:mr-72">
-            <h1 class="text-2xl font-bold mb-4">مدیریت بر اطلاعات قوانین و مصوبات</h1>
+            <h1 class="text-2xl font-bold mb-4">مدیریت بر اطلاعات قوانین و مصوبات
+            ({{ $lawList->total() }} مصوبه)
+            </h1>
 
             <div class="bg-white rounded shadow p-6 flex flex-col ">
                 <div class="flex">
@@ -295,7 +297,7 @@
                         </div>
                     </div>
                 </form>
-                @if(!@$isEmpty)
+                @if(!$lawList->isEmpty())
                     <table class="w-full border-collapse rounded-lg overflow-hidden text-center datasheet">
                         <thead>
                         <tr class="bg-gradient-to-r from-blue-400 to-purple-500 items-center text-center text-white">
@@ -358,7 +360,7 @@
                         </tbody>
                     </table>
                 @else
-                    <div dir="ltr" class="mt-4 flex justify-center">
+                    <div dir="ltr" class="mt-4 bg-gray-300 p-4 flex justify-center">
                         هیچ موردی یافت نشد
                     </div>
                 @endif
