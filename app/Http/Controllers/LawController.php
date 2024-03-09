@@ -429,7 +429,7 @@ class LawController extends Controller
         $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
         $referTypes = ReferType::where('status', 1)->orderBy('name', 'desc')->get();
-        $refers = Refer::with('typeInfo')->with('lawFromInfo')->with('lawToInfo')->where('law_from',$id)->orderBy('id', 'asc')->get();
+        $refers = Refer::with('typeInfo')->with('lawFromInfo')->with('lawToInfo')->where('law_from',$id)->orderBy('id')->get();
         return view('LawManager.Update', compact('lawInfo', 'groups', 'approvers', 'topics', 'types', 'referTypes', 'refers'));
     }
 
