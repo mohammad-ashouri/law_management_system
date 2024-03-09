@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        $query="insert into topics (name) values ('موضوع اول')";
+        $query="insert into topics (name) values ('جذب و استخدام'),('انتصابات'),('حقوق و دستمزد'),('احکام'),('کارکرد'),('ارزشیابی'),('آموزش و بهسازی'),('بیمه و بازنشستگی'),('رفاه و فرهنگی')";
         DB::statement($query);
     }
 

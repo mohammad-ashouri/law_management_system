@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        $query="insert into types (name) values ('قانون'),('مصوبه'),('آیین نامه'),('دستورالعمل')";
+        $query="insert into types (name) values ('بخشنامه'),('آیین نامه'),('دستورالعمل')";
         DB::statement($query);
     }
 
