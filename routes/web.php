@@ -118,7 +118,7 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
                 Route::get('/', [LawController::class, 'index'])->name('LawsIndex');
                 Route::get('/new', [LawController::class, 'createIndex']);
                 Route::post('/create', [LawController::class, 'create']);
-                Route::post('/search', [LawController::class, 'search']);
+                Route::get('/search', [LawController::class, 'search']);
                 Route::get('/edit/{id}', [LawController::class, 'updateIndex'])->name('law.update');
                 Route::post('/update', [LawController::class, 'update']);
                 Route::post('/delete', [LawController::class, 'delete']);

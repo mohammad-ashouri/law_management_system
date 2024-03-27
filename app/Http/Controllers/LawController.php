@@ -396,8 +396,8 @@ class LawController extends Controller
             });
         }
         $query->orderBy('created_at', 'desc');
-
-        $lawList = $query->paginate(20);
+        $data =$query->paginate(20);
+        $lawList = $data->appends(request()->query())->links();
 
         $isEmpty = false;
         if ($lawList->isEmpty()) {
