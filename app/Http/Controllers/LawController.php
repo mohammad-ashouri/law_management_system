@@ -379,13 +379,13 @@ class LawController extends Controller
         if ($topic) {
             $query->where('topic_id', $topic);
         }
-        if (@$approval_date) {
+        if (isset($approval_date)) {
             $query->where('approval_date', $approval_date);
         }
-        if (@$issue_date) {
+        if (isset($issue_date)) {
             $query->where('issue_date', $issue_date);
         }
-        if (@$promulgation_date) {
+        if (isset($promulgation_date)) {
             $query->where('promulgation_date', $promulgation_date);
         }
         if ($request->filled('keywords')) {
@@ -397,12 +397,14 @@ class LawController extends Controller
         }
         $query->orderBy('created_at', 'desc');
         $data =$query->paginate(20);
+        if ($data==null or $data->isEmpty()) {
+            $isEmpty = true;
+        }else{
+            $isEmpty = false;
+        }
         $lawList = $data->appends(request()->query())->links();
 
-        $isEmpty = false;
-        if ($lawList->isEmpty()) {
-            $isEmpty = true;
-        }
+
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
         $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
