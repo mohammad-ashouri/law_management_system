@@ -171,6 +171,7 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Ybazli\Faker\FakerServiceProvider::class,
         niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
     ])->toArray(),
 
     /*
