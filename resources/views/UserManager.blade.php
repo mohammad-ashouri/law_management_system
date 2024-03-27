@@ -214,10 +214,10 @@
                                     <button type="submit" data-username="{{ $user->username }}"
                                         @php
                                             if ($user->active==1){
-                                                echo "class='px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ASUM'";
+                                                echo "class='px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ASUM'";
                                                 echo "data-active=1";
                                             }elseif ($user->active==0){
-                                                echo "class='px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 ASUM'";
+                                                echo "class='px-2 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 ASUM'";
                                                 echo "data-active=0";
                                             }
                                         @endphp
@@ -232,13 +232,13 @@
                                     </button>
                                 </td>
                                 <td class="px-3 py-4">
-                                    <button type="submit" data-ntcp-username="{{ $user->username }}"
+                                    <button type="button" data-ntcp-username="{{ $user->username }}"
                                         @php
                                             if ($user->NTCP==1){
-                                                echo "class='px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ntcp'";
+                                                echo "class='px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 ntcp'";
                                                 echo "data-ntcp=1";
                                             }elseif ($user->NTCP==0){
-                                                echo "class='px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 ntcp'";
+                                                echo "class='px-2 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 ntcp'";
                                                 echo "data-ntcp=0";
                                         }
                                         @endphp
@@ -254,7 +254,7 @@
                                 </td>
                                 <td class="px-3 py-4">
                                     <button type="submit" data-rp-username="{{ $user->username }}"
-                                            class="class='px-4 py-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 rp"
+                                            class="class='px-2 py-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 rp"
                                     >
                                         بازنشانی رمز
                                     </button>
