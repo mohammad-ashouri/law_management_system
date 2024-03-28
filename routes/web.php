@@ -11,6 +11,7 @@ use App\Http\Controllers\LawController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Reports\ExcelAllReportsController;
 use App\Http\Controllers\Reports\PDFReportController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserManager;
 use App\Http\Middleware\CheckLoginMiddleware;
@@ -112,6 +113,9 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
                 Route::post('/update', [ReferTypesController::class, 'update']);
                 Route::post('/changeStatus', [ReferTypesController::class, 'changeStatus']);
             });
+
+            //Role Controller
+            Route::resource('/Roles',RoleController::class);
 
             //Law Management
             Route::group(['prefix' => 'Laws'], function () {

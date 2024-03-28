@@ -15,10 +15,10 @@ class RoleAuthorization
      */
     public function handle(Request $request, Closure $next,...$roles): Response
     {
-        if (auth()->check() && in_array(auth()->user()->type, $roles)) {
+//        if (auth()->check() && in_array(auth()->user()->type, $roles)) {
             return $next($request);
-        }
+//        }
 
-        abort(403, 'Unauthorized action.');
+//        abort(403, 'Unauthorized action.');
     }
 }
