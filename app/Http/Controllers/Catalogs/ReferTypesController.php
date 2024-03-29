@@ -8,6 +8,20 @@ use Illuminate\Http\Request;
 
 class ReferTypesController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:لیست انواع ارتباط', ['only' => ['index']]);
+        $this->middleware('permission:ایجاد ارتباط', ['only' => ['create']]);
+        $this->middleware('permission:ویرایش ارتباط', ['only' => ['update']]);
+        $this->middleware('permission:تغییر وضعیت ارتباط', ['only' => ['changeStatus']]);
+    }
+
+    public function index()
+    {
+        $referTypeList = ReferType::orderBy('name', 'asc')->paginate(20);
+        return \view('Catalogs.ReferTypeCatalog', ['referTypeList' => $referTypeList]);
+    }
+
     public function create(Request $request)
     {
         $name = $request->input('name');
@@ -16,13 +30,13 @@ class ReferTypesController extends Controller
             return $this->alerts(false, 'nullName', 'نام ارتباط وارد نشده است');
         }
 
-        $table = ReferType::where('name',$name)->get();
-        if ($table->count()>0){
+        $table = ReferType::where('name', $name)->get();
+        if ($table->count() > 0) {
             return $this->alerts(false, 'dupName', 'نام ارتباط تکراری وارد شده است');
         }
 
         $table = new ReferType();
-        $table->name=$name;
+        $table->name = $name;
         $table->save();
         $this->logActivity('ReferType Added =>' . $table->id, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'Added', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
@@ -37,13 +51,13 @@ class ReferTypesController extends Controller
             return $this->alerts(false, 'nullName', 'نام ارتباط وارد نشده است');
         }
 
-        $table = ReferType::where('name',$name)->get();
-        if ($table->count()>0){
+        $table = ReferType::where('name', $name)->get();
+        if ($table->count() > 0) {
             return $this->alerts(false, 'dupName', 'نام ارتباط تکراری وارد شده است');
         }
 
         $table = ReferType::find($ID);
-        $table->name=$name;
+        $table->name = $name;
         $table->save();
         $this->logActivity('ReferType Edited =>' . $ID, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'Edited', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
@@ -72,9 +86,4 @@ class ReferTypesController extends Controller
         }
     }
 
-    public function index()
-    {
-        $referTypeList = ReferType::orderBy('name', 'asc')->paginate(20);
-        return \view('Catalogs.ReferTypeCatalog', ['referTypeList' => $referTypeList]);
-    }
 }

@@ -8,6 +8,20 @@ use Illuminate\Http\Request;
 
 class TopicController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:لیست موضوعات', ['only' => ['index']]);
+        $this->middleware('permission:ایجاد موضوع', ['only' => ['create']]);
+        $this->middleware('permission:ویرایش موضوع', ['only' => ['update']]);
+        $this->middleware('permission:تغییر وضعیت موضوع', ['only' => ['changeStatus']]);
+    }
+
+    public function index()
+    {
+        $topicList = Topic::orderBy('name', 'asc')->paginate(20);
+        return \view('Catalogs.TopicCatalog', ['topicList' => $topicList]);
+    }
+
     public function create(Request $request)
     {
         $name = $request->input('name');
@@ -16,13 +30,13 @@ class TopicController extends Controller
             return $this->alerts(false, 'nullName', 'موضوع وارد نشده است');
         }
 
-        $table = Topic::where('name',$name)->get();
-        if ($table->count()>0){
+        $table = Topic::where('name', $name)->get();
+        if ($table->count() > 0) {
             return $this->alerts(false, 'dupName', 'موضوع تکراری وارد شده است');
         }
 
         $table = new Topic();
-        $table->name=$name;
+        $table->name = $name;
         $table->save();
         $this->logActivity('Topic Added =>' . $table->id, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'Added', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
@@ -37,13 +51,13 @@ class TopicController extends Controller
             return $this->alerts(false, 'nullName', 'موضوع وارد نشده است');
         }
 
-        $table = Topic::where('name',$name)->get();
-        if ($table->count()>0){
+        $table = Topic::where('name', $name)->get();
+        if ($table->count() > 0) {
             return $this->alerts(false, 'dupName', 'موضوع تکراری وارد شده است');
         }
 
         $table = Topic::find($ID);
-        $table->name=$name;
+        $table->name = $name;
         $table->save();
         $this->logActivity('Topic Edited =>' . $ID, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'Edited', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
@@ -72,9 +86,5 @@ class TopicController extends Controller
         }
     }
 
-    public function index()
-    {
-        $topicList = Topic::orderBy('name', 'asc')->paginate(20);
-        return \view('Catalogs.TopicCatalog', ['topicList' => $topicList]);
-    }
+
 }

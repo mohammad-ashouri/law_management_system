@@ -8,6 +8,20 @@ use Illuminate\Http\Request;
 
 class ApproverController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:لیست تصویب کنندگان', ['only' => ['index']]);
+        $this->middleware('permission:ایجاد تصویب کننده', ['only' => ['create']]);
+        $this->middleware('permission:ویرایش تصویب کننده', ['only' => ['update']]);
+        $this->middleware('permission:تغییر وضعیت تصویب کننده', ['only' => ['changeStatus']]);
+    }
+
+    public function index()
+    {
+        $approverList = Approver::orderBy('name', 'asc')->paginate(20);
+        return \view('Catalogs.ApproverCatalog', ['approverList' => $approverList]);
+    }
+
     public function create(Request $request)
     {
         $name = $request->input('name');
@@ -16,13 +30,13 @@ class ApproverController extends Controller
             return $this->alerts(false, 'nullName', 'نام وارد نشده است');
         }
 
-        $table = Approver::where('name',$name)->get();
-        if ($table->count()>0){
+        $table = Approver::where('name', $name)->get();
+        if ($table->count() > 0) {
             return $this->alerts(false, 'dupName', 'نام تکراری وارد شده است');
         }
 
         $table = new Approver();
-        $table->name=$name;
+        $table->name = $name;
         $table->save();
         $this->logActivity('Approver Added =>' . $table->id, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'Added', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
@@ -37,13 +51,13 @@ class ApproverController extends Controller
             return $this->alerts(false, 'nullName', 'موضوع وارد نشده است');
         }
 
-        $table = Approver::where('name',$name)->get();
-        if ($table->count()>0){
+        $table = Approver::where('name', $name)->get();
+        if ($table->count() > 0) {
             return $this->alerts(false, 'dupName', 'موضوع تکراری وارد شده است');
         }
 
         $table = Approver::find($ID);
-        $table->name=$name;
+        $table->name = $name;
         $table->save();
         $this->logActivity('Approver Edited =>' . $ID, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'Edited', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
@@ -72,9 +86,4 @@ class ApproverController extends Controller
         }
     }
 
-    public function index()
-    {
-        $approverList = Approver::orderBy('name', 'asc')->paginate(20);
-        return \view('Catalogs.ApproverCatalog', ['approverList' => $approverList]);
-    }
 }

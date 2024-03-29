@@ -18,7 +18,7 @@ class RoleController extends Controller
         $this->middleware('permission:حذف نقش', ['only' => ['destroy']]);
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $roles = Role::orderBy('name', 'asc')->paginate(10);
         return view('Catalogs.Roles.index', compact('roles'));

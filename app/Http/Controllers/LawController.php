@@ -16,8 +16,30 @@ use Illuminate\Support\Facades\Validator;
 
 class LawController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:لیست قوانین و مصوبات', ['only' => ['index']]);
+        $this->middleware('permission:ایجاد مصوبه', ['only' => ['create', 'createIndex']]);
+        $this->middleware('permission:ویرایش نوع مصوبه', ['only' => ['update', 'updateIndex']]);
+        $this->middleware('permission:جستجوی مصوبه', ['only' => ['search']]);
+        $this->middleware('permission:حذف مصوبه', ['only' => ['delete']]);
+        $this->middleware('permission:نمایش تاریخچه مصوبه', ['only' => ['showHistory']]);
+    }
+
     public $searchArray = ['أ', 'ة', 'إ', 'ؤ', 'ً', 'ٌ', 'ٍ', 'َ', 'ُ', 'ِ', 'ّ', 'ۀ', '¬', 'ي', 'ك', '‌'];
     public $replaceArray = ['ا', 'ی', 'ه', 'ا', 'و', '', '', '', '', '', '', '', 'ه', ' ', 'ک', ' '];
+
+    public function index()
+    {
+        $filtered = false;
+        $isEmpty = false;
+        $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
+        $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
+        $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
+        $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
+        $lawList = Law::with('type')->with('group')->with('topic')->with('approver')->orderBy('created_at', 'desc')->paginate(20);
+        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'approvers', 'types', 'filtered', 'isEmpty'));
+    }
 
     public function create(Request $request)
     {
@@ -315,18 +337,6 @@ class LawController extends Controller
         ]);
     }
 
-    public function index()
-    {
-        $filtered = false;
-        $isEmpty = false;
-        $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
-        $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
-        $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
-        $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
-        $lawList = Law::with('type')->with('group')->with('topic')->with('approver')->orderBy('created_at', 'desc')->paginate(20);
-        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'approvers', 'types', 'filtered','isEmpty'));
-    }
-
     public function search(Request $request)
     {
         $lawCode = $request->input('lawCode');
@@ -396,10 +406,10 @@ class LawController extends Controller
             });
         }
         $query->orderBy('created_at', 'desc');
-        $data =$query->paginate(20);
-        if ($data==null or $data->isEmpty()) {
+        $data = $query->paginate(20);
+        if ($data == null or $data->isEmpty()) {
             $isEmpty = true;
-        }else{
+        } else {
             $isEmpty = false;
         }
         $lawList = $data->appends(request()->query())->links();
@@ -431,7 +441,7 @@ class LawController extends Controller
         $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
         $referTypes = ReferType::where('status', 1)->orderBy('name', 'desc')->get();
-        $refers = Refer::with('typeInfo')->with('lawFromInfo')->with('lawToInfo')->where('law_from',$id)->orderBy('id')->get();
+        $refers = Refer::with('typeInfo')->with('lawFromInfo')->with('lawToInfo')->where('law_from', $id)->orderBy('id')->get();
         return view('LawManager.Update', compact('lawInfo', 'groups', 'approvers', 'topics', 'types', 'referTypes', 'refers'));
     }
 
@@ -441,7 +451,7 @@ class LawController extends Controller
         $law = Law::find($id);
         if ($law->delete()) {
             $this->logActivity('Law Deleted =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
-            Refer::where('law_to',$id)->delete();
+            Refer::where('law_to', $id)->delete();
             return $this->success(true, 'Deleted', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
         }
         return $this->alerts(false, 'wrongError', 'خطای نامشخص.');
@@ -466,8 +476,8 @@ class LawController extends Controller
 
     public function removeRefer(Request $request)
     {
-        $refer= Refer::find($request->refer_id);
-        if ($refer){
+        $refer = Refer::find($request->refer_id);
+        if ($refer) {
             $refer->delete();
             $this->logActivity('Refer Deleted =>' . $request->refer_id, request()->ip(), request()->userAgent(), session('id'));
             return $this->success(true, 'Deleted', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');

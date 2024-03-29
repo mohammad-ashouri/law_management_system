@@ -8,6 +8,21 @@ use Illuminate\Support\Facades\Validator;
 
 class UserManager extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:لیست کاربران', ['only' => ['index']]);
+        $this->middleware('permission:ایجاد کاربر', ['only' => ['newUser']]);
+        $this->middleware('permission:ویرایش کاربر', ['only' => ['editUser']]);
+        $this->middleware('permission:تغییر وضعیت کاربر', ['only' => ['ChangeUserActivationStatus']]);
+        $this->middleware('permission:تغییر وضعیت نیازمند به تغییر رمز عبور', ['only' => ['ChangeUserNTCP']]);
+        $this->middleware('permission:بازنشانی رمز عبور کاربر', ['only' => ['ResetPassword']]);
+    }
+
+    public function index()
+    {
+        $userList = User::orderBy('id', 'asc')->paginate(10);
+        return view('UserManager', ['userList' => $userList]);
+    }
 
     public function ChangeUserActivationStatus(Request $request)
     {
@@ -154,11 +169,4 @@ class UserManager extends Controller
         $this->logActivity('Getting User Information With ID => ' . $request->userID, request()->ip(), request()->userAgent(), session('id'));
         return $user;
     }
-
-    public function index()
-    {
-        $userList = User::orderBy('id', 'asc')->paginate(10);
-        return view('UserManager', ['userList' => $userList]);
-    }
-
 }

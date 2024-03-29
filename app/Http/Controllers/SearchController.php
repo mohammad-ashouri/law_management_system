@@ -9,25 +9,15 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:جستجوی کاربر', ['only' => ['search']]);
+    }
+
     public function search(Request $request)
     {
         $work = $request->input('work');
         switch ($work) {
-            case 'BrandCatalogSearch':
-                $name = $request->input('name');
-                $search = Company::query();
-                if ($name) {
-                    $search->where('name', 'LIKE', '%' . $name . '%');
-                    $search->where('name', '!=', 'ONBOARD');
-                    $this->logActivity('Search In Company Catalog With Name => ' . $name, request()->ip(), request()->userAgent(), session('id'));
-                } else {
-                    $search->where('name', 'LIKE', '%' . '%');
-                    $search->where('name', '!=', 'ONBOARD');
-                }
-                $search->orderBy('name', 'asc');
-                $result = $search->get();
-                return response()->json($result);
-                break;
             case 'UserManagerSearch':
                 $username = $request->input('username');
                 $type = $request->input('type');
@@ -49,24 +39,6 @@ class SearchController extends Controller
                 }
                 $result = $search->get();
                 return response()->json($result);
-            case 'PersonManagerSearch':
-                $name = $request->input('name');
-                $family = $request->input('family');
-                $code = $request->input('code');
-                $national_code = $request->input('national_code');
-                $search = Person::query();
-                $search->where('name', 'LIKE', '%' . $name . '%');
-                $search->where('family', 'LIKE', '%' . $family . '%');
-                if ($code) {
-                    $search->where('personnel_code', $code);
-                }
-                if ($national_code){
-                    $search->where('national_code', $national_code);
-                }
-                $result = $search->get();
-                $this->logActivity('Search In Person Manager With ID => ' . $code . ' Name => ' . $name . ' Family => ' . $family, request()->ip(), request()->userAgent(), session('id'));
-                return response()->json($result);
-                break;
         }
     }
 }

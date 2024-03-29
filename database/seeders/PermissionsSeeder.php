@@ -30,7 +30,7 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'تغییر وضعیت گروه']);
         Permission::create(['name' => 'دسترسی به منوی گروه بندی']);
 
-        Permission::create(['name' => 'لیست موضوع']);
+        Permission::create(['name' => 'لیست موضوعات']);
         Permission::create(['name' => 'ایجاد موضوع']);
         Permission::create(['name' => 'ویرایش موضوع']);
         Permission::create(['name' => 'تغییر وضعیت موضوع']);
@@ -84,7 +84,7 @@ class PermissionsSeeder extends Seeder
             'ایجاد گروه',
             'ویرایش گروه',
             'تغییر وضعیت گروه',
-            'لیست موضوع',
+            'لیست موضوعات',
             'ایجاد موضوع',
             'ویرایش موضوع',
             'تغییر وضعیت موضوع',

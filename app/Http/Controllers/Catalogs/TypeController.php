@@ -8,6 +8,20 @@ use Illuminate\Http\Request;
 
 class TypeController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:لیست انواع مصوبه', ['only' => ['index']]);
+        $this->middleware('permission:ایجاد نوع مصوبه', ['only' => ['create']]);
+        $this->middleware('permission:ویرایش نوع مصوبه', ['only' => ['update']]);
+        $this->middleware('permission:تغییر وضعیت نوع مصوبه', ['only' => ['changeStatus']]);
+    }
+
+    public function index()
+    {
+        $typeList = Type::orderBy('name', 'asc')->paginate(20);
+        return \view('Catalogs.TypeCatalog', ['typeList' => $typeList]);
+    }
+
     public function create(Request $request)
     {
         $name = $request->input('name');
@@ -16,13 +30,13 @@ class TypeController extends Controller
             return $this->alerts(false, 'nullName', 'موضوع وارد نشده است');
         }
 
-        $table = Type::where('name',$name)->get();
-        if ($table->count()>0){
+        $table = Type::where('name', $name)->get();
+        if ($table->count() > 0) {
             return $this->alerts(false, 'dupName', 'موضوع تکراری وارد شده است');
         }
 
         $table = new Type();
-        $table->name=$name;
+        $table->name = $name;
         $table->save();
         $this->logActivity('Type Added =>' . $table->id, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'Added', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
@@ -37,13 +51,13 @@ class TypeController extends Controller
             return $this->alerts(false, 'nullName', 'موضوع وارد نشده است');
         }
 
-        $table = Type::where('name',$name)->get();
-        if ($table->count()>0){
+        $table = Type::where('name', $name)->get();
+        if ($table->count() > 0) {
             return $this->alerts(false, 'dupName', 'موضوع تکراری وارد شده است');
         }
 
         $table = Type::find($ID);
-        $table->name=$name;
+        $table->name = $name;
         $table->save();
         $this->logActivity('Type Edited =>' . $ID, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'Edited', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
@@ -72,9 +86,4 @@ class TypeController extends Controller
         }
     }
 
-    public function index()
-    {
-        $typeList = Type::orderBy('name', 'asc')->paginate(20);
-        return \view('Catalogs.TypeCatalog', ['typeList' => $typeList]);
-    }
 }
