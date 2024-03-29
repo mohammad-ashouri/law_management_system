@@ -1,11 +1,8 @@
-@extends('Layouts.panel')
-
+@extends('layouts.PanelMaster')
 @section('content')
-    <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
-        <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
-            <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
-                <h1 class="text-2xl font-medium">Edit role</h1>
-            </div>
+    <main class="flex-1 bg-gray-100 py-6 px-8">
+        <div class="mx-auto lg:mr-72">
+            <h1 class="text-2xl font-bold mb-4">جزئیات و ویرایش نقش کاربری</h1>
             @if (count($errors) > 0)
                 <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                      role="alert">
@@ -25,51 +22,50 @@
                     </div>
                 </div>
             @endif
-            <div class="grid grid-cols-3 gap-4 mb-4">
-                <div class="lg:col-span-2 col-span-3 ">
-                    <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
-                            <h1 class="text-2xl font-medium"> Role information</h1>
+            <div class="bg-white rounded shadow flex flex-col ">
+                {!! Form::model($role, ['method' => 'PATCH','route' => ['Roles.update', $role->id]]) !!}
+                @csrf
+                <div class="bg-white rounded shadow flex flex-col p-4">
+                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <div>
+                            <label for="name"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">عنوان
+                                نقش</label>
+                            <input type="text" id="name" name="name" value="{{ $role->name }}"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   placeholder="" required>
                         </div>
-
-                        {!! Form::model($role, ['method' => 'PATCH','route' => ['roles.update', $role->id]]) !!}
-                        <div class="grid gap-6 mb-6 md:grid-cols-2">
-                            <div>
-                                <label for="name"
-                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">role
-                                    name</label>
-                                <input type="text" id="name" name="name" value="{{ $role->name }}"
-                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                       placeholder="" required>
-                            </div>
-                            <div>
-                                <div class="form-group">
-                                    <strong>Permission:</strong>
+                        <div>
+                            <div class="form-group">
+                                <strong>دسترسی ها:</strong>
+                                <br/>
+                                @foreach($permission as $value)
+                                    <label>
+                                        {{ Form::checkbox('permission[]', $value->name, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
+                                        {{ $value->name }}
+                                    </label>
                                     <br/>
-                                    @foreach($permission as $value)
-                                        <label>
-                                            {{ Form::checkbox('permission[]', $value->name, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
-                                            {{ $value->name }}
-                                        </label>
-                                        <br/>
-                                    @endforeach
-                                </div>
+                                @endforeach
                             </div>
                         </div>
-                        <button type="submit"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Save all
-                        </button>
-                        <a href="{{ url()->previous() }}">
-                            <button type="button"
-                                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                Back
-                            </button>
-                        </a>
-                        {!! Form::close() !!}
                     </div>
                 </div>
+
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    @can('ویرایش نقش')
+                        <input type="hidden" name="role_id" value="{{ $role->id }}">
+                        <button type="submit"
+                                class="px-4 py-2 mr-3 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300">
+                            ویرایش نقش
+                        </button>
+                    @endcan
+                    <button id="backward_page" type="button"
+                            class="mt-3 w-full inline-flex justify-center px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300 sm:mt-0 sm:w-auto">
+                        بازگشت
+                    </button>
+                </div>
+                {!! Form::close() !!}
             </div>
         </div>
-    </div>
+    </main>
 @endsection

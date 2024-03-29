@@ -16,19 +16,21 @@ class PermissionsSeeder extends Seeder
     public function run(): void
     {
         //catalogs
-        Permission::create(['name' => 'role-list']);
-        Permission::create(['name' => 'role-create']);
-        Permission::create(['name' => 'role-edit']);
-        Permission::create(['name' => 'role-delete']);
-        Permission::create(['name' => 'role-menu-access']);
+        Permission::create(['name' => 'لیست نقش ها']);
+        Permission::create(['name' => 'ایجاد نقش']);
+        Permission::create(['name' => 'ویرایش نقش']);
+        Permission::create(['name' => 'نمایش جزئیات نقش']);
+        Permission::create(['name' => 'حذف نقش']);
+        Permission::create(['name' => 'دسترسی به منوی نقش های کاربری']);
 
         $interviewerRole = Role::create(['name' => 'ادمین کل']);
         $interviewerRole->givePermissionTo([
-            'role-list',
-            'role-create',
-            'role-edit',
-            'role-delete',
-            'role-menu-access',
+            'لیست نقش ها',
+            'ایجاد نقش',
+            'ویرایش نقش',
+            'نمایش جزئیات نقش',
+            'حذف نقش',
+            'دسترسی به منوی نقش های کاربری',
         ]);
 
         $role = Role::where('name', 'ادمین کل')->first();

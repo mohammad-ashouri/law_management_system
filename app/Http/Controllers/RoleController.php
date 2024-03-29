@@ -11,10 +11,11 @@ class RoleController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:role-list', ['only' => ['index']]);
-        $this->middleware('permission:role-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:role-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:لیست نقش ها', ['only' => ['index']]);
+        $this->middleware('permission:ایجاد نقش', ['only' => ['create', 'store']]);
+        $this->middleware('permission:ویرایش نقش', ['only' => ['update']]);
+        $this->middleware('permission:نمایش جزئیات نقش', ['only' => ['edit']]);
+        $this->middleware('permission:حذف نقش', ['only' => ['destroy']]);
     }
 
     public function index(Request $request)
@@ -31,7 +32,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:roles,name',
+            'name' => 'required|exists:roles,name',
             'permission' => 'required',
         ]);
 
@@ -39,7 +40,7 @@ class RoleController extends Controller
         $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('Roles.index')
-            ->with('success', 'Role created successfully');
+            ->with('success', 'نقش کاربری با موفقیت ایجاد شد.');
     }
 
     public function show($id)
@@ -76,7 +77,7 @@ class RoleController extends Controller
 
         $role->syncPermissions($request->input('permission'));
 
-        return redirect()->route('roles.index')
-            ->with('success', 'Role updated successfully');
+        return redirect()->route('Roles.index')
+            ->with('success', 'نقش کاربری با موفقیت ویرایش شد.');
     }
 }
