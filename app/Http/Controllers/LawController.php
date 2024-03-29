@@ -318,13 +318,13 @@ class LawController extends Controller
     public function index()
     {
         $filtered = false;
-        $allRequests = [];
+        $isEmpty = false;
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
         $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
         $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
         $lawList = Law::with('type')->with('group')->with('topic')->with('approver')->orderBy('created_at', 'desc')->paginate(20);
-        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'approvers', 'types', 'filtered'));
+        return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'approvers', 'types', 'filtered','isEmpty'));
     }
 
     public function search(Request $request)
@@ -441,6 +441,7 @@ class LawController extends Controller
         $law = Law::find($id);
         if ($law->delete()) {
             $this->logActivity('Law Deleted =>' . $law->id, request()->ip(), request()->userAgent(), session('id'));
+            Refer::where('law_to',$id)->delete();
             return $this->success(true, 'Deleted', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
         }
         return $this->alerts(false, 'wrongError', 'خطای نامشخص.');
