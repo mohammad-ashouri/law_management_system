@@ -9,19 +9,19 @@
         {{ env('APP_PERSIAN_NAME') }}
     </title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-{{--    <link href="http://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">--}}
-{{--    <script src="http://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>--}}
-{{--    <script--}}
-{{--        src="https://code.jquery.com/jquery-3.7.1.js"--}}
-{{--        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="--}}
-{{--        crossorigin="anonymous"></script>--}}
+    {{--    <link href="http://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">--}}
+    {{--    <script src="http://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>--}}
+    {{--    <script--}}
+    {{--        src="https://code.jquery.com/jquery-3.7.1.js"--}}
+    {{--        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="--}}
+    {{--        crossorigin="anonymous"></script>--}}
     <script src="/build/plugins/jquery/dist/jquery.js"></script>
-    <link href="/build/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="/build/plugins/select2/dist/css/select2.min.css" rel="stylesheet"/>
     <script src="/build/plugins/select2/dist/js/select2.min.js"></script>
     <link rel="stylesheet" href="/build/plugins/jquery-tags-input/dist/jquery.tagsinput.min.css">
     <script src="/build/plugins/jquery-tags-input/dist/jquery.tagsinput.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.select2').select2({
                 placeholder: 'یک گزینه را انتخاب کنید',
             });
@@ -44,14 +44,17 @@
                 ::-webkit-scrollbar {
                     width: 12px;
                 }
+
                 ::-webkit-scrollbar-thumb {
                     background-color: #4A90E2;
                     border-radius: 6px;
                 }
+
                 ::-webkit-scrollbar-thumb:hover {
                     background-color: #357ABD;
                     border-radius: 10px;
                 }
+
                 li.active {
                     /* overflow: hidden; */
                     position: relative;
@@ -151,10 +154,11 @@
                                 <div class="avatar flex justify-center ">
                                     @if($userInfo->user_image)
                                         @php
-                                        $src=substr($userInfo->user_image,6);
-                                        $src='storage'.$src;
+                                            $src=substr($userInfo->user_image,6);
+                                            $src='storage'.$src;
                                         @endphp
-                                        <div style="background: url({{ $src }}) no-repeat; background-size: cover;" class="w-16 h-16 rounded-full">
+                                        <div style="background: url({{ $src }}) no-repeat; background-size: cover;"
+                                             class="w-16 h-16 rounded-full">
                                         </div>
                                     @else
                                         <div id="user_icon" class="w-16 h-16 rounded-full">
@@ -170,7 +174,7 @@
                                         {{ $userInfo->subject }}
                                     @elseif($userInfo->type===2)
                                         @php
-                                        $provinceInfo=Province::find($userInfo->province_id)
+                                            $provinceInfo=Province::find($userInfo->province_id)
                                         @endphp
                                         {{ $userInfo->subject . ' ' . $provinceInfo->name }}
                                     @endif
@@ -196,95 +200,102 @@
                             @foreach ($menus as $menu)
                                 <li>
                                     @if (isset($menu['childs']) && count($menu['childs']) > 0)
-                                        <details id="{{ 'details-' . $menu['title'] }}">
-                                            <summary
-                                                class="flex items-center p-3 my-1 text-cu-light rounded-s-full dark:text-white hover:bg-gray-100 light:hover:bg-gray-700 group">
-                                                <svg
-                                                    class="ml-3 flex-shrink-0 w-5 h-5  transition duration-75 text-cu-light group-hover:text-cu-light dark:group-hover:text-gray-700"
-                                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                    fill="currentColor" viewBox="0 0 25 25">
-                                                    @if(@$menu['path1'])
-                                                        <path
-                                                            d="{{ $menu['path1'] }}"></path>
-                                                    @endif
-                                                    @if(@$menu['path2'])
-                                                        <path
-                                                            d="{{ @$menu['path2'] }}"></path>
-                                                    @endif
-                                                    @if(@$menu['path3'])
-                                                        <path
-                                                            d="{{ @$menu['path3'] }}"></path>
-                                                    @endif
-                                                    @if(@$menu['path4'])
-                                                        <path
-                                                            d="{{ @$menu['path4'] }}"></path>
-                                                    @endif
-                                                    @if(@$menu['path5'])
-                                                        <path
-                                                            d="{{ @$menu['path5'] }}"></path>
-                                                    @endif
-                                                    @if(@$menu['path6'])
-                                                        <path
-                                                            d="{{ @$menu['path6'] }}"></path>
-                                                    @endif
-                                                </svg>
-                                                {{ $menu['title'] }}
-                                            </summary>
-                                            <ul class="text-white w-full mr-2">
-                                                @foreach ($menu['childs'] as $child)
-                                                    <li class="menu-item mr-8" id="{{ $child['title'] }}">
-
-                                                        <a href="{{ $child['link'] }}"
-                                                           class="flex items-center p-3 my-1 text-cu-light rounded-s-full dark:text-white hover:bg-gray-100 light:hover:bg-gray-700 group">
-                                                            <svg
-                                                                class="w-5 h-5 dark:text-white transition duration-75 dark:group-hover:text-gray-700"
-                                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                                fill="currentColor"
-                                                                viewBox="0 0 25 25">
-                                                                <path
-                                                                    d="{{ @$child['path1'] }}"></path>
-                                                                <path
-                                                                    d="{{ @$child['path2'] }}"></path>
-                                                            </svg>
-                                                            {{ $child['title'] }}</a>
-                                                    </li>
-                                                    <li>
-                                                @endforeach
-
-                                            </ul>
-
-                                            @else
-                                                <li class="menu-item" id="menu{{ $menu['link'] }}">
-                                                    <a href="{{ $menu['link'] }}"
-                                                       class="flex items-center p-3 my-1 text-cu-light rounded-s-full dark:text-white hover:bg-gray-100 light:hover:bg-gray-700 group">
+                                        @can($menu['permission'])
+                                            <details id="{{ 'details-' . $menu['title'] }}">
+                                                <summary
+                                                    class="flex items-center p-3 my-1 text-cu-light rounded-s-full dark:text-white hover:bg-gray-100 light:hover:bg-gray-700 group">
+                                                    <svg
+                                                        class="ml-3 flex-shrink-0 w-5 h-5  transition duration-75 text-cu-light group-hover:text-cu-light dark:group-hover:text-gray-700"
+                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                        fill="currentColor" viewBox="0 0 25 25">
                                                         @if(@$menu['path1'])
-                                                            <svg
-                                                                class="w-5 h-5 dark:text-white transition duration-75 dark:group-hover:text-gray-700"
-                                                                aria-hidden="true"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                fill="currentColor"
-                                                                viewBox="0 0 22 21">
-                                                                <path
-                                                                    d="{{ $menu['path1'] }}"></path>
-                                                                <path
-                                                                    d="{{ @$menu['path2'] }}"></path>
-                                                                <path
-                                                                    d="{{ @$menu['path3'] }}"></path>
-                                                                <path
-                                                                    d="{{ @$menu['path4'] }}"></path>
-                                                                <path
-                                                                    d="{{ @$menu['path5'] }}"></path>
-                                                                <path
-                                                                    d="{{ @$menu['path6'] }}"></path>
-                                                            </svg>
+                                                            <path
+                                                                d="{{ $menu['path1'] }}"></path>
                                                         @endif
-                                                        <span class=" mr-3 ">
+                                                        @if(@$menu['path2'])
+                                                            <path
+                                                                d="{{ @$menu['path2'] }}"></path>
+                                                        @endif
+                                                        @if(@$menu['path3'])
+                                                            <path
+                                                                d="{{ @$menu['path3'] }}"></path>
+                                                        @endif
+                                                        @if(@$menu['path4'])
+                                                            <path
+                                                                d="{{ @$menu['path4'] }}"></path>
+                                                        @endif
+                                                        @if(@$menu['path5'])
+                                                            <path
+                                                                d="{{ @$menu['path5'] }}"></path>
+                                                        @endif
+                                                        @if(@$menu['path6'])
+                                                            <path
+                                                                d="{{ @$menu['path6'] }}"></path>
+                                                        @endif
+                                                    </svg>
+                                                    {{ $menu['title'] }}
+                                                </summary>
+                                                <ul class="text-white w-full mr-2">
+                                                    @foreach ($menu['childs'] as $child)
+                                                        @if(isset($child['permission']))
+                                                            @can($child['permission'])
+                                                                <li class="menu-item mr-8" id="{{ $child['title'] }}">
+                                                                    <a href="{{ $child['link'] }}"
+                                                                       class="flex items-center p-3 my-1 text-cu-light rounded-s-full dark:text-white hover:bg-gray-100 light:hover:bg-gray-700 group">
+                                                                        <svg
+                                                                            class="w-5 h-5 dark:text-white transition duration-75 dark:group-hover:text-gray-700"
+                                                                            aria-hidden="true"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="currentColor"
+                                                                            viewBox="0 0 25 25">
+                                                                            <path
+                                                                                d="{{ @$child['path1'] }}"></path>
+                                                                            <path
+                                                                                d="{{ @$child['path2'] }}"></path>
+                                                                        </svg>
+                                                                        {{ $child['title'] }}</a>
+                                                                </li>
+                                                            @endcan
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                                @endcan
+                                                @else
+                                                    @if(isset($menu['permission']))
+                                                        @can($menu['permission'])
+                                                            <li class="menu-item" id="menu{{ $menu['link'] }}">
+                                                                <a href="{{ $menu['link'] }}"
+                                                                   class="flex items-center p-3 my-1 text-cu-light rounded-s-full dark:text-white hover:bg-gray-100 light:hover:bg-gray-700 group">
+                                                                    @if(@$menu['path1'])
+                                                                        <svg
+                                                                            class="w-5 h-5 dark:text-white transition duration-75 dark:group-hover:text-gray-700"
+                                                                            aria-hidden="true"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="currentColor"
+                                                                            viewBox="0 0 22 21">
+                                                                            <path
+                                                                                d="{{ $menu['path1'] }}"></path>
+                                                                            <path
+                                                                                d="{{ @$menu['path2'] }}"></path>
+                                                                            <path
+                                                                                d="{{ @$menu['path3'] }}"></path>
+                                                                            <path
+                                                                                d="{{ @$menu['path4'] }}"></path>
+                                                                            <path
+                                                                                d="{{ @$menu['path5'] }}"></path>
+                                                                            <path
+                                                                                d="{{ @$menu['path6'] }}"></path>
+                                                                        </svg>
+                                                                    @endif
+                                                                    <span class=" mr-3 ">
                                                             {{ $menu['title'] }}
                                                         </span>
-                                                    </a>
-                                                </li>
-                                            @endif
-                                        </details>
+                                                                </a>
+                                                            </li>
+                                                        @endcan
+                                                    @endif
+                                                @endif
+                                            </details>
                                 </li>
                             @endforeach
 
