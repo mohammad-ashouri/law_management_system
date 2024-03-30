@@ -459,10 +459,9 @@ class LawController extends Controller
 
     public function showHistory($id)
     {
-        $lawDiffs = Difference::with('lawInfo')->with('editorInfo')->where('law_id', $id)->orderBy('id', 'desc')->get();
-        return view('LawManager.Difference_history', compact('lawDiffs'));
-
-
+        $lawDiffs = Difference::with('lawInfo')->with('editorInfo')->where('law_id', $id)->orderByDesc('id')->get();
+        $lawName=Law::find($id)->pluck('title');
+        return view('LawManager.Difference_history', compact('lawDiffs','lawName'));
     }
 
     public function getLawInfo(Request $request)

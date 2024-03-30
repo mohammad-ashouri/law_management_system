@@ -1,4 +1,3 @@
-@php use App\Models\Catalogs\LawGroup;use function PHPUnit\Framework\isEmpty; @endphp
 @extends('layouts.PanelMaster')
 @section('content')
     <main class="flex-1 bg-gray-100 py-6 px-8">
@@ -357,7 +356,7 @@
                                 <td class="px-6 py-1">{{ $law->approval_date }}</td>
                                 <td class="flex px-6 py-1">
                                     @can('نمایش تاریخچه مصوبه')
-                                        <form action="/Laws/showHistory/{{$law->id}}" method="get">
+                                        <form action="{{route('laws.history.show',$law->id)}}" method="get">
                                             <button data-id="{{ $law->id }}"
                                                     class="px-2 py-2 mr-2 mt-4 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:border-gray-300 ">
                                                 <i class="fa fa-history" aria-hidden="true"></i>
