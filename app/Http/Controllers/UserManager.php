@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class UserManager extends Controller
 {
@@ -21,7 +22,8 @@ class UserManager extends Controller
     public function index()
     {
         $userList = User::orderBy('id', 'asc')->paginate(10);
-        return view('UserManager', ['userList' => $userList]);
+        $allRoles = Role::get();
+        return view('UserManager', compact('userList', 'allRoles'));
     }
 
     public function ChangeUserActivationStatus(Request $request)
@@ -94,37 +96,26 @@ class UserManager extends Controller
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:users',
+            'type' => 'required|exists:roles,id',
         ]);
         if ($validator->fails()) {
             return $this->alerts(false, 'userFounded', 'نام کاربری تکراری وارد شده است.');
-        }
-        if ($request->input('type') == 3 and !$request->input('province')) {
-            return $this->alerts(false, 'emptyProvince', 'استان انتخاب نشده است.');
         }
         $name = $request->input('name');
         $family = $request->input('family');
         $username = $request->input('username');
         $password = $request->input('password');
         $type = $request->input('type');
-        switch ($type) {
-            case 1:
-                $subject = 'ادمین کل';
-                break;
-            case 2:
-                $subject = 'کارشناس فناوری استان';
-                break;
-        }
+
         $user = new User();
         $user->name = $name;
         $user->family = $family;
         $user->username = $username;
         $user->password = bcrypt($password);
         $user->type = $type;
-        $user->subject = $subject;
-        if ($type == 2 and $request->input('province')) {
-            $user->province_id = $request->input('province');
-        }
+        $user->subject = Role::findById($type)->name;
         $user->save();
+        $user->assignRole(Role::findById($type)->name);
         $this->logActivity('Added User With Name => ' . $username, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'userAdded', 'کاربر با موفقیت تعریف شد. برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
     }
@@ -135,29 +126,14 @@ class UserManager extends Controller
         $name = $request->input('editedName');
         $family = $request->input('editedFamily');
         $type = $request->input('editedType');
-        $province = null;
-        if ($type == 2 and !$request->input('editedProvince')) {
-            return $this->alerts(false, 'emptyProvince', 'استان انتخاب نشده است.');
-        }
-        if ($type == 2) {
-            $province = $request->input('editedProvince');
-        }
-        switch ($type) {
-            case 1:
-                $subject = 'ادمین کل';
-                break;
-            case 2:
-                $subject = 'کارشناس فناوری استان';
-                break;
-        }
         $user = User::find($userID);
         if ($user) {
             $user->name = $name;
             $user->family = $family;
             $user->type = $type;
-            $user->subject = $subject;
-            $user->province_id = $province;
+            $user->subject = Role::findById($type)->name;
         }
+        $user->syncRoles(Role::findById($type)->name);
         $user->save();
         $this->logActivity('Edited User With ID => ' . $userID, request()->ip(), request()->userAgent(), session('id'));
         return $this->success(true, 'userEdited', 'کاربر با موفقیت ویرایش شد. برای نمایش اطلاعات ویرایش شده، صفحه را رفرش نمایید.');
