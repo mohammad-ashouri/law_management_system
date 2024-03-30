@@ -357,37 +357,32 @@
                                 <td class="flex px-6 py-1">
                                     @can('نمایش تاریخچه مصوبه')
                                         <form action="{{route('laws.history.show',$law->id)}}" method="get">
-                                            <button data-id="{{ $law->id }}"
-                                                    class="px-2 py-2 mr-2 mt-4 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:border-gray-300 ">
-                                                <i class="fa fa-history" aria-hidden="true"></i>
+                                            <button data-id="{{ $law->id }}" title="نمایش تاریخچه"
+                                                    class="px-1 py-2 mr-2 mt-4 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:border-gray-300 ">
+                                                <i class="las la-history" style="font-size: 20px"></i>
                                             </button>
                                         </form>
                                     @endcan
                                     @can('ویرایش مصوبه')
                                         <form action="/Laws/edit/{{$law->id}}" method="get">
-                                            <button type="submit"
+                                            <button type="submit" title="ویرایش مصوبه"
+                                                    class="px-1 py-2 mr-2 mt-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:border-green-300 LawControl">
+                                                <i class="las la-edit" style="font-size: 20px"></i>
+                                            </button>
+                                        </form>
+                                    @endcan
+                                    @can('نمایش مصوبه')
+                                        <form action="{{route('law.show',$law->id)}}" method="get">
+                                            <button type="submit" title="نمایش مصوبه"
                                                     class="px-1 py-2 mr-2 mt-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 LawControl">
-                                                <svg width="24px" height="24px" viewBox="0 0 192 192"
-                                                     xmlns="http://www.w3.org/2000/svg" xml:space="preserve"
-                                                     fill="none"><path
-                                                        d="m104.175 90.97-4.252 38.384 38.383-4.252L247.923 15.427V2.497L226.78-18.646h-12.93zm98.164-96.96 31.671 31.67"
-                                                        class="cls-1"
-                                                        style="fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:12;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-                                                        transform="translate(-77.923 40.646)"/>
-                                                    <path d="m195.656 33.271-52.882 52.882"
-                                                          style="fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:12;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:5;stroke-dasharray:none;stroke-opacity:1"
-                                                          transform="translate(-77.923 40.646)"/></svg>
+                                                <i class="las la-info-circle" style="font-size: 20px"></i>
                                             </button>
                                         </form>
                                     @endcan
                                     @can('حذف مصوبه')
-                                        <button type="button" data-id="{{ $law->id }}"
-                                                class="px-1 py-1 mr-2 mt-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 deleteLaw">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px"
-                                                 height="24px">
-                                                <path
-                                                    d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 22 L 19 22 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z"/>
-                                            </svg>
+                                        <button type="button" data-id="{{ $law->id }}" title="حذف مصوبه"
+                                                class="px-1 mr-2 mt-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 deleteLaw">
+                                            <i class="las la-trash" style="font-size: 20px"></i>
                                         </button>
                                     @endcan
                                 </td>

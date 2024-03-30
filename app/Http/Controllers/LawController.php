@@ -22,8 +22,11 @@ class LawController extends Controller
         $this->middleware('permission:ایجاد مصوبه', ['only' => ['create', 'createIndex']]);
         $this->middleware('permission:ویرایش نوع مصوبه', ['only' => ['update', 'updateIndex']]);
         $this->middleware('permission:جستجوی مصوبه', ['only' => ['search']]);
+        $this->middleware('permission:نمایش مصوبه', ['only' => ['show']]);
         $this->middleware('permission:حذف مصوبه', ['only' => ['delete']]);
         $this->middleware('permission:نمایش تاریخچه مصوبه', ['only' => ['showHistory']]);
+
+        ini_set('upload_max_filesize', '32M');
     }
 
     public $searchArray = ['أ', 'ة', 'إ', 'ؤ', 'ً', 'ٌ', 'ٍ', 'َ', 'ُ', 'ِ', 'ّ', 'ۀ', '¬', 'ي', 'ك', '‌'];
@@ -127,7 +130,11 @@ class LawController extends Controller
             return $this->alerts(false, 'nullIssueDate', 'تاریخ صدور به صورت کامل انتخاب نشده است');
         }
 
-        $law->issue_date = $issue_year . '/' . $issue_month . '/' . $issue_day;
+        if ($issue_year) {
+            $law->issue_date = $issue_year . '/' . $issue_month . '/' . $issue_day;
+        } else {
+            $law->issue_date = null;
+        }
 
         $promulgation_day = $request->input('promulgation_day');
         $promulgation_month = $request->input('promulgation_month');
@@ -141,12 +148,16 @@ class LawController extends Controller
             return $this->alerts(false, 'nullPromulgationDate', 'تاریخ ابلاغ به صورت کامل انتخاب نشده است');
         }
 
-        $law->promulgation_date = $promulgation_year . '/' . $promulgation_month . '/' . $promulgation_day;
+        if ($promulgation_year) {
+            $law->promulgation_date = $promulgation_year . '/' . $promulgation_month . '/' . $promulgation_day;
+        } else {
+            $law->promulgation_date = null;
+        }
 
         $file = $request->file('file');
         if ($file) {
             $validator = Validator::make($request->all(), [
-                'file' => 'required|mimes:jpg,png,jpeg,pdf,doc,docx,zip,rar|max:20480',
+                'file' => 'required|mimes:jpg,png,jpeg,pdf,doc,docx,zip,rar|max:16384',
             ]);
             if ($validator->fails()) {
                 return $this->alerts(false, 'wrongFile', 'فایل نامعتبر انتخاب شده است.');
@@ -278,7 +289,11 @@ class LawController extends Controller
             return $this->alerts(false, 'nullIssueDate', 'تاریخ صدور به صورت کامل انتخاب نشده است');
         }
 
-        $law->issue_date = $issue_year . '/' . $issue_month . '/' . $issue_day;
+        if ($issue_year) {
+            $law->issue_date = $issue_year . '/' . $issue_month . '/' . $issue_day;
+        } else {
+            $law->issue_date = null;
+        }
 
         $promulgation_day = $request->input('promulgation_day');
         $promulgation_month = $request->input('promulgation_month');
@@ -292,12 +307,16 @@ class LawController extends Controller
             return $this->alerts(false, 'nullPromulgationDate', 'تاریخ ابلاغ به صورت کامل انتخاب نشده است');
         }
 
-        $law->promulgation_date = $promulgation_year . '/' . $promulgation_month . '/' . $promulgation_day;
+        if ($promulgation_year) {
+            $law->promulgation_date = $promulgation_year . '/' . $promulgation_month . '/' . $promulgation_day;
+        } else {
+            $law->promulgation_date = null;
+        }
 
         $file = $request->file('file');
         if ($file) {
             $validator = Validator::make($request->all(), [
-                'file' => 'required|mimes:jpg,png,jpeg,pdf,doc,docx|max:2048',
+                'file' => 'required|mimes:jpg,png,jpeg,pdf,doc,docx|max:16384',
             ]);
             if ($validator->fails()) {
                 return $this->alerts(false, 'wrongFile', 'فایل نامعتبر انتخاب شده است.');
@@ -445,6 +464,18 @@ class LawController extends Controller
         return view('LawManager.Update', compact('lawInfo', 'groups', 'approvers', 'topics', 'types', 'referTypes', 'refers'));
     }
 
+    public function show($id)
+    {
+        $lawInfo = Law::with('type')->with('group')->with('topic')->with('approver')->with('approver')->find($id);
+        $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
+        $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
+        $approvers = Approver::where('status', 1)->orderBy('name', 'desc')->get();
+        $topics = Topic::where('status', 1)->orderBy('name', 'desc')->get();
+        $referTypes = ReferType::where('status', 1)->orderBy('name', 'desc')->get();
+        $refers = Refer::with('typeInfo')->with('lawFromInfo')->with('lawToInfo')->where('law_from', $id)->orderBy('id')->get();
+        return view('LawManager.Show', compact('lawInfo', 'groups', 'approvers', 'topics', 'types', 'referTypes', 'refers'));
+    }
+
     public function delete(Request $request)
     {
         $id = $request->input('id');
@@ -460,8 +491,8 @@ class LawController extends Controller
     public function showHistory($id)
     {
         $lawDiffs = Difference::with('lawInfo')->with('editorInfo')->where('law_id', $id)->orderByDesc('id')->get();
-        $lawName=Law::find($id)->pluck('title');
-        return view('LawManager.Difference_history', compact('lawDiffs','lawName'));
+        $lawName = Law::find($id)->pluck('title');
+        return view('LawManager.Difference_history', compact('lawDiffs', 'lawName'));
     }
 
     public function getLawInfo(Request $request)

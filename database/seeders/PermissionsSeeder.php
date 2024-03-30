@@ -61,6 +61,7 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'ویرایش مصوبه']);
         Permission::create(['name' => 'نمایش تاریخچه مصوبه']);
         Permission::create(['name' => 'جستجوی مصوبه']);
+        Permission::create(['name' => 'نمایش مصوبه']);
         Permission::create(['name' => 'حذف مصوبه']);
         Permission::create(['name' => 'دسترسی به منوی قوانین و مصوبات']);
 
@@ -106,6 +107,7 @@ class PermissionsSeeder extends Seeder
             'ویرایش مصوبه',
             'نمایش تاریخچه مصوبه',
             'جستجوی مصوبه',
+            'نمایش مصوبه',
             'حذف مصوبه',
             'لیست کاربران',
             'ایجاد کاربر',

@@ -125,6 +125,7 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
                 Route::get('/search', [LawController::class, 'search']);
                 Route::get('/edit/{id}', [LawController::class, 'updateIndex'])->name('law.update');
                 Route::post('/update', [LawController::class, 'update']);
+                Route::get('/show/{id}', [LawController::class, 'show'])->name('law.show');
                 Route::post('/delete', [LawController::class, 'delete']);
                 Route::get('/showHistory/{id}', [LawController::class, 'showHistory'])->name('laws.history.show');
                 Route::get('/GetLawInfo', [LawController::class, 'getLawInfo']);
