@@ -316,7 +316,7 @@ class LawController extends Controller
         $file = $request->file('file');
         if ($file) {
             $validator = Validator::make($request->all(), [
-                'file' => 'required|mimes:jpg,png,jpeg,pdf,doc,docx|max:16384',
+                'file' => 'required|mimes:jpg,png,jpeg,pdf,doc,docx,zip,rar|max:16384',
             ]);
             if ($validator->fails()) {
                 return $this->alerts(false, 'wrongFile', 'فایل نامعتبر انتخاب شده است.');
