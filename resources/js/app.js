@@ -1536,6 +1536,26 @@ $(document).ready(function () {
                     });
                 });
                 break;
+            case '/BackupDatabase':
+                $('#create-backup').on('click', function (e) {
+                    e.preventDefault();
+                    showLoadingPopup();
+                    $.ajax({
+                        type: 'POST', url: '/BackupDatabase', headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        }, success: function (response) {
+                            if (response.errors) {
+                                if (response.errors.error) {
+                                    swalFire('خطا!', response.errors.error[0], 'error', 'تلاش مجدد');
+                                }
+                            } else {
+                                location.reload();
+                            }
+                        }
+                    });
+                });
+
+                break;
         }
     }
 });

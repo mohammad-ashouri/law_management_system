@@ -75,6 +75,11 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'جستجوی کاربر']);
         Permission::create(['name' => 'دسترسی به منوی مدیریت کاربران']);
 
+        //Users Manager
+        Permission::create(['name' => 'لیست بکاپ دیتابیس']);
+        Permission::create(['name' => 'ایجاد بکاپ دیتابیس']);
+        Permission::create(['name' => 'دسترسی به منوی بکاپ دیتابیس']);
+
         $superAdminRole = Role::create(['name' => 'ادمین کل']);
         $superAdminRole->givePermissionTo([
             'لیست انواع مصوبه',
@@ -116,6 +121,8 @@ class PermissionsSeeder extends Seeder
             'تغییر وضعیت نیازمند به تغییر رمز عبور',
             'بازنشانی رمز عبور کاربر',
             'جستجوی کاربر',
+            'لیست بکاپ دیتابیس',
+            'ایجاد بکاپ دیتابیس',
             'دسترسی به منوی کاتالوگ اولیه سامانه',
             'دسترسی به منوی انواع مصوبه',
             'دسترسی به منوی گروه بندی',
@@ -125,6 +132,7 @@ class PermissionsSeeder extends Seeder
             'دسترسی به منوی نقش های کاربری',
             'دسترسی به منوی قوانین و مصوبات',
             'دسترسی به منوی مدیریت کاربران',
+            'دسترسی به منوی بکاپ دیتابیس',
         ]);
 
         $role = Role::where('name', 'ادمین کل')->first();

@@ -3,15 +3,16 @@
 use App\Http\Controllers\Catalogs\ApproverController;
 use App\Http\Controllers\Catalogs\GroupController;
 use App\Http\Controllers\Catalogs\ReferTypesController;
+use App\Http\Controllers\Catalogs\RoleController;
 use App\Http\Controllers\Catalogs\TopicController;
 use App\Http\Controllers\Catalogs\TypeController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LawController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Reports\DatabaseBackupController;
 use App\Http\Controllers\Reports\ExcelAllReportsController;
 use App\Http\Controllers\Reports\PDFReportController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserManager;
 use App\Http\Middleware\CheckLoginMiddleware;
@@ -143,6 +144,11 @@ Route::middleware(CheckLoginMiddleware::class)->middleware(MenuMiddleware::class
             //End Reports
 
             Route::post('/CompareText', [Controller::class, 'compareText']);
+
+            Route::prefix('BackupDatabase')->group(function () {
+                Route::get('/', [DatabaseBackupController::class, 'index']);
+                Route::post('/', [DatabaseBackupController::class, 'createBackup']);
+            });
         });
 
     });
