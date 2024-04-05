@@ -16,13 +16,13 @@ class GroupController extends Controller
         $this->middleware('permission:تغییر وضعیت گروه', ['only' => ['changeStatus']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $groupList = LawGroup::orderBy('name', 'asc')->paginate(20);
         return \view('Catalogs.GroupCatalog', ['groupList' => $groupList]);
     }
 
-    public function create(Request $request)
+    public function create(Request $request): \Illuminate\Http\JsonResponse
     {
         $name = $request->input('name');
 
@@ -42,7 +42,7 @@ class GroupController extends Controller
         return $this->success(true, 'Added', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
     }
 
-    public function update(Request $request)
+    public function update(Request $request): \Illuminate\Http\JsonResponse
     {
         $ID = $request->input('group_id');
         $name = $request->input('nameForEdit');
@@ -71,7 +71,7 @@ class GroupController extends Controller
         }
     }
 
-    public function changeStatus(Request $request)
+    public function changeStatus(Request $request): void
     {
         $ID = $request->input('id');
         if ($ID) {

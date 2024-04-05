@@ -11,12 +11,12 @@ use Morilog\Jalali\Jalalian;
 
 class DashboardController extends Controller
 {
-    public function Profile()
+    public function Profile(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('Profile');
     }
 
-    public function ChangePasswordInc(Request $request)
+    public function ChangePasswordInc(Request $request): \Illuminate\Http\JsonResponse
     {
         $oldPass = $request->input('oldPass');
         $newPass = $request->input('newPass');
@@ -69,18 +69,18 @@ class DashboardController extends Controller
         }
     }
 
-    public function jalaliDateAndTime()
+    public function jalaliDateAndTime(): string
     {
         $data = Jalalian::forge('today')->format('%A, %d %B %Y');
         return $data . ' ' . date("h:i");
     }
 
-    public function jalaliDate()
+    public function jalaliDate(): string
     {
         return Jalalian::now()->format('Y/m/d');
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('dashboard');
     }

@@ -14,7 +14,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function logActivity($activity, $ip_address, $user_agent, $user_id = null)
+    public function logActivity($activity, $ip_address, $user_agent, $user_id = null): void
     {
         $agent = new Agent();
         ActivityLog::create([
@@ -26,19 +26,7 @@ class Controller extends BaseController
         ]);
     }
 
-    public function logEquipmentChanges($title, $equipment_id, $equipment_type,$property_number, $operator,$personal_code=null)
-    {
-        EquipmentLog::create([
-            'equipment_id' => $equipment_id,
-            'equipment_type' => $equipment_type,
-            'title' => $title,
-            'personal_code' => $personal_code,
-            'property_number' => $property_number,
-            'operator' => $operator,
-        ]);
-    }
-
-    public function alerts($state,$errorVariable,$errorText)
+    public function alerts($state, $errorVariable, $errorText): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'success' => $state,
@@ -48,7 +36,7 @@ class Controller extends BaseController
         ]);
     }
 
-    public function success($state,$messageVariable,$messageText)
+    public function success($state, $messageVariable, $messageText): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'success' => $state,
@@ -58,12 +46,14 @@ class Controller extends BaseController
         ]);
     }
 
-    public function compareText(Request $request){
-        $body1=$request->input('text1');
-        $body2=$request->input('text2');
-        if ($body1!=null and $body2!=null){
+    public function compareText(Request $request): ?string
+    {
+        $body1 = $request->input('text1');
+        $body2 = $request->input('text2');
+        if ($body1 != null and $body2 != null) {
             $htmlDiff = new \Caxy\HtmlDiff\HtmlDiff($body1, $body2);
-            return $content = $htmlDiff->build();
+            return $htmlDiff->build();
         }
+        return null;
     }
 }

@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Artisan;
 
 class DatabaseBackupController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $backups=DatabaseBackup::with('creatorInfo')->orderBy('id','desc')->paginate(15);
         return view('Reports.DatabaseBackup',compact('backups'));
     }
 
-    public function createBackup()
+    public function createBackup(): \Illuminate\Http\JsonResponse
     {
         $command=Artisan::call('database:backup');
         if ($command===0) {

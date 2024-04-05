@@ -19,14 +19,14 @@ class UserManager extends Controller
         $this->middleware('permission:بازنشانی رمز عبور کاربر', ['only' => ['ResetPassword']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $userList = User::orderBy('id', 'asc')->paginate(10);
         $allRoles = Role::get();
         return view('UserManager', compact('userList', 'allRoles'));
     }
 
-    public function ChangeUserActivationStatus(Request $request)
+    public function ChangeUserActivationStatus(Request $request): \Illuminate\Http\JsonResponse
     {
         $username = $request->input('username');
         $user = User::where('username', $username)->first();
@@ -51,7 +51,7 @@ class UserManager extends Controller
         }
     }
 
-    public function ChangeUserNTCP(Request $request)
+    public function ChangeUserNTCP(Request $request): \Illuminate\Http\JsonResponse
     {
 
         $username = $request->input('username');
@@ -75,7 +75,7 @@ class UserManager extends Controller
         }
     }
 
-    public function ResetPassword(Request $request)
+    public function ResetPassword(Request $request): \Illuminate\Http\JsonResponse
     {
         $username = $request->input('username');
         $user = User::where('username', $username)->first();
@@ -92,7 +92,7 @@ class UserManager extends Controller
         }
     }
 
-    public function newUser(Request $request)
+    public function newUser(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:users',
@@ -120,7 +120,7 @@ class UserManager extends Controller
         return $this->success(true, 'userAdded', 'کاربر با موفقیت تعریف شد. برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
     }
 
-    public function editUser(Request $request)
+    public function editUser(Request $request): \Illuminate\Http\JsonResponse
     {
         $userID = $request->input('userIdForEdit');
         $name = $request->input('editedName');

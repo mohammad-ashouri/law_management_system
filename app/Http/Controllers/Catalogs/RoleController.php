@@ -19,18 +19,18 @@ class RoleController extends Controller
         $this->middleware('permission:حذف نقش', ['only' => ['destroy']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $roles = Role::orderBy('name', 'asc')->paginate(10);
         return view('Catalogs.Roles.index', compact('roles'));
     }
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $permission = Permission::orderBy('name')->get();
         return view('Catalogs.Roles.create', compact('permission'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->validate($request, [
             'name' => 'required|unique:roles,name',
@@ -44,7 +44,7 @@ class RoleController extends Controller
             ->with('success', 'نقش کاربری با موفقیت ایجاد شد.');
     }
 
-    public function show($id)
+    public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $role = Role::find($id);
         $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
@@ -54,7 +54,7 @@ class RoleController extends Controller
         return view('Catalogs.Roles.show', compact('role', 'rolePermissions'));
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $role = Role::find($id);
         $permission = Permission::orderBy('name')->get();
@@ -65,7 +65,7 @@ class RoleController extends Controller
         return view('Catalogs.Roles.edit', compact('role', 'permission', 'rolePermissions'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $this->validate($request, [
             'name' => 'required',

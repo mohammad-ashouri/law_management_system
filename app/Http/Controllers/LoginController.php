@@ -17,7 +17,7 @@ class LoginController extends Controller
 {
 //    use AuthenticatesUsers;
 
-    protected $redirectTo = '/dashboard';
+    protected string $redirectTo = '/dashboard';
 
     public function getCaptcha(Captcha $captcha)
     {
@@ -32,7 +32,7 @@ class LoginController extends Controller
         $this->middleware('web')->only('logout');
     }
 
-    public function showLoginForm()
+    public function showLoginForm(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         if (Auth::check()) {
             return redirect()->route('dashboard');
@@ -41,7 +41,7 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function login(Request $request)
+    public function login(Request $request): \Illuminate\Http\JsonResponse
     {
 
         if (!$request->input('username')) {
@@ -105,13 +105,13 @@ class LoginController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(): \Illuminate\Http\RedirectResponse
     {
         Auth::logout();
         return redirect()->route('login');
     }
 
-    protected function authenticated(Request $request, $user)
+    protected function authenticated(Request $request, $user): \Illuminate\Http\RedirectResponse
     {
         return redirect()->intended($this->redirectPath());
     }

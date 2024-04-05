@@ -29,10 +29,10 @@ class LawController extends Controller
         ini_set('upload_max_filesize', '32M');
     }
 
-    public $searchArray = ['أ', 'ة', 'إ', 'ؤ', 'ً', 'ٌ', 'ٍ', 'َ', 'ُ', 'ِ', 'ّ', 'ۀ', '¬', 'ي', 'ك', '‌'];
-    public $replaceArray = ['ا', 'ی', 'ه', 'ا', 'و', '', '', '', '', '', '', '', 'ه', ' ', 'ک', ' '];
+    public array $searchArray = ['أ', 'ة', 'إ', 'ؤ', 'ً', 'ٌ', 'ٍ', 'َ', 'ُ', 'ِ', 'ّ', 'ۀ', '¬', 'ي', 'ك', '‌'];
+    public array $replaceArray = ['ا', 'ی', 'ه', 'ا', 'و', '', '', '', '', '', '', '', 'ه', ' ', 'ک', ' '];
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $filtered = false;
         $isEmpty = false;
@@ -44,7 +44,7 @@ class LawController extends Controller
         return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'approvers', 'types', 'filtered', 'isEmpty'));
     }
 
-    public function create(Request $request)
+    public function create(Request $request): \Illuminate\Http\JsonResponse
     {
         $lawCode = $request->input('lawCode');
         if (!$lawCode) {
@@ -194,7 +194,7 @@ class LawController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): \Illuminate\Http\JsonResponse
     {
         $lawID = $request->input('law_id');
         if (!$lawID) {
@@ -356,7 +356,7 @@ class LawController extends Controller
         ]);
     }
 
-    public function search(Request $request)
+    public function search(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $lawCode = $request->input('lawCode');
         $sessionCode = $request->input('sessionCode');
@@ -442,7 +442,7 @@ class LawController extends Controller
         return view('LawManager.Index', compact('lawList', 'groups', 'topics', 'types', 'approvers', 'isEmpty', 'allRequests'));
     }
 
-    public function createIndex()
+    public function createIndex(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
         $groups = LawGroup::where('status', 1)->orderBy('name', 'asc')->get();
@@ -452,7 +452,7 @@ class LawController extends Controller
         return view('LawManager.Create', compact('groups', 'topics', 'approvers', 'types', 'referTypes'));
     }
 
-    public function updateIndex($id)
+    public function updateIndex($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $lawInfo = Law::with('type')->with('group')->with('topic')->with('approver')->with('approver')->find($id);
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
@@ -464,7 +464,7 @@ class LawController extends Controller
         return view('LawManager.Update', compact('lawInfo', 'groups', 'approvers', 'topics', 'types', 'referTypes', 'refers'));
     }
 
-    public function show($id)
+    public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $lawInfo = Law::with('type')->with('group')->with('topic')->with('approver')->with('approver')->find($id);
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
@@ -476,7 +476,7 @@ class LawController extends Controller
         return view('LawManager.Show', compact('lawInfo', 'groups', 'approvers', 'topics', 'types', 'referTypes', 'refers'));
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request): \Illuminate\Http\JsonResponse
     {
         $id = $request->input('id');
         $law = Law::find($id);
@@ -488,14 +488,14 @@ class LawController extends Controller
         return $this->alerts(false, 'wrongError', 'خطای نامشخص.');
     }
 
-    public function showHistory($id)
+    public function showHistory($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $lawDiffs = Difference::with('lawInfo')->with('editorInfo')->where('law_id', $id)->orderByDesc('id')->get();
         $lawName = Law::find($id)->pluck('title');
         return view('LawManager.Difference_history', compact('lawDiffs', 'lawName'));
     }
 
-    public function getLawInfo(Request $request)
+    public function getLawInfo(Request $request): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|string|array
     {
         $lawInfo = Law::with('group')->with('type')->with('approver')->with('topic')->find($request->law_id);
         if ($lawInfo) {
@@ -504,7 +504,7 @@ class LawController extends Controller
         return 'not found';
     }
 
-    public function removeRefer(Request $request)
+    public function removeRefer(Request $request): \Illuminate\Http\JsonResponse
     {
         $refer = Refer::find($request->refer_id);
         if ($refer) {

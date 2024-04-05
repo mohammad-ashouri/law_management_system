@@ -16,13 +16,13 @@ class ApproverController extends Controller
         $this->middleware('permission:تغییر وضعیت تصویب کننده', ['only' => ['changeStatus']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $approverList = Approver::orderBy('name', 'asc')->paginate(20);
         return \view('Catalogs.ApproverCatalog', ['approverList' => $approverList]);
     }
 
-    public function create(Request $request)
+    public function create(Request $request): \Illuminate\Http\JsonResponse
     {
         $name = $request->input('name');
 
@@ -42,7 +42,7 @@ class ApproverController extends Controller
         return $this->success(true, 'Added', 'برای نمایش اطلاعات جدید، لطفا صفحه را رفرش نمایید.');
     }
 
-    public function update(Request $request)
+    public function update(Request $request): \Illuminate\Http\JsonResponse
     {
         $ID = $request->input('approver_id');
         $name = $request->input('nameForEdit');
@@ -71,7 +71,7 @@ class ApproverController extends Controller
         }
     }
 
-    public function changeStatus(Request $request)
+    public function changeStatus(Request $request): void
     {
         $ID = $request->input('id');
         if ($ID) {
