@@ -425,13 +425,13 @@ class LawController extends Controller
             });
         }
         $query->orderBy('created_at', 'desc');
-        $data = $query->paginate(20);
-        if ($data == null or $data->isEmpty()) {
+        $lawList = $query->paginate(20);
+        if ($lawList == null or $lawList->isEmpty()) {
             $isEmpty = true;
         } else {
             $isEmpty = false;
         }
-        $lawList = $data->appends(request()->query())->links();
+//        $lawList = $data->appends(request()->query())->links();
 
 
         $types = Type::where('status', 1)->orderBy('name', 'asc')->get();
