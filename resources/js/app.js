@@ -627,8 +627,6 @@ $(document).ready(function () {
                             }, success: function (response) {
                                 if (response.errors && response.errors.userFounded) {
                                     swalFire('خطا!', response.errors.userFounded[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors && response.errors.emptyProvince) {
-                                    swalFire('خطا!', response.errors.emptyProvince[0], 'error', 'تلاش مجدد');
                                 } else if (response.success) {
                                     swalFire('عملیات موفقیت آمیز بود!', response.message.userAdded[0], 'success', 'بستن');
                                     toggleModal(newUserModal.id);
@@ -687,9 +685,7 @@ $(document).ready(function () {
                             }, success: function (response) {
                                 if (response.errors && response.errors.userFounded) {
                                     swalFire('خطا!', response.errors.userFounded[0], 'error', 'تلاش مجدد');
-                                } else if (response.errors && response.errors.emptyProvince) {
-                                    swalFire('خطا!', response.errors.emptyProvince[0], 'error', 'تلاش مجدد');
-                                } else if (response.success) {
+                                }  else if (response.success) {
                                     swalFire('عملیات موفقیت آمیز بود!', response.message.userEdited[0], 'success', 'بستن');
                                     toggleModal(editUserModal.id);
                                     resetFields();

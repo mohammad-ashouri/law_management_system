@@ -170,14 +170,7 @@
                                     {{ $userInfo->username.' | '. $userInfo->name . ' '. $userInfo->family }}
                                 </p>
                                 <p class="pt-1 text-cu-light">
-                                    @if($userInfo->type===1)
-                                        {{ $userInfo->subject }}
-                                    @elseif($userInfo->type===2)
-                                        @php
-                                            $provinceInfo=Province::find($userInfo->province_id)
-                                        @endphp
-                                        {{ $userInfo->subject . ' ' . $provinceInfo->name }}
-                                    @endif
+                                    {{ $userInfo->subject }}
                                 </p>
                             </div>
                             <li class="menu-item" id="dashboard">

@@ -1,4 +1,3 @@
-@php use App\Models\Province; @endphp
 @extends('layouts.PanelMaster')
 
 @section('content')
