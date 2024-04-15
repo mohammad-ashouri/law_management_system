@@ -1,3 +1,4 @@
+@php use Morilog\Jalali\Jalalian; @endphp
 @extends('layouts.PanelMaster')
 @section('content')
     <main class="flex-1 bg-gray-100 py-6 px-8">
@@ -332,13 +333,13 @@
                             <th class="px-2 py-3  font-bold ">ردیف</th>
                             <th class="px-2 py-3  font-bold ">کد</th>
                             <th class="px-6 py-3  font-bold ">شماره مصوبه</th>
-                            <th class="px-6 py-3  font-bold ">شماره جلسه</th>
                             <th class="px-6 py-3  font-bold ">عنوان</th>
                             <th class="px-6 py-3  font-bold ">نوع مصوبه</th>
                             <th class="px-6 py-3  font-bold ">گروه</th>
                             <th class="px-6 py-3  font-bold ">تصویب کننده</th>
                             <th class="px-6 py-3  font-bold ">موضوع</th>
-                            <th class="px-6 py-3  font-bold ">تاریخ تصویب</th>
+                            <th class="px-6 py-3  font-bold ">ثبت کننده</th>
+                            <th class="px-6 py-3  font-bold ">تاریخ ثبت</th>
                             <th class="px-6 py-3  font-bold ">عملیات</th>
                         </tr>
                         </thead>
@@ -348,13 +349,17 @@
                                 <td class="px-2 py-1">{{ $loop->iteration }}</td>
                                 <td class="px-2 py-1">{{ $law->id }}</td>
                                 <td class="px-6 py-1">{{ $law->law_code }}</td>
-                                <td class="px-6 py-1">{{ $law->session_code }}</td>
                                 <td class="px-6 py-1">{{ $law->title }}</td>
                                 <td class="px-6 py-1">{{ $law->type->name }}</td>
                                 <td class="px-6 py-1">{{ $law->group->name }}</td>
                                 <td class="px-6 py-1">{{ $law->approver->name }}</td>
                                 <td class="px-6 py-1">{{ $law->topic->name }}</td>
-                                <td class="px-6 py-1">{{ $law->approval_date }}</td>
+                                <td class="px-6 py-1">{{ $law->adderInfo->name }} {{ $law->adderInfo->family }}</td>
+                                @php
+                                    $jalaliDate = Jalalian::fromDateTime($law->created_at);
+                                    $formattedJalaliDate = $jalaliDate->format('Y/m/d H:i:s');
+                                @endphp
+                                <td class="px-6 py-1">{{ $formattedJalaliDate }}</td>
                                 <td class="flex px-6 py-1">
                                     @can('نمایش تاریخچه مصوبه')
                                         <form action="{{route('laws.history.show',$law->id)}}" method="get">

@@ -51,4 +51,8 @@ class Law extends Model
     {
         return $this->belongsTo(Topic::class,'topic_id','id');
     }
+    public function adderInfo()
+    {
+        return $this->belongsTo(User::class,'adder','id');
+    }
 }
