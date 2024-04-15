@@ -4,10 +4,21 @@ import $ from 'jquery';
 import Swal from 'sweetalert2';
 // Initialization for ES Users
 import {initTE, Modal, Ripple,} from "tw-elements";
+import 'tinymce/tinymce';
+import 'tinymce/skins/ui/oxide/skin.min.css';
+import 'tinymce/skins/content/default/content.min.css';
+import 'tinymce/skins/content/default/content.css';
+import 'tinymce/icons/default/icons';
+import 'tinymce/themes/silver/theme';
+import 'tinymce/models/dom/model';
+import 'tinymce/plugins/table/plugin.js';
+import 'tinymce/plugins/fullscreen/plugin.js';
+import 'tinymce/plugins/autoresize/plugin.js';
 
 initTE({Modal, Ripple});
 
 window.Swal = Swal;
+
 
 function swalFire(title = null, text, icon, confirmButtonText) {
     Swal.fire({
@@ -108,6 +119,32 @@ function getJalaliDate() {
 
 $(document).ready(function () {
     hideLoadingPopup();
+    tinymce.init({
+        selector: '#body',
+        plugins: 'table fullscreen autoresize',
+        max_height: 1000,
+        skin: false,
+        content_css: false
+    });
+    tinymce.init({
+        selector: '#body2',
+
+        skin: false,
+        content_css: false
+    });
+    tinymce.init({
+        selector: '#body2',
+
+        skin: false,
+        content_css: false
+    });
+    tinymce.init({
+        selector: '#bodyModal',
+
+        skin: false,
+        content_css: false
+    });
+
     $('#backward_page').on('click', function () {
         window.history.back();
     });
@@ -127,11 +164,11 @@ $(document).ready(function () {
                     showLoadingPopup();
                     var form = $(this);
                     var formData = new FormData(form[0]);
-                    $('input[name^="refer_id"]').each(function(index, element) {
+                    $('input[name^="refer_id"]').each(function (index, element) {
                         formData.append($(element).attr('name'), $(element).val());
                     });
 
-                    $('input[name^="refer_type"]').each(function(index, element) {
+                    $('input[name^="refer_type"]').each(function (index, element) {
                         formData.append($(element).attr('name'), $(element).val());
                     });
                     $.ajax({
@@ -305,18 +342,25 @@ $(document).ready(function () {
                 $('.compare').on('click', function () {
                     showLoadingPopup();
                     $.ajax({
-                        type: 'POST', url: "/CompareText", data: {
-                            text1: $('#body1').val(), text2: $('#body2').val(),
-                        }, headers: {
+                        type: 'POST',
+                        url: "/CompareText",
+                        data: {
+                            text1: tinymce.get('body1').getContent({format: 'text'}), // گرفتن محتوای body1 از TinyMCE
+                            text2: tinymce.get('body2').getContent({format: 'text'}), // گرفتن محتوای body2 از TinyMCE
+                        },
+                        headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        }, success: function (response) {
+                        },
+                        success: function (response) {
                             hideLoadingPopup();
                             document.getElementById("compared").innerHTML = response;
-                        }, error: function (xhr, textStatus, errorThrown) {
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
                             // console.log(xhr);
                         }
                     });
                 });
+
                 break;
             case "/Profile":
                 resetFields();
@@ -617,7 +661,7 @@ $(document).ready(function () {
                         swalFire('خطا!', 'نوع کاربری انتخاب نشده است.', 'error', 'تلاش مجدد');
                     } else if (hasOnlyPersianCharacters(username)) {
                         swalFire('خطا!', 'نام کاربری نمی تواند مقدار فارسی داشته باشد.', 'error', 'تلاش مجدد');
-                    }  else {
+                    } else {
                         var form = $(this);
                         var data = form.serialize();
 
@@ -685,7 +729,7 @@ $(document).ready(function () {
                             }, success: function (response) {
                                 if (response.errors && response.errors.userFounded) {
                                     swalFire('خطا!', response.errors.userFounded[0], 'error', 'تلاش مجدد');
-                                }  else if (response.success) {
+                                } else if (response.success) {
                                     swalFire('عملیات موفقیت آمیز بود!', response.message.userEdited[0], 'success', 'بستن');
                                     toggleModal(editUserModal.id);
                                     resetFields();
