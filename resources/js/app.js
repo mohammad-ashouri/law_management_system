@@ -127,7 +127,7 @@ $(document).ready(function () {
         content_css: false
     });
     tinymce.init({
-        selector: '#body2',
+        selector: '#body1',
 
         skin: false,
         content_css: false
