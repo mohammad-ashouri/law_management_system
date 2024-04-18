@@ -51,10 +51,10 @@ class LawController extends Controller
             return $this->alerts(false, 'nullLawCode', 'شماره مصوبه وارد نشده است');
         }
 
-        $checkLawCode = Law::where('law_code', $lawCode)->get();
-        if ($checkLawCode->count() > 0) {
-            return $this->alerts(false, 'dupLawCode', 'شماره مصوبه تکراری وارد شده است');
-        }
+//        $checkLawCode = Law::where('law_code', $lawCode)->get();
+//        if ($checkLawCode->count() > 0) {
+//            return $this->alerts(false, 'dupLawCode', 'شماره مصوبه تکراری وارد شده است');
+//        }
 
         $law = new Law();
         $law->law_code = $lawCode;
@@ -206,10 +206,10 @@ class LawController extends Controller
             return $this->alerts(false, 'nullLawCode', 'شماره مصوبه وارد نشده است');
         }
 
-        $checkLawCode = Law::where('law_code', $lawCode)->where('id', '!=', $lawID)->get();
-        if ($checkLawCode->count() > 0) {
-            return $this->alerts(false, 'dupLawCode', 'شماره مصوبه تکراری وارد شده است');
-        }
+//        $checkLawCode = Law::where('law_code', $lawCode)->where('id', '!=', $lawID)->get();
+//        if ($checkLawCode->count() > 0) {
+//            return $this->alerts(false, 'dupLawCode', 'شماره مصوبه تکراری وارد شده است');
+//        }
 
         $law = Law::find($lawID);
         $newDiff = new Difference();
