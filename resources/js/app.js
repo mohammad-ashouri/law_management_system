@@ -150,6 +150,7 @@ $(document).ready(function () {
     });
     let pathname = window.location.pathname;
     if (pathname.includes("Laws/edit")) {
+
         $('#edit-law').on('submit', function (e) {
             e.preventDefault();
             Swal.fire({
