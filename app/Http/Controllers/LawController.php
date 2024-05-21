@@ -30,7 +30,7 @@ class LawController extends Controller
     }
 
     public array $searchArray = ['أ', 'ة', 'إ', 'ؤ', 'ً', 'ٌ', 'ٍ', 'َ', 'ُ', 'ِ', 'ّ', 'ۀ', '¬', 'ي', 'ك', '‌'];
-    public array $replaceArray = ['ا', 'ی', 'ه', 'ا', 'و', '', '', '', '', '', '', '', 'ه', ' ', 'ک', ' '];
+    public array $replaceArray = ['ا', 'ه', 'ا', 'و', '', '', '', '', '', '', '', 'ه', ' ', 'ی', 'ک', ' '];
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
