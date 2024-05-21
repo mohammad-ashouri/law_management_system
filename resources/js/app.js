@@ -117,15 +117,11 @@ function getJalaliDate() {
     });
 }
 
+
+
 $(document).ready(function () {
     hideLoadingPopup();
-    tinymce.init({
-        selector: '#body',
-        plugins: 'table fullscreen autoresize',
-        max_height: 1000,
-        skin: false,
-        content_css: false
-    });
+
     tinymce.init({
         selector: '#body1',
 
@@ -150,7 +146,6 @@ $(document).ready(function () {
     });
     let pathname = window.location.pathname;
     if (pathname.includes("Laws/edit")) {
-
         $('#edit-law').on('submit', function (e) {
             e.preventDefault();
             Swal.fire({

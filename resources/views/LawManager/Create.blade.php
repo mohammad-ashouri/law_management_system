@@ -97,22 +97,19 @@
                         </div>
                         <script>
                             $(document).ready(function () {
-                                $('#selectTextButton').click(function () {
-                                    var selectedText = getSelectedText();
-                                    $('#keywords').addTag(selectedText);
-                                });
-
-                                function getSelectedText() {
-                                    var textArea = document.getElementById('body');
-                                    var selectedText = '';
-
-                                    if (window.getSelection) {
-                                        selectedText = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
+                                tinymce.init({
+                                    selector: '#body',
+                                    plugins: 'table fullscreen autoresize',
+                                    max_height: 1000,
+                                    skin: false,
+                                    content_css: false,
+                                    setup: function(editor) {
+                                        document.getElementById('selectTextButton').addEventListener('click', function() {
+                                            var selectedText = tinymce.activeEditor.selection.getContent({format: 'text'});
+                                            $('#keywords').addTag(selectedText);
+                                        });
                                     }
-
-                                    return selectedText;
-                                }
-
+                                });
                                 $('#keywords').tagsInput({
                                     selectFirst: true,
                                     autoFill: true,
