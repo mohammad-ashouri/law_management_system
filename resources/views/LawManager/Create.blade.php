@@ -1,4 +1,5 @@
-@php use App\Models\Catalogs\LawGroup; @endphp
+@php use App\Models\Catalogs\LawGroup;use Morilog\Jalali\Jalalian; $currentJalaliDate = Jalalian::now();
+@endphp
 @extends('layouts.PanelMaster')
 
 @section('content')
@@ -103,8 +104,8 @@
                                     max_height: 1000,
                                     skin: false,
                                     content_css: false,
-                                    setup: function(editor) {
-                                        document.getElementById('selectTextButton').addEventListener('click', function() {
+                                    setup: function (editor) {
+                                        document.getElementById('selectTextButton').addEventListener('click', function () {
                                             var selectedText = tinymce.activeEditor.selection.getContent({format: 'text'});
                                             $('#keywords').addTag(selectedText);
                                         });
@@ -142,7 +143,7 @@
                                     <select id="approval_year" class="border rounded-md px-3 py-2"
                                             name="approval_year">
                                         <option value="" disabled selected>سال</option>
-                                        @for($a=1370;$a<=1402;$a++)
+                                        @for($a=1370;$a<=$currentJalaliDate->getYear();$a++)
                                             <option value="{{ $a }}">{{ $a }}</option>
                                         @endfor
                                     </select>
@@ -168,7 +169,7 @@
                                     <select id="issue_year" class="border rounded-md px-3 py-2"
                                             name="issue_year">
                                         <option value="" disabled selected>سال</option>
-                                        @for($a=1370;$a<=1402;$a++)
+                                        @for($a=1370;$a<=$currentJalaliDate->getYear();$a++)
                                             <option value="{{ $a }}">{{ $a }}</option>
                                         @endfor
                                     </select>
@@ -194,7 +195,7 @@
                                     <select id="promulgation_year" class="border rounded-md px-3 py-2"
                                             name="promulgation_year">
                                         <option value="" disabled selected>سال</option>
-                                        @for($a=1370;$a<=1402;$a++)
+                                        @for($a=1370;$a<=$currentJalaliDate->getYear();$a++)
                                             <option value="{{ $a }}">{{ $a }}</option>
                                         @endfor
                                     </select>
@@ -221,7 +222,8 @@
                                     </div>
                                     <div class="mr-3 mt-1">
                                         <p class="font-bold text-sm">حداکثر حجم: 16 مگابایت</p>
-                                        <p class="font-bold text-sm">فرمت های پشتیبانی شده: jpg, png, jpeg, pdf, doc, docx</p>
+                                        <p class="font-bold text-sm">فرمت های پشتیبانی شده: jpg, png, jpeg, pdf, doc,
+                                            docx</p>
                                     </div>
                                 </div>
                             </div>
