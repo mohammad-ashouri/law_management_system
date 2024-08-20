@@ -27,6 +27,7 @@ class LawController extends Controller
         $this->middleware('permission:نمایش تاریخچه مصوبه', ['only' => ['showHistory']]);
 
         ini_set('upload_max_filesize', '32M');
+        ini_set('post_max_size', '32M');
     }
 
     public array $searchArray = ['أ', 'ة', 'إ', 'ؤ', 'ً', 'ٌ', 'ٍ', 'َ', 'ُ', 'ِ', 'ّ', 'ۀ', '¬', 'ي', 'ك', '‌'];
